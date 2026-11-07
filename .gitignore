@@ -1,0 +1,35 @@
+# 秘密情報
+.env
+.env.*
+!.env.example
+local.properties
+secrets.properties
+*.keystore
+*.jks
+google-services.json
+GoogleService-Info.plist
+service-account*.json
+
+# Android
+.gradle/
+build/
+captures/
+.idea/
+*.iml
+.cxx/
+.externalNativeBuild/
+
+# Node / Web
+node_modules/
+dist/
+.next/
+.vite/
+
+# Python
+__pycache__/
+.venv/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
