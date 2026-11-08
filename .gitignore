@@ -33,3 +33,6 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# 取得し直せる大きなデータ
+backend/data/raw/
