@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>津波避難ナビ（試作）</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; max-width: 640px; margin-inline: auto; background: #fff; color: #111; }
+  h1 { font-size: 20px; }
+  fieldset { border: 1px solid #ccc; margin-bottom: 12px; }
+  button { font-size: 16px; padding: 10px 14px; margin: 4px 4px 4px 0; }
+  .alert { background: #b00020; color: #fff; padding: 12px; font-weight: bold; }
+  .training { font-size: 12px; font-weight: normal; }
+  .message { font-size: 18px; line-height: 1.6; padding: 12px; border: 2px solid #111; margin: 12px 0; white-space: pre-wrap; }
+  .card { border: 1px solid #999; padding: 10px; margin: 8px 0; }
+  .card a { display: inline-block; margin-top: 6px; font-weight: bold; }
+  .note { font-size: 12px; color: #555; }
+</style>
+</head>
+<body>
+<h1>津波避難ナビ（試作）</h1>
+
+<fieldset>
+  <legend>言語</legend>
+  <select id="lang">
+    <option value="ja">日本語</option>
+    <option value="en">English</option>
+    <option value="zh">简体中文</option>
+    <option value="ko">한국어</option>
+  </select>
+  <label><input type="checkbox" id="slow"> 速く歩けない（子ども・高齢者・けが）</label>
+</fieldset>
+
+<fieldset>
+  <legend>いる場所（訓練の警報で試す）</legend>
+  <button data-lat="34.6545" data-lon="135.4290">海遊館</button>
+  <button data-lat="34.6658" data-lon="135.4325">USJ</button>
+  <button data-lat="34.5845" data-lon="135.4640">堺・大浜公園</button>
+  <button id="here">現在地</button>
+</fieldset>
+
+<div id="out"></div>
+
+<script>
+const out = document.getElementById("out");
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function run(lat, lon) {
+  out.innerHTML = "<p>確認中…</p>";
+  const res = await fetch("/api/plan", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lat, lon, lang: document.getElementById("lang").value, slow: document.getElementById("slow").checked }),
+  });
+  if (!res.ok) { out.innerHTML = `<p>エラー: ${esc(await res.text())}</p>`; return; }
+  const { alert, plan, explanation } = await res.json();
+  const card = (o, label) => `
+    <div class="card">
+      <div>${label}：<b>${esc(o.name)}</b>（${esc(o.city)}）</div>
+      <div>${esc(o.address)}</div>
+      <div>歩いて約 ${Math.round(o.walk_min)} 分 ／ ${o.type === "go_upstairs" ? `建物の ${o.floor_min ?? "最上"} 階以上（目安）・浸水想定 ${esc(o.inundation_depth)}` : "浸水想定区域の外"}</div>
+      <a href="${esc(o.maps_url)}" target="_blank" rel="noopener">Google マップで案内</a>
+    </div>`;
+  out.innerHTML = `
+    <div class="alert">${esc(alert.kind)}（${esc(alert.area_name)}）残り約 ${Math.round(plan.minutes_left)} 分
+      <div class="training">${esc(alert.status)}電文（気象庁のサンプル）</div></div>
+    <div class="message">${esc(explanation.message)}</div>
+    ${card(plan.primary, "避難先")}
+    ${plan.alternatives.map((o) => card(o, "ほかの候補")).join("")}
+    <p class="note">避難先：国土地理院 指定緊急避難場所（津波）／浸水想定：国土数値情報 津波浸水想定（大阪府 2023 年版）／歩く時間：${plan.walking_time_source === "routes_api" ? "Routes API" : "直線距離からの目安"}／説明：${explanation.source === "gemini" ? "Gemini" : "決まった文（Gemini に失敗）"}</p>`;
+}
+
+document.querySelectorAll("button[data-lat]").forEach((b) =>
+  b.addEventListener("click", () => run(+b.dataset.lat, +b.dataset.lon)));
+document.getElementById("here").addEventListener("click", () =>
+  navigator.geolocation.getCurrentPosition((p) => run(p.coords.latitude, p.coords.longitude), (e) => (out.textContent = e.message)));
+</script>
+</body>
+</html>
