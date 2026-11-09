@@ -36,3 +36,7 @@ Thumbs.db
 
 # 取得し直せる大きなデータ
 backend/data/raw/
+
+# 作業の記録
+backend/eval/last_run.log
+backend/finetune/last_run.log

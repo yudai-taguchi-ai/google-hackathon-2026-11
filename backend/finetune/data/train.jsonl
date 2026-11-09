@@ -1,0 +1,1600 @@
+{"text": "道路中断，前面被倒塌的围墙挡住了。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "推着婴儿车走不快。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Is it safe to collect my suitcase from the hotel yet?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "짐이 너무 무거워서 걸음이 안 떨어져요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "부상 당함, 피 계속 남.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "走ってて聞こえなかった、もう一度教えて", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "When will they lift the tsunami evacuation order?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "頭から血流れてる、どうしよう", "lang": "ja", "name": "injured", "args": {}}
+{"text": "家族とはぐれたので安否確認したいです", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "I can't climb steps with this stroller, where do I go?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "推车，楼梯不行，有坡道吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "몸살 기운이 심해서 움직이기 힘들어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "屋上まで？それとも何階？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "喂喂能听到我说话吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "가족 놓침", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "墙塌了，路被完全堵住了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Carrying two toddlers, running is impossible!", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "가족 안 보여요 어디 있어요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Shelter full, need another one.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "ちょっと聞き取れなかった、もう一度", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Too much pain, I cannot walk up stairs.", "lang": "en", "name": "injured", "args": {}}
+{"text": "I really need a glass of water.", "lang": "en", "name": "other", "args": {}}
+{"text": "换别的避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Could you say that again slowly?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "出血がひどいです、どうすればいいですか", "lang": "ja", "name": "injured", "args": {}}
+{"text": "行李太多，跑不了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "다리 아파 못 걸어 도와줘.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "아 진짜 다리 아파 죽겠네 언제까지 걸어야 돼?", "lang": "ko", "name": "other", "args": {}}
+{"text": "Ankle sprained, can only limp very slowly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "足が痛くて走れません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "轮椅推不动台阶，有平路去高处吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "すみません、今のもう一回！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "捻挫したみたいで早く進めない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "どの高さまで上がればいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "荷物だけ取りに戻るの無理？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "跑不了，爷爷走很慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "树倒下来挡住了路，过不去怎么办？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "電柱が倒れてて道が塞がってます", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "무슨 말인지 이해 못 했어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "腿不能弯曲拄着拐杖，请避开楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "刚才那句话我没明白。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "走不快，老人年纪太大了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "我想回酒店拿行李，允许离开吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "带小宝宝推车，需要无台阶避难路线。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "짐 찾으러 가도 돼? 호텔 바로 앞인데.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "水が迫っててこの道は危ない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "노인 동반이라 이동이 느려요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "別の避難場所を再検索してください", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "摔倒了，膝盖一直在流血。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Please guide us along a flat path, my grandfather walks slowly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "ホテルのチェックイン間に合わないかも", "lang": "ja", "name": "other", "args": {}}
+{"text": "바다 색깔은 엄청 예쁜데 무섭네 참.", "lang": "ko", "name": "other", "args": {}}
+{"text": "連れとはぐれちゃった、位置情報わかる？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "아이가 어려서 뛰질 못해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Asthma attack, can't breathe or run.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Big tree down, road blocked completely.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "孩子走丢了，帮帮我", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "どこまで上がればいいか教えて。", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "可以回去了吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "子供とはぐれました、助けてください", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Alternative shelter, please.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "어르신이 계셔서 빨리 못 가요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "瓦礫が山積みで通れない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "拄拐杖，走不了楼梯，只能走平缓路面。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "妊娠してお腹が大きくて走れないです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "계단 못 타요. 경사로나 평지로만 우회로 찾아줘요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "다른 곳 안내", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "흙더미가 무너져서 길이 막혀 있습니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "ここ入れないです、他の場所案内して", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "어디까지 올라가? 옥상이야?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "쓰나미 오면 최소 몇 층?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "차가 뒤엉켜서 길이 꽉 막혔어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Water rushing in, road impossible to take.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "넘어져서 무릎 깨짐 피남.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "쓰러진 잔해 때문에 지나갈 수가 없습니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "がれきで通れないです", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "애기 유모차 때문에 육교나 계단 못 건너요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "잘 못 들었어요 다시 알려주세요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "请问这边路不通了，下一步去哪？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "附近还有其他避难场所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다리를 다쳐서 대피소까지 못 가겠어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "谢谢你智能助手真棒。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Didn't hear, say again.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "제 친구를 못 찾겠어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "捻挫したっぽくて走れないです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "임신부라 달릴 수가 없는데 어쩌죠?", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "好想现在去吃碗热拉面啊。", "lang": "zh", "name": "other", "args": {}}
+{"text": "请帮帮我，我受伤动弹不得。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "호텔로 돌아갈 수 있는 시간 알려줘.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "여기 꽉 찼어. 다른 곳은?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Please suggest a different high ground.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Switch to a different shelter immediately.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "轮椅，无障碍，快！", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "请问现在回旅馆安全吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "よく聞こえない、もう一度言ってもらえますか", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "体調が急激に悪化して動けません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "人が多すぎるから別の場所がいい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "手机快没电了该怎么办呢。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Are there any other safe places nearby?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "腿不行，走不快。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Where is my group? We got separated.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "지팡이 쓰는 노인 동행입니다. 완만한 길로 가야 해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "大概什么时候能安全返回？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Slow pace, grandma can't hurry.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "How long do we have to stay here?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Any other higher ground nearby?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Which floor is safe from the tsunami?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "Stairs impossible with this heavy stroller, please help.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "고마워요 번역해줘서 도움이 많이 됐어요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "Excuse me, I didn't understand the last instruction.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "救救我，我被砸伤了，一直在流血。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "音声認識ちゃんと動いてる？", "lang": "ja", "name": "other", "args": {}}
+{"text": "Much appreciated, my friend.", "lang": "en", "name": "other", "args": {}}
+{"text": "ベビーカーあり。段差ない道で避難したい", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "連れと離れちゃった、探す機能ある？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "ここ、何階まで上がれば安全？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "もう一回！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "다른 곳으로 가고 싶어요", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "건물 몇 층으로 가야 안전한가요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Wheelchair route please.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "My ankle is hurt, please help me.", "lang": "en", "name": "injured", "args": {}}
+{"text": "呼吸が苦しい、助けてください", "lang": "ja", "name": "injured", "args": {}}
+{"text": "여기 취소하고 다른 안전한 곳 알려주세요", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Help me, I fell and my knee is bleeding badly.", "lang": "en", "name": "injured", "args": {}}
+{"text": "방금 안내 음성 다시 재생해줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "Do we have to go higher than the third floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "避難の解除っていつになる見込みですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "这里不行，换别的", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "피난하다가 남편이랑 흩어졌습니다.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "え？なんて？", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "近くにトイレってありますか？", "lang": "ja", "name": "other", "args": {}}
+{"text": "杖歩行です。坂道かエレベーターで行ける場所ありますか", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "대피하려면 몇 층으로?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "轮椅，不能楼梯，快点。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我们得在这里过夜吗，还是等下能回去？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "딴 데로 바꿔줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "现在能不能回房间？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Feeling faint, need help to evacuate to high ground.", "lang": "en", "name": "injured", "args": {}}
+{"text": "제 남편도 이쪽 대피소로 오고 있나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Bleeding leg, cannot climb the stairs!", "lang": "en", "name": "injured", "args": {}}
+{"text": "앞 길이 막혔어요 다른 길 알려줘요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "实在跑不起来，箱子太沉了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Tsunami coming, which floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "走不动，脚伤了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "避難は何階まで行けばいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "連れとはぐれた、探して", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Is there a list of people who evacuated here? My friend is missing.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "으아아아 진짜 집 가고 싶다 한국 가고 싶어.", "lang": "ko", "name": "other", "args": {}}
+{"text": "Which floor for tsunami?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "I'm all alone, where did everyone go?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "孕妇，跑不快，有近路吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "How much longer do we need to wait here?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Where to go? Road blocked by cars!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "일행이랑 떨어졌어요 도와주세요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Please navigate me to high ground avoiding all staircases.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "짐 때문에 속도가 안 나요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "What floor should I go to?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "人满，去别处", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "没太明白，能再提醒一下吗？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "ここ通れません、どうすればいいですか", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "どこまで登ればいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "有没有别的避难所？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "할아버지 걸음이 너무 느리세요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "我怀孕几个月了，没法快跑。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "心臓が苦しい、動けないです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "上到几楼安全？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "前面的路被堵死了，过不去！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "友達とはぐれた！", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "지금 건물인데 몇 층으로 올라가야 하나요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Leg hurt, bleeding, cannot move fast.", "lang": "en", "name": "injured", "args": {}}
+{"text": "どこまで上に行けば助かりますか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "貴重品取りにホテル戻っても平気？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Again please, the siren is too loud!", "lang": "en", "name": "repeat", "args": {}}
+{"text": "무릎이 아파서 천천히밖에 못 걸어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Could you provide a step-free route to the evacuation building?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "커피 한잔 마시고 싶은데 자판기 있나?", "lang": "ko", "name": "other", "args": {}}
+{"text": "Where to go, what floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "시끄러워서 안 들렸어요 다시 말씀해주세요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "부모님이 연세가 많으셔서 천천히 가야 해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "避難解除の見込み時間を教えてください", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "I am feeling very unwell and need assistance to evacuate.", "lang": "en", "name": "injured", "args": {}}
+{"text": "请问预计几点能解除避难指示？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "足不自由で階段登れません！", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "바람 소리 때문에 안 들려 다시", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "几楼能躲海啸？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "여기 사람 너무 많아서 못 들어가겠어", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "나무가 쓰러져서 못 지나가겠어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "ベビーカー押して逃げてます、段差ない道ナビして", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "여기 막혔어 다른 데 어디야", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "몇 층 올라가야 해?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "腕を怪我して痛いです、手当てできる場所ありますか", "lang": "ja", "name": "injured", "args": {}}
+{"text": "階段、何階まで上がればいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "要跑到几楼才行？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "我虚脱了，完全走不动路。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "疲れたー、ちょっと座りたい", "lang": "ja", "name": "other", "args": {}}
+{"text": "車いす避難、階段なしルート", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ホテル 荷物 取りに戻る", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "腿流血了，没法跑了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Can't move quickly with small children holding my hands.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "숙소에 짐 가지러 잠깐 다녀와도 될까요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "受伤，无法行动。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Do I need to get to the very top?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "몸이 너무 안 좋아요. 토할 것 같아요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "I fell down and injured my back.", "lang": "en", "name": "injured", "args": {}}
+{"text": "일행 못 찾겠어요 도와줘요", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "我妈走得慢，我回头她就不见了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "어디까지 올라가야 살 수 있어요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Traveling with an elderly person, we need a slow route.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Sorry, wrong speech to text.", "lang": "en", "name": "other", "args": {}}
+{"text": "具合が悪くて歩けないです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "海啸来了，我应该上到第几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "No stairs! Stroller here!", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "戻るのいつ？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "一緒に避難してた友達を見失いました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "这里进不了，换别处", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "여기 포기. 다른 곳 알려줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "入れない。他の避難場所は？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "晩ごはん何食べようかなあ", "lang": "ja", "name": "other", "args": {}}
+{"text": "前に進めない、水が来てる", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "推车过不去台阶，请指引走平路。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "What floor is high enough?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "可以放一首轻松的歌曲吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "风声太大了没听清楚，请再说一次。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "Please find an accessible tsunami shelter route for a stroller.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Can go back now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Please repeat, I am running and didn't hear.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "여기 몇 시까지 있어야 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "救命，我该去几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "어 음 아무것도 아니에요 잘못 눌렀어요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "발을 심하게 다쳐서 도망칠 수가 없어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Give me another safe building.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Lost contact with my sister while running uphill.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "I am stuck because a fallen building is blocking the way.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Lost companion, need help.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "我家人没跟上来，怎么办", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Say again, can't hear you properly.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "重复一遍避难指示。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "このビルの何階に行けばいいの？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "我和家人走散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "他、どこか逃げられる場所ない？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "여기 말고 다른 피난소 안내해 주실래요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "야 이거 녹음되고 있는 거 맞냐?", "lang": "ko", "name": "other", "args": {}}
+{"text": "방금 말한 거 못 들었어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "높은 곳 어디까지 가야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "真的很感谢你的帮助。", "lang": "zh", "name": "other", "args": {}}
+{"text": "ベビーカー、階段使えない、避難タワー上がれる？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "和团友走散了，我该去哪找他们", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Man, I am getting really hungry.", "lang": "en", "name": "other", "args": {}}
+{"text": "何階まで逃げれば助かる？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "When are we allowed to leave this evacuation center?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "嗯？刚才说了啥？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "哇天上的云好奇怪。", "lang": "zh", "name": "other", "args": {}}
+{"text": "今天晚饭吃什么好呢？", "lang": "zh", "name": "other", "args": {}}
+{"text": "I don't know where my son went.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "4階で足りる？もっと上まで？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "다시, 안 들렸어", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "I have a baby stroller, can't move fast.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "전신주 쓰러짐 길 막힘", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "足腰が悪くて急いで歩けません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "想回酒店了，什么时候可以走？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "I have an open wound on my leg and it's bleeding a lot.", "lang": "en", "name": "injured", "args": {}}
+{"text": "네 고맙습니다 다들 수고가 많으십니다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "找不到同行的人，怎么办啊", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "수위가 너무 높아서 걸어갈 수 없어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "동생을 잃어버렸어요 제발 찾아주세요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "案内されたルート、塞がってる", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "계단에서 넘어져서 피가 철철 나요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "足が痛い、もう動かせない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "유모차가 있어서 계단 없는 길 알려줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "他の避難先を探してもらえますか？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "我现在想回酒店拿护照，可以吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "도로 폐쇄된 것 같아요 못 지나가요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "もうクタクタだよ、休みたい", "lang": "ja", "name": "other", "args": {}}
+{"text": "숙소에 짐 두고 왔는데 지금 가도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "ここ通れないんだけど、どこ行けばいい？", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "물 차서 못 감", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "どこまで上階へ行けばいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "쓰나미 피할 수 있는 층수 어디야?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "언제쯤 해제돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "Where can I find a public restroom?", "lang": "en", "name": "other", "args": {}}
+{"text": "저 휠체어인데 계단밖에 안 나와요. 다른 길 줘요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Can this app find my missing companions?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "血が止まらない、助けて", "lang": "ja", "name": "injured", "args": {}}
+{"text": "荷物が重すぎて走れない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "いつまで待てばいいこれ", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Gate is closed, where else is safe?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "무슨 뜻이야? 다시 쉽게 말해줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "小さい子どもがいるので早く歩けないです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "よく分からなかった、もう一度説明して", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "발목 삐어서 못 걸어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "쓰나미 경보 떴는데 몇 층으로 피해야 돼요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "車いすの家族がいます、階段使えないです", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我腿疼走不快，怎么办？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "다리 아파, 못 뛰어.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "ここじゃない場所を教えてください", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Street impassable. Water everywhere.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "숨이 잘 안 쉬어지고 속이 메스꺼워요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "和旅行团走散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Water is already rising here!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "발을 다쳐서 천천히 걸어야 해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "The route is cut off by fallen trees.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "수동 휠체어 밀고 있어요. 턱이나 계단 없는 길!", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "谢谢啊太贴心了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "请问还要避难几个小时？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "破片が刺さって足から血が吹き出てる", "lang": "ja", "name": "injured", "args": {}}
+{"text": "몇 층으로 가?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "There is too much water on this path, I cannot cross.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "解除いつ？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "다리 불편해서 지팡이 짚었어 계단 힘들어.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "몇 층으로 대피하면 되나요? 알려줘요.", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Foot hurts, slow walk only.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "別の避難ビル案内して", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Show me other evacuation spots around here.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "前面走不了，堵死，怎么办？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "去别的地方避难", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "抱歉，请问有不用爬楼梯的避难所吗？我腿疼走慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "被碎玻璃割伤了，手和腿都在流血。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "水泥块把路挡了，过不去了。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "还要等多久才能回海岸那边？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "没听清楚，请再说一下。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "孩子不见了，救命啊", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "ベビーカーがあるから急げないんです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "建物の上、何階まで逃げる？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "몇 층까지 뛰어야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "가족 찾아야 돼요 어디로 가야 하죠?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "I'm pushing a double stroller, is there a step-free path?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "雨降ってきちゃったんだけど", "lang": "ja", "name": "other", "args": {}}
+{"text": "Oops, sorry, I tapped the wrong button.", "lang": "en", "name": "other", "args": {}}
+{"text": "早くホテル帰って寝たいよ", "lang": "ja", "name": "other", "args": {}}
+{"text": "避难所太挤了，还有其他选择吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "애들 때문에 빨리 못 뛰는데 어떡해요?", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "캐리어 가지러 숙소 잠깐 들러도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "계단 불가. 경사로 길만 보여줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "임신해서 배가 불러 빨리 못 달려요 도와줘요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Friend gone, don't know where.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "足折れたかも、もう動けない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "Foot injured, unable to run fast.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "How many floors up should I go?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "High floor needed, which one?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "请重复刚才的语音播报。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "爸爸妈妈不见了！", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "はぐれた！仲間がいない！", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "숙소 언제 갈 수 있어요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "聞こえなかった！リピートして！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "お腹が激痛でその場に蹲ってます", "lang": "ja", "name": "injured", "args": {}}
+{"text": "쓰러진 나무 때문에 막혔어요 돌아서 갈 수 있나요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Are any convenience stores open right now?", "lang": "en", "name": "other", "args": {}}
+{"text": "The water is already ankle-deep and rising quickly on this street.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "道路が水浸しで通れません、迂回ルートを教えてください", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "Tell me a funny joke to calm my nerves.", "lang": "en", "name": "other", "args": {}}
+{"text": "파도가 여기까지 밀려오는데 어디로 피해요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "足腰弱くて階段登れない、どこ逃げたらいい？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "景色全然見えないね", "lang": "ja", "name": "other", "args": {}}
+{"text": "What is the weather forecast for tomorrow?", "lang": "en", "name": "other", "args": {}}
+{"text": "이쪽 길 침수 통행 불가", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "호텔 짐 찾으러 가도 됨?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "大肚子走不快啊，很急。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "여기 못 들어가요. 다른 피난 장소 알려줘요.", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "My kids are missing.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "请帮帮我，我带着老人跑不动。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "请再说一遍。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "明天还能看到富士山吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "我们要爬多高才安全？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "The street is completely blocked.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "車いすだから歩道橋渡れない、別の道ある？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "最高需要爬到哪一层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Road underwater, cannot get through.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "피가 너무 많이 나와요, 도와주세요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Too crowded, any other options?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "もう歩けない、足から血が", "lang": "ja", "name": "injured", "args": {}}
+{"text": "階段無理です、平らな道で高台行けますか", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ホテル戻る タイミング", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "测试测试一二三。", "lang": "zh", "name": "other", "args": {}}
+{"text": "애기가 안 걸으려고 해서 빨리 못 가겠어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "This shelter is completely full, reroute me.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "짐만 빨리 챙겨서 오면 안 되나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "回酒店取行李可以吗，真的很着急。", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Tell me the safe floor level.", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "連れとはぐれた、集合場所ってどこ？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "流血，好痛，帮帮我。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Water coming close, road blocked ahead!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "荷物が多くて速く移動できません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "友達と逃げてたのにはぐれました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "同伴不见了，现在在哪能集合？", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "けが人です、血がたくさん出てます", "lang": "ja", "name": "injured", "args": {}}
+{"text": "多高才安全，去第几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "I am feeling extremely nauseous and unable to walk further.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Which level is safe right now?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "방금 나온 안내 다시 틀어줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "夫がいなくなった、どこ探せばいい？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Avoid stairs, stroller baby emergency.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Could you direct me to high ground that doesn't require climbing stairs?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Blocked road. Reroute please.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Any stair-free evacuation paths nearby?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "4층 이상으로 가야 되나?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "I cannot keep a fast pace with my children.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "天气真好啊完全看不出危险。", "lang": "zh", "name": "other", "args": {}}
+{"text": "那个温泉街离这儿远不远？", "lang": "zh", "name": "other", "args": {}}
+{"text": "拄拐，楼梯不能走，求平路路线。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "麻烦再说一次，刚才人太多没注意听。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "알려줘서 고마워요 힘내서 올라가 볼게요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "대피소 다른 데로 가고 싶어", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "はぐれちゃった、子供どこ行ったの？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "杖ついてて階段登れないです", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Severe pain in my foot, I cannot walk.", "lang": "en", "name": "injured", "args": {}}
+{"text": "지팡이 짚고 있어서 걷기 힘들어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I am pregnant and cannot walk fast.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "여기 들어가기 힘든데 근처 다른 곳 있나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "유모차 두 대라서 계단은 절대 안 돼요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "いつまでここにいないといけないですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "When can we return to our rooms?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "ベビーカーあり、バリアフリールートでお願い", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Big rubble in the middle of the road, can't pass.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "갑자기 배가 너무 아파서 주저앉았어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "What is the minimum safe floor for vertical evacuation here?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "길이 없어요 막혔음", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "너무 시끄러워 뭐라고 했는지 다시", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "请问安全楼层是哪一层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Kid missing, please help.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "足痛くて階段上がれない、スロープどこ？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "친구랑 떨어졌습니다 도와주실 수 있나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Which floor safe?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "上楼，去几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "진짜 여행 첫날부터 무슨 날벼락이람 참나.", "lang": "ko", "name": "other", "args": {}}
+{"text": "おばあちゃんが一緒だから早く歩けない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "여기 사람 꽉 찼음 다른 곳 추천 좀", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "家族がどこにいるかわかりません", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "ここ無理そう、別どこ？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "腿抽筋了，完全走不快。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "캐리어가 무거워서 빨리 달리기 어려워요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Roof or fifth floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "我走不了路了，脚很痛。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "발에 쥐가 나서 뛸 수가 없어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "No space left here, where should I head next?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "找不到儿子了，帮帮我吧", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "같이 다니던 친구가 안 보여요 연락도 끊겼어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "道が割れてて渡れません", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "I missed what you said, please tell me again.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "Pardon? Where should I evacuate?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "傘持ってないから濡れちゃうよ", "lang": "ja", "name": "other", "args": {}}
+{"text": "妊婦だからゆっくりしか進めないです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "ベビーカーだから階段登れないし走れない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Cannot walk fast, please help.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "行李不要紧，但能先回酒店退房吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Could you tell me how to say excuse me in Japanese?", "lang": "en", "name": "other", "args": {}}
+{"text": "过不去啊，前面全是倒下来的电线！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "휠체어 탑승 중. 무장애 대피로 추천해 줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "这里的空气闻起来好新鲜。", "lang": "zh", "name": "other", "args": {}}
+{"text": "坐轮椅的游客，请给一条没有台阶的避难路径。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "避难是在三楼还是屋顶？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "ホテル戻りたいんだけどまだ危険？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "同行者が見つかりません、どうすればいいですか？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "坐轮椅，海啸来了走哪条无障碍路？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I am terribly injured and unable to evacuate on my own.", "lang": "en", "name": "injured", "args": {}}
+{"text": "What floor do we evacuate to for this tsunami warning?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "婴儿车没办法上楼，哪里有无障碍入口？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "못 들었어요 어디로 피해야 돼요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "친구 잃어버림 어떡해", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "아아 날씨 춥다 겉옷 좀 챙겨올걸 그랬어.", "lang": "ko", "name": "other", "args": {}}
+{"text": "저기 물 넘쳤어요 못 가요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "This one is full, what is the next closest safe place?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Water incoming! Way blocked!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "여기 못 들어감 다른 대피소", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "请问哪里能广播找人？我和家人分开了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "うーん、電波悪いな", "lang": "ja", "name": "other", "args": {}}
+{"text": "是不是只要往高处跑就行，几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "어지럽고 숨쉬기가 힘들어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "川みたいに水が流れてて進めません", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "I want to change the evacuation place.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "水越来越深了，这条路彻底不能走了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "今日ってこの後雨降るのかな", "lang": "ja", "name": "other", "args": {}}
+{"text": "えーっと、聞こえなかったです", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Safe floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "友達とはぐれて今一人です", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "一緒にいた人が見当たらないんです", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "何階まで避難すれば安全？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "휠체어로 대피 가능한 안전한 고지대 경로 알려주세요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "别处避难所导航", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "サンキュー助かるわ", "lang": "ja", "name": "other", "args": {}}
+{"text": "친구 어디 있는지 확인할 수 있나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "糟糕，海水涨上来了，前面过不去！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "피난 중에 아내를 잃어버렸어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "I have a baby stroller, so I can't use stairs.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ありがとう、助かります", "lang": "ja", "name": "other", "args": {}}
+{"text": "대피소 바꿔줘 여기 못 들어가", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "能重新告诉我刚才的指示吗？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "对不起，导航指的路被水淹了，怎么走？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "我没听懂你刚刚说的内容。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "경보 언제 풀려요? 호텔 가야 되는데.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "I left my umbrella at the coffee shop.", "lang": "en", "name": "other", "args": {}}
+{"text": "ここ満員で入れない、他ない？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "階段ダメ、ベビーカーです", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "待機終了の時間は決まってますか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "人太多了，我和家人挤散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "谢谢你一直提醒我。", "lang": "zh", "name": "other", "args": {}}
+{"text": "저 다쳤는데 어디로 가야 하나요?", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Ah, my shoes are totally soaked.", "lang": "en", "name": "other", "args": {}}
+{"text": "逃到几楼才可以？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "쓰나미 오는데 몇 층까지 가야 됩니까?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "我拄着拐杖，走得很慢，不能走楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "何階まで登るべきですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "뭐라고 하시는지 하나도 모르겠어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "真是辛苦你了非常感谢。", "lang": "zh", "name": "other", "args": {}}
+{"text": "지금 내려가면 위험해요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "길 막힘 다른 길 안내해 줘", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "我受重伤了，需要紧急包扎。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "别的地方呢？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "もっと別の場所ないの？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "몇 층으로 도망쳐야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "My toddler can't walk fast, need close shelter.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "请带我去其他的避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Until what time do we have to stay evacuated?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "え、なにこれ、どういうこと？", "lang": "ja", "name": "other", "args": {}}
+{"text": "짐 가지러 호텔 갔다 와도 되는지 알려줘.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "숙소 복귀 시간 언제인가요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "머리 다쳤음 피남.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "避难所能找人吗？我同伴走丢了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "간판이랑 쓰레기 때문에 길이 막혔어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Is there a gentle path? I can't climb fast.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "逃难楼层是多少？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "호텔 짐 회수 가능?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "我们还要滞留多长时间？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "I can't reach my wife on her phone and I'm worried.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "다리 아파서 천천히, 빨리 못 가.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "寒気と吐き気がすごくて歩けなくなりました", "lang": "ja", "name": "injured", "args": {}}
+{"text": "I was separated from my group during the evacuation.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Can I quickly grab my luggage from the hotel?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "救命，腿动不了，血流不止。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "救命，流了好多血，走不了路。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "请再说一遍避难场所的名字。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "年寄りと一緒なので走れません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "딴 데 없을까?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Blocked ahead, need alternative escape route right now.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "刚才跑太急没注意听，请重说一遍。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "I'm bleeding from my leg and cannot walk.", "lang": "en", "name": "injured", "args": {}}
+{"text": "통로가 막혀서 앞으로 못 가겠어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "違う場所に変えてください", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "路不通了，换别的路！急！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "도와주셔서 정말 감사합니다 복 받으실 거예요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "돌이랑 파편 때문에 발이 묶였어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "My kid is tired and cannot run.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Could you let me know if it is safe to pick up my bags yet?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "找不到我同伴了，有什么办法吗", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Can you find another route? This way is impassable.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "请问有急救箱吗？我受伤流血了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "家人不见了，紧急求助", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "箱子太重，实在拿不动走不快。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "유모차 진입 가능한 대피 장소 찾아줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I need to find my travel buddies right now.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "身体很难受，想吐，走不动路。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "아이 데리고 있어서 빨리 못 뛰어.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "没听到，请立刻重复一遍！", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "호텔로 언제가?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "他の避難場所ありませんか？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "几点可以回去？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "쓰나미 피하려면 몇 층으로 가야 하나요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "What floor do I stop climbing?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "もう一回再生して！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "这里太挤了，另外的高处有吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is the tsunami over? Can we leave?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "倒塌的建筑物挡住了路，没法前进了。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Fallen debris blocks this alley completely.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Another shelter now.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "走散了，急死我了，我老婆呢", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "大きな荷物があって早く走れません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "어디까지 피해야 돼? 몇 층?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "何て言ったの？もう一回お願い", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "家族とはぐれました、どうすればいいですか？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Should I go all the way to the rooftop?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "風の音で聞こえなかった、もう一度お願い", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "아 네네 알겠습니다 감사해요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "三楼够高吗，还是去更高？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "얼마나 더 여기 대피해 있어야 하나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "避難所からいつ出られるか教えて", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "유모차가 있어서 빨리 못 가요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "방송 소리 때문에 못 들었어 다시 해줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "No running, terrible leg pain!", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Cannot do stairs, baby in pram.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "需要到四楼以上吗？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Am I allowed to walk back to my hotel right now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "대피하다가 일행 손을 놓쳐버렸어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "友達と離れ離れになっちゃった", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "スマホの画面が見づらいです", "lang": "ja", "name": "other", "args": {}}
+{"text": "How long should we stay at this evacuation site?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "东西还在房间里，能回去拿吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "I didn't understand what you just said.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "不好意思请问能派人帮我吗？我脚崴了动不了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "상처가 깊어요, 구급차 좀 불러주세요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "杖ついてます、急な坂や階段は避けたいです", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "几楼可以避难？快告诉我！", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Is there a flat road or ramp for wheelchairs to escape the tsunami?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I am in a wheelchair, need ramp to high ground.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "물이 바로 앞까지 왔어요 못 지나갑니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "壁が崩れてて通れない！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "Need slope only, wheelchair user fleeing tsunami.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I am exhausted and can't run anymore.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "え、聞こえんかった", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "带着两个孩子，根本跑不动。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Split up with my family during the tsunami alert.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "What did you say?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "뭐라는지 잘 안 들렸어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "휠체어 대피 지원되는 고지대 대피소 어디예요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "这里排队太长进不去，有别处吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "え、どこに行けばいいの？もう一回言って", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Please help me find my daughter.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "다리가 물에 잠겨서 건널 수가 없어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "警报解除了吗，可以走了没？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "방금 거 다시 한번만", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "荷物取りに行っちゃダメですかね？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "路堵了！换条路！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "ここいつ出れる？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "请问还有其他的避难所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "애가 울고 보채서 빨리 못 가.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Show me barrier-free tsunami evacuation directions immediately.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "不行，过不去，都是水！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Do I need to reach the roof?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "腿疼，无法走，流血。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Can you tell me how many floors up I must go?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "車いすなんですが近くのバリアフリー避難所はどこですか", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "부모님을 놓쳤습니다 찾는 방법 알려주세요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Ouch, I think I pulled a muscle.", "lang": "en", "name": "other", "args": {}}
+{"text": "몇 층까지 올라가야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "几楼？现在去几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "能去别的避难所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "車いすで行ける高台のルート知りたい", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "スーツケース取りに一度戻りたいです", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "推着婴儿车，有没有无障碍避难路线？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "음 뭐라고 해야 되지 아무튼 고마워.", "lang": "ko", "name": "other", "args": {}}
+{"text": "去几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Lost track of my father on the stairs.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "上、何階に行けばいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "好想立刻钻回被窝睡觉。", "lang": "zh", "name": "other", "args": {}}
+{"text": "何階まで行けば大丈夫？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "宿に戻りたいです。解除はまだですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Moving slow, traveling with elderly parents.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "换个避难地点", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "助けて、けがして動けない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "Path blocked here, help!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "海の写真撮りたかったのにな", "lang": "ja", "name": "other", "args": {}}
+{"text": "아 다리 터질 것 같아 운동 부족인가 봐.", "lang": "ko", "name": "other", "args": {}}
+{"text": "Too packed here, where is the next shelter?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "拄拐，楼梯不行，避难所平路怎么走？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "换一个地方，进不去", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "호텔 짐 챙기러 잠깐만 갔다 오는 건 괜찮죠?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "はぐれた家族を探したいです", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "階段無理！バリアフリーの避難路出して！", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I really love Japan anyway.", "lang": "en", "name": "other", "args": {}}
+{"text": "请问走不快该去哪里避难？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "가족을 찾을 수 있는 방법이 있을까요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Am I safe on the second floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "One more time please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "え、何？", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "No steps, walking cane, guide me fast.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "다시 한번 들려주실래요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "请问海啸警报大概什么时候解除？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "피난소인데 가족이 안 와요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "他、空いてる避難所ない？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "일행 어디 갔어 안 보여", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "I wish I had packed warmer clothes this morning.", "lang": "en", "name": "other", "args": {}}
+{"text": "The bridge ahead is submerged in water!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "杖ついてるので歩くの遅いです、階段ない避難所どこ？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "内容が理解できませんでした、もう一度お願いします", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "階段使えない、スロープある道", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Separated from family, please locate.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "唉今天运气可真够差的。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Cannot run fast, pregnant woman here.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "我们还要在这个地方呆几个小时？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Pram with me, stairs impossible right now.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ベビーカー連れです、スロープ付きの避難場所教えて", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "여기 주변에 화장실 어디 있나요 급한데요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "이쪽 길 침수됐어요 우회로 알려주세요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Bags too heavy, can't keep up.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "足が痛むからゆっくりしか歩けない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "지금 몇 층으로 올라가야 안전한지 알려줘.", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "ここ以外で近くの避難所どこ？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "行李太重跑不动，救命。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "사이렌 때문에 안 들려 뭐라고?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "와 하늘 완전 맑은데 신기하다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "I lost my family.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "ああー、足痛い、もう歩けない", "lang": "ja", "name": "other", "args": {}}
+{"text": "没听见，再说一次！", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "도통 무슨 말인지 모르겠어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "换地方", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "すみません、よく聞こえませんでした", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Speak again, please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "휠체어 이용자인데 대피소 어떻게 가나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "不好意思，前面路上有障碍物过不去，该往哪走？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "폰 배터리 십 퍼센트밖에 안 남았는데 어떡하지.", "lang": "ko", "name": "other", "args": {}}
+{"text": "割れたガラスで足切った、血が止まらない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "往上跑，去第几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "家族とはぐれてしまって不安です", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "휠체어 때문에 계단 못 올라가요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "피 나요, 붕대 같은 거 없나요?", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Cannot find my partner anywhere.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Are there other places to evacuate?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "走太慢了，膝盖好痛。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "何階に上がれば安全か教えてほしい。", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "太挤了，换", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "How many levels up to avoid the water?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "転んで起き上がれなくなっちゃいました", "lang": "ja", "name": "injured", "args": {}}
+{"text": "荷物が重くてペースが上がりません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "앱 만들어주신 개발자분들 진짜 감사합니다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "我不去这里了，换别的", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Repeat the evacuation alert, please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "Where inside this building should I go up to?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "Stroller friendly evacuation route please.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "무슨 말인지 전혀 모르겠어", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "Which level should we climb to?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "連れが見当たらない", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Lost my husband, where is he?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Blood coming out from head, please help me!", "lang": "en", "name": "injured", "args": {}}
+{"text": "What was that instruction? Repeat please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "フェンスが倒れてて通れないよ", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "前の道、水没してる！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "今のなんですか？聞こえませんでした", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "前の道路、完全に冠水してます", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "Say that again please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "人いっぱい、違う場所にして", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "杖だから段差無理、平坦な道で避難したい", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "How many more hours do we have to wait here?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "전동 휠체어인데 갈 수 있는 피난길 있어요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "麻烦帮帮我，我脚踝扭伤完全站不起来。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "この道ダメ、通れない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "请问现在这条路被淹了，最近的高地怎么走？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "同行者とはぐれてしまいました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "친구 놓쳤어요 연락 안 됨", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "コンビニ寄っても大丈夫かな？", "lang": "ja", "name": "other", "args": {}}
+{"text": "Road blocked, where do I go?", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "옥상 가야 돼요 말아야 돼요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "同行的人找不到了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "拿护照，现在能去酒店吗？很急！", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "周围能借到充电宝吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "明日の天気って晴れるのかな", "lang": "ja", "name": "other", "args": {}}
+{"text": "Luggage in hotel, can I get it now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "다쳐서 못 움직여요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "这边的樱花开了没有呀？", "lang": "zh", "name": "other", "args": {}}
+{"text": "계단 못 가요 휠체어라.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Hurt, bleeding, trapped on stairs.", "lang": "en", "name": "injured", "args": {}}
+{"text": "屋顶吗？还是几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "다리가 부러진 것 같아요. 움직일 수가 없어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "能不能让我回酒店拿一下药？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "My mom is not here with me.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "몸 상태가 너무 안 좋은데 근처에 병원 없나요?", "lang": "ko", "name": "injured", "args": {}}
+{"text": "混雑してるから他行きたい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Louder, I didn't catch that.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "走れないです、妊婦です", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "子どもが小さくて早く歩けないよ", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "I just need to get my luggage, is that allowed?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "请问周围还有可以去的避难所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "よく分からん、もう一度", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "好的好的多谢啦！", "lang": "zh", "name": "other", "args": {}}
+{"text": "请问这栋建筑避难要上几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "別の場所に行きたいです", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "We lost each other in the rush.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "가족 어디 갔는지 몰라요 찾고 싶어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Please send someone, I'm bleeding and unable to move.", "lang": "en", "name": "injured", "args": {}}
+{"text": "빨리 못 걸어요, 애가 있어서요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "友達とはぐれた、どうしよう", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Can't go inside, find another spot quick.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "여기 말고 딴 데", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "最低でも何階まで登ればいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "回房间拿包，可以去吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "路不通！很多水！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "足を挫いてしまって早く歩けません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "腿脚不便柱着拐杖，没办法爬楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "I hurt my knee, cannot move!", "lang": "en", "name": "injured", "args": {}}
+{"text": "木が倒れてて前に行けません", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "사람 너무 많아 다른 데", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "喂！我跟我朋友分开了！", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Can I retrieve my belongings from my hotel now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "앞이 물에 잠겼어요 어디로 가요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "꼭대기 층까지 가야 안전해요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "哪个楼层是安全的？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "휠체어, 계단 안 됨.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "허리가 아파서 빨리 못 걷겠습니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "頭を打って血が出ています", "lang": "ja", "name": "injured", "args": {}}
+{"text": "다침, 이동 불가.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "피가 안 멈춰요 어떻게 해야 해요?", "lang": "ko", "name": "injured", "args": {}}
+{"text": "听不清楚到底该往哪里跑。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "저기요 혹시 오늘 저녁에 라멘 먹을 수 있을까요?", "lang": "ko", "name": "other", "args": {}}
+{"text": "I don't want to go here, give me another choice.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Hey Siri, wait no, whatever your name is.", "lang": "en", "name": "other", "args": {}}
+{"text": "お土産買いたかったのに店閉まってる", "lang": "ja", "name": "other", "args": {}}
+{"text": "계단 말고 엘리베이터 있는 대피 빌딩 없나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "水が押し寄せてきてて引き返したい", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "请问我现在必须上到几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "언제 돌아갈 수 있나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "倒木で塞がれてて進めないです", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "What floor does the app recommend right now?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "前面被水淹没了，走不过去。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "여기 말고 갈 만한 곳 또 없어요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "我老婆不见了！", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "海啸过去了吗？能不能回海边拿行李？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "건물이 무너져서 길이 막혔습니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "쌍둥이 유모차라 계단은 절대 못 가요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "따뜻한 녹차 한잔 마시면 딱 좋겠는데.", "lang": "ko", "name": "other", "args": {}}
+{"text": "安全な階数を教えてください。", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "要上几楼？马上回答！", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "子どもが疲れて歩くの遅い", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "いつホテルに帰れますか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "冠水してて歩けないです", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "여기 말고 갈 데 또 있어?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "请问有走失人员登记的地方吗？", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "어버버 아아 마이크 테스트 들려요?", "lang": "ko", "name": "other", "args": {}}
+{"text": "家族と連絡が取れません、はぐれました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Excuse me, is there a way to track down my missing family?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "津波、何階まで上がれば届かない？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "スロープのある避難場所、大至急教えてください！", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Wow, this wind is freezing.", "lang": "en", "name": "other", "args": {}}
+{"text": "Can I go somewhere else?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "祖母の足が悪くて早く避難できません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "喂，我和朋友分开了，怎么联系", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "水がどんどん来てます、危ないです", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "How far up do I have to run?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "자리 없는데 어디로 가야 돼요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "什么？没听懂。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "Water is coming fast, I can't go forward!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "杖歩行、階段使わない逃げ道", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我先生不见了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "跑着跑着同伴不见了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "到底要去几楼啊？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Can you find a route with ramps or elevators for my stroller?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Excuse me, is it okay to return to our accommodation now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "周りがうるさくて聞き取れなかった、もう一回！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "几时能回去啊？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "How long is this evacuation going to last?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "すみません、今の案内がよく分からなかったです", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "あと何時間くらいここで待機すればいいですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "找不到我朋友了，怎么办", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "なになに？聞こえなかった！", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "听不清，请大声点再说一遍。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "我和同行的朋友被人群冲散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Family missing, what should I do?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "他の候補地を表示してほしいです", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "障碍物太多，过不去，求换路线。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "도망치다가 넘어졌는데 뼈가 부러진 것 같아요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "옥상까지 가야 하나요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "여기 말고 다른 대피소 가고 싶어요", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "あとどれくらいここにいればいいですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "대피소 변경하고 싶어요", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Hotel return time?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "We have heavy backpacks and are walking very slowly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "完全没听懂，请重新说明一下。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "Okay, talk to you later.", "lang": "en", "name": "other", "args": {}}
+{"text": "哮喘犯了，呼吸不上来，动不了了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "轮椅上不去台阶，怎么办？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "带着小宝宝根本跑不起来啊。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Is there a vending machine nearby?", "lang": "en", "name": "other", "args": {}}
+{"text": "No steps route, please hurry!", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "물 들어옴 못 지나감", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "I cut my foot and there is a lot of blood.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Can't enter this building, give me a different spot.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "ありがとう、助かったよ", "lang": "ja", "name": "other", "args": {}}
+{"text": "우리 애기 찾아야 해요 어디로 갔을까요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "这里太满，还有哪里能去？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "还要继续往上走吗，走几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "救命啊，跟我一起的人找不到了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "もう一回言ってください", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "What? I didn't catch that.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "車いす通れる道探して！", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "救命！脚踝肿了，一动就剧痛。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "My chest hurts and I can barely walk.", "lang": "en", "name": "injured", "args": {}}
+{"text": "轮椅走不了台阶，请问走哪里？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Road closed, water coming in.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "足を怪我していて走れません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "没搞明白，请重讲一遍。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "屋上まで行かないとダメですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "連れとはぐれた、どこにいるかわからない", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "途中で途切れた、もう一度言って", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "휠체어 탄 상태로 쓰나미 피할 수 있는 길!", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "오늘 며칠이지 날짜 감각이 완전 없어졌어.", "lang": "ko", "name": "other", "args": {}}
+{"text": "언제까지 여기 있어야 되는지 알 수 있을까요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "はいはい、わかりましたー", "lang": "ja", "name": "other", "args": {}}
+{"text": "가족이랑 헤어졌어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "どこに行けって言ったの？もう一度", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "水来了水来了，前面的路完全被淹了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Sorry, what did you mean?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "계단 못 써요. 엘리베이터나 경사로 어디예요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Cannot get inside, redirect me.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "When can tourists go back?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "動けないよ、助けて、津波から逃げられない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "친구를 잃어버렸는데 어디서 찾아야 하죠?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "不想在这，换一个", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Cannot walk here, street is totally flooded.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "지팡이 노인 동반. 계단 없는 피난 루트 필요해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "请问附近有适合婴儿车的避难通道吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "キャリーバッグ重い、走れない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "목말라 물 마시고 싶다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "通れない、道がない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "임신 중이라 빨리 달릴 수가 없어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "脚卡住了受了伤，动弹不得。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "请问避难要爬到几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Can you show me an evacuation path without any steps?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我行动不便，走得比较慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "すみません、聞き取れませんでした、もう一度言ってください", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "너무너무 무섭고 힘든데 친절하게 알려줘서 땡큐.", "lang": "ko", "name": "other", "args": {}}
+{"text": "別の避難場所", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Sorry, can you repeat the route?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "I can't run, my leg hurts badly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "子ども連れだから速く歩けない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "想在这里拍张风景照留念。", "lang": "zh", "name": "other", "args": {}}
+{"text": "我现在在二楼，还要往上几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "여기 말고 근처 다른 높은 곳 있어요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "はあ、ため息しか出ないよ", "lang": "ja", "name": "other", "args": {}}
+{"text": "何階以上に行けばいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "Too slow, hurt my foot.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Need elevator or slope, I am using a wheelchair.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Need get my passport hotel, can I go?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "몇 층 이상 가야 됨?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "일행이랑 헤어졌을 때 어떻게 하나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "When will the tsunami warning end?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Still dangerous outside? Can go hotel?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Which floor to evacuate?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "My grandmother is in a wheelchair and cannot use the stairs.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "孩子在婴儿车里，楼梯实在搬不动。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "走不动了，太累了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "ほんと助かりました、感謝します", "lang": "ja", "name": "other", "args": {}}
+{"text": "ここいっぱいだから別のとこ", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "임신 초기라 무리해서 뛰면 안 돼요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "のど渇いた、自販機どこ", "lang": "ja", "name": "other", "args": {}}
+{"text": "Walking stick user, please show gentle slope instead of stairs.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "아 배고파 아까 산 삼각김밥 그냥 먹을걸.", "lang": "ko", "name": "other", "args": {}}
+{"text": "딴 데 없어? 여기 사람 터져", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "乳母車あるから段差少ない逃げ道教えてください", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "お腹すいたな、何か食べるものある？", "lang": "ja", "name": "other", "args": {}}
+{"text": "이제 위험 끝났어요? 호텔 가도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "避难的时候和朋友失散了，能帮我找找吗？", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "老人孩子都在，完全快不了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "现在很急，能不能再说一遍？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "다시 말해줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "前面坍塌了，没有路了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "轮椅移动中，避开所有楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "テストテスト、マイク入ってる？", "lang": "ja", "name": "other", "args": {}}
+{"text": "Too many people here, find another evacuation site.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "通行止めになってます、迂回路はありますか？", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "他の場所に変更したい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "跑不动了，心脏跳得好难受。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "침수 위험 때문에 통행이 불가능합니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "海水涌过来了，根本没法往前走！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "I cannot proceed on this street due to heavy flooding.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "走慢，脚痛。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "麻烦请再讲一次。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "同行的老人走得非常慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "違う避難場所に行きたいんだけど", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Did not hear, please repeat now.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "3階で大丈夫ですか？もっと上？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "一緒のグループとはぐれた、どうしたらいい？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "脚受伤了拄着拐杖，只能走平路或坡道。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Missing my friends, how can I search for them?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Good app, nice voice.", "lang": "en", "name": "other", "args": {}}
+{"text": "Missed that, repeat please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "Is there an alternative tsunami evacuation area?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Heavy suitcase, no fast walking.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Electric wheelchair here, need paved ramp route.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Where is the nearest tsunami shelter with wheelchair access?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Hurt head, dizzy, cannot walk alone.", "lang": "en", "name": "injured", "args": {}}
+{"text": "堵死了！过不去！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "周围声音太杂了，没听清。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "ここ以外でどこかある？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "유리 조각에 찔려서 피가 멈추질 않아요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "我有轮椅，不能走楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "体力が限界で倒れそう、近くに休める場所ある？", "lang": "ja", "name": "injured", "args": {}}
+{"text": "할머니 모시고 있어서 뛸 수가 없어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "이제 돌아가도 되는 시간인가요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "I'm using crutches and I can't walk up stairs.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "엄마 어디 갔지 안 보여요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "連れが見つからない、助けて", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Should we keep going up to the top floor?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "能再讲一遍刚才的紧急通知吗？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "아기 유모차 계단 못 들어. 완만한 언덕길 어딨어?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "前面被大卡车挡住了，走不了。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "ベビーカー押してます、スロープのルート教えてください", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ベビーカー押してるから歩道橋とか階段は無理", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "My boyfriend was right behind me, but now he is gone.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "パニックで過呼吸、息ができないです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "荷物回収戻っていい？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "別の安全な場所を教えて", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "通行不能、別ルート出して", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "호텔에 짐 가지러 잠깐 갔다 와도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "여기 만원인데 다른 대피 장소 좀 찾아줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "不好意思，刚才说的是什么？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "荷物だけさっと取りに戻るのってダメですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "입구 막혔는데 다른 대피소 어디로 가요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "連れとはぐれて合流できません", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "When will it be safe for us to head back?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "家族がいません、はぐれちゃいました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "계단 패스. 배리어프리 피난 경로로 안내해.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "몇 층까지 올라가야 물 안 닿아요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "엄마랑 떨어졌어요 어떻게 해야 돼요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "지팡이 보행자입니다. 계단 피해서 갈 수 있는 길 부탁해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "満杯で入れそうにない、他ある？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다른 피난처로 경로 다시 설정해 줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Need help, can't walk, ankle broken.", "lang": "en", "name": "injured", "args": {}}
+{"text": "家族が高齢で走ることが難しいです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "How many floors must I climb to escape the wave?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "유모차 끌고 계단 올라가기 불가능해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "몸이 아파서 더 이상 걸을 수가 없어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "水漫街了，根本走不动！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Is floor five safe enough?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "塞がってる、通れない、助けて", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "I cannot pass through this road, please show another way.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "気分が悪くてここから一歩も動けません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "잘 안 들렸어 다시 부탁해", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "한번 더 말해줄래?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "请问能重复一下刚才的避难路线吗？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "刚才没听清，能重复一下吗？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "이해 안 돼요 어디로 가라고요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "孩子太小抱不动，走得慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "가족이랑 같이 있었는데 갑자기 안 보여요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "건물 꼭대기까지 가야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "여기 건물에서 몇 층으로 피해야 하죠?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "언제까지 대피해야 하는지 시간 좀 알려주세요.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "잠깐만 다시 말해봐", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "I'm bleeding heavily from my arm.", "lang": "en", "name": "injured", "args": {}}
+{"text": "어? 방금 뭐라고요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "Do you know any good ramen places around here?", "lang": "en", "name": "other", "args": {}}
+{"text": "아이가 세 살이라 뛰는 게 불가능해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Such a beautiful ocean usually, you know?", "lang": "en", "name": "other", "args": {}}
+{"text": "换个避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "伤势很严重，请问救援人员什么时候能到？", "lang": "zh", "name": "injured", "args": {}}
+{"text": "一緒にいた家族とはぐれてしまいました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "别的避难点在哪里？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다시 안내해 줘 못 들었단 말이야", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "別のところに避難したい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "물이 밀려와요 여기 통과 못 해요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "はぐれた！連れがいない！", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "I couldn't understand that, please repeat.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "過呼吸で倒れそうです、助けて", "lang": "ja", "name": "injured", "args": {}}
+{"text": "동생 찾아줘 어디 있어", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "We got separated while running.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "换避难点", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "走得脚好酸走不动了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "임산부예요. 빨리 못 뛰어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "ここは何階以上が安全ですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "水没してる、通れない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "숨차고 어지러워서 쓰러질 것 같습니다.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "上、何階まで？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "Sorry, repeat please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "이제 내려가서 호텔 가도 되나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "能不能稍微慢一点再说一次？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "違う避難先教えて", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "脚痛走慢，紧急避难所呢？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "头好晕，走不动了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Go back hotel ok now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "带推车和拐杖的老人，走不了楼梯，求无障碍路！", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "前面有树倒了，摩托车过不去我也过不去。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "小孩走不动，一直哭。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Water level is rising fast, path unavailable.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "抱歉我有点慌，请慢点再说一遍。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "还有别的高地避难所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "息が苦しくてこれ以上走れません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "심장이 너무 빨리 뛰고 어지러워요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Excuse me, I am injured and I can't walk anymore.", "lang": "en", "name": "injured", "args": {}}
+{"text": "すみません、もう一度お願いできますか？", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "다른 데로 대피할래", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "パスポート宿に置いてきたから取りに行きたい", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "看板が落ちてて道が塞がれてます", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "連れがいなくなった！", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Could you please tell me when we can leave this shelter?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "请问怎么才能找到同伴？", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "물이 차오르고 있어요 이쪽 못 지나가요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "足痛いから急げない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Luggage too heavy to run!", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "肚子疼得厉害，没办法逃跑。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "スーツケースが重くて早く進めません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "足痛い、動けない、津波来ちゃう", "lang": "ja", "name": "injured", "args": {}}
+{"text": "돌아가도 돼?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "호텔에 중요한 물건 두고 왔는데 지금 가도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "다른 데 찾아줘 급해", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "什么意思？完全没搞懂。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "대피 층수 몇 층이야?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Is the third floor high enough for this wave?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "짐 너무 무거워 빨리 안 돼.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "지금 호텔 들어가면 안 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "배고픈데 근처에 편의점 문 열었으려나?", "lang": "ko", "name": "other", "args": {}}
+{"text": "通れない！水が来てる！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "道が塞がれてて高台に行けません", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "Could you kindly assist me in reuniting with my spouse?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "どの階まで避難すればいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "海啸避难，要上几楼？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "기념품 산 거 호텔에 다 두고 왔는데 아까워라.", "lang": "ko", "name": "other", "args": {}}
+{"text": "请问现在允许回酒店拿贵重物品吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Can you play some relaxing music for me?", "lang": "en", "name": "other", "args": {}}
+{"text": "几楼安全？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "摔下台阶了，全身都在痛，站不起来。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "언제까지 여기서 기다려야 돼?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "我们用轮椅，避难所怎么上去？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Come again?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "这里人太满了，有别的地方吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "階段使えません、車椅子で避難中", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "다시 한번만 말씀해 주시겠어요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "Big cut on my hand, bleeding won't stop.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Sorry, what was the last part?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "肚子已经饿得咕噜叫了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "휠체어 경사로 있는 높은 건물 가르쳐 주세요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "什么时候警报才结束？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "違う避難所に変更して", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다쳤어요. 혼자서 못 걷겠어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "Bad back pain, can't run away quickly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "不去这里，换别的高处", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "头晕目眩，没力气跑了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "めまいがひどくて倒れそう", "lang": "ja", "name": "injured", "args": {}}
+{"text": "この道無理です、他の避難ルートは？", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "感觉快晕倒了，能不能派人来救我？", "lang": "zh", "name": "injured", "args": {}}
+{"text": "この先、道路がふさがってて通れません！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "母とはぐれてしまいました、居場所わかりますか？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "重いリュック背負ってて走れない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Cannot use stairs, baby carriage with me.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Is there an alternate route? A collapsed building is blocking this passage.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "危险解除了吗？想回酒店了。", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "No entry here, find alternative route.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "どこまで上に逃げたら安全ですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "ここから出られるのいつ頃？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Thank you so much for helping me.", "lang": "en", "name": "other", "args": {}}
+{"text": "車椅子使ってます、階段通らないルート案内して", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "もしもし、聞こえてますか？", "lang": "ja", "name": "other", "args": {}}
+{"text": "무슨 말이에요? 잘 못 알아들었어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "탈진한 것 같아요, 쓰러질 것 같아요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "可以离开避难点了吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "ここダメそう、他の候補ある？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "哈喽哈喽在吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "何階？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "足元まで水が来てる、早く別の道！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "足が痛いのでゆっくり歩いてます", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "请问避难指定楼层是多少？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "When can we leave?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "속이 너무 울렁거리고 식은땀이 나요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "换个不挤的避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Please navigate me around, the designated route is blocked.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Fallen power lines blocking the path ahead!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "瓦砾堆得太高了，根本翻不过去。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "It looks packed, is there anywhere else?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Testing, one two three, hello?", "lang": "en", "name": "other", "args": {}}
+{"text": "骨折したかもしれません、激痛で動けないです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "我们什么时候可以回酒店？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "摔伤了走不动，海啸要来了吗？", "lang": "zh", "name": "injured", "args": {}}
+{"text": "伤口好深，血止不住。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Cannot move forward, high water here.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "头破了在流血，头很晕。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "어라 이거 왜 지 혼자 켜졌지?", "lang": "ko", "name": "other", "args": {}}
+{"text": "什么时候能走？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "My daughter got left behind, please help me.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "子連れで急げない、どうしよう", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Deep cut, blood everywhere, can't run!", "lang": "en", "name": "injured", "args": {}}
+{"text": "Any update on when we can go back?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "すみません、聞き直したいです", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "足痛い、血出てる、もう走れない", "lang": "ja", "name": "injured", "args": {}}
+{"text": "장애물 때문에 앞으로 못 나아가고 있어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "ここ行き止まりになってる！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "家族とはぐれた、どう探せばいい？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Can I take a selfie with this app?", "lang": "en", "name": "other", "args": {}}
+{"text": "脚很痛，能慢点走吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "This vacation is completely ruined.", "lang": "en", "name": "other", "args": {}}
+{"text": "足悪くて階段無理！坂道で避難できるとこ！", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "ホテル戻るの可能？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "계단 이용 불가능합니다. 슬로프 있는 길 안내 바랍니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "请问今晚气温大概多少度？", "lang": "zh", "name": "other", "args": {}}
+{"text": "Where did my friends go?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "呼吸困难，浑身没力气走不了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "Can you say that one more time?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "무릎 수술해서 지팡이 짚었어요. 계단 무리예요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "妻が見つかりません、探せますか？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "못 움직이겠어요, 다리에 힘이 안 들어가요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "人太多进不去，换个地方", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Please say that again, I didn't get it.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "소리 잘 안 들렸는데 뭐라고 하셨나요?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "わかんなかった、もう一回", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "再播报一次刚才的内容。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "아이 손을 놓쳤어요 어떡해요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "现在回住处安全不安全？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "要上到几楼避难？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "ベビーカーでも逃げられる高台ありますか？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "길이 물에 다 잠겨버렸습니다", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "We are moving slowly because my grandmother is with us.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "朋友走丢，急！", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "車椅子で行ける避難場所はどこですか？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我受伤了，脚扭了走不动。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "친구랑 같이 도망치다가 놓쳤습니다.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "안전한 층수가 몇 층이에요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "피, 피가 너무 많이 나.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "I left my medicine at the hotel, can I go back and get it?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Lost my wife in the crowd, please help.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "What was that?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "Can you find me another evacuation building?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "多谢信息十分感激。", "lang": "zh", "name": "other", "args": {}}
+{"text": "せっかくの旅行だったのに最悪", "lang": "ja", "name": "other", "args": {}}
+{"text": "なんて言ったの？", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "유모차 끌고 피난 중인데 계단 없는 대피로 찾아줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Too heavy bags, can't sprint.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "別のルートの避難先にして", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "My leg is in pain, cannot rush uphill.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "もう戻っていいの？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "How much longer must we remain on higher ground?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Need ramp route, using a walking cane.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "荷物多すぎて走るの無理です", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "You are doing a great job, thank you.", "lang": "en", "name": "other", "args": {}}
+{"text": "何階まで行けば津波から逃げられますか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "还有哪里可以去避难？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "同行伙伴不见了，怎么确认安全？", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "腿被划伤了，一直在流血怎么办？", "lang": "zh", "name": "injured", "args": {}}
+{"text": "ホテル戻っていい時間教えて", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "なんて言ったか分からなかった", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Can you translate this sign on the wall for me?", "lang": "en", "name": "other", "args": {}}
+{"text": "走不通啊，水漫过来了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "前面有电线杆倒了，挡住了去路。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Please help, I feel too dizzy to move.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Cannot move, my leg broken, tsunami coming.", "lang": "en", "name": "injured", "args": {}}
+{"text": "방금 뭐라고 했어?", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "行李太沉了，走不动。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "我脚受伤了，没办法快走。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "朋友在哪，找不到人", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "上階、どこまで行けばいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "Path closed by fallen concrete, please redirect me.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Lost my brother during the siren.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "I didn't hear you.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "いっぱいだから他に変えたい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "팔 다쳐서 피 흘리는 중.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "推婴儿车，哪里有无障碍通道？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "何階以上が避難場所になってますか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "딴 대피소 어디야?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "喂，刚才说了什么？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "I twisted my ankle while running and cannot stand up.", "lang": "en", "name": "injured", "args": {}}
+{"text": "宿に荷物残してるんだけど取りに行けない？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "何階まで上がればいい？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "다리 통증 때문에 빨리 걷기 어렵습니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Say it again louder please.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "Can you help me locate my parents?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "물이 너무 빨리 차올라요 이 길 위험해요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "최소 몇 층까지 올라가야 하나요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "お水飲みたいんだけど売ってないかな", "lang": "ja", "name": "other", "args": {}}
+{"text": "我的行李还在酒店房间里。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Elderly with walking stick, cannot take stairs.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "爬到几楼合适？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "딴 데 안내해 줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "导航到另外的避难地点", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "请问前面道路封堵了，有其他避难路线吗？", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "안내해줘서 고마워 덕분에 마음이 진정됐어.", "lang": "ko", "name": "other", "args": {}}
+{"text": "앞길 막혀서 못 감 다른 경로 줘", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "过不去，水已经到膝盖了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "지금 몇 시예요 시간 좀 알려주세요.", "lang": "ko", "name": "other", "args": {}}
+{"text": "Hello? Are you still listening to me?", "lang": "en", "name": "other", "args": {}}
+{"text": "妊娠中だから走れなくて困ってます", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "妊娠中なので走ることができません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Different shelter, please.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "오늘 날씨는 진짜 좋은데 왜 이런 일이 생기지.", "lang": "ko", "name": "other", "args": {}}
+{"text": "Just talking to myself, ignore me.", "lang": "en", "name": "other", "args": {}}
+{"text": "水が流れてきて渡れない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "다리 다쳐서 지팡이 쓰는데 계단 없는 대피로 급구.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "老人坐轮椅，请指引没有楼梯的避难所。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "足が動かない、誰か呼んで", "lang": "ja", "name": "injured", "args": {}}
+{"text": "水がもうそこまで来てて進めない", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "아내랑 헤어졌는데 방송으로 찾아줄 수 있나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "友達どこ行ったかわからない", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "I couldn't catch that over the alarms.", "lang": "en", "name": "repeat", "args": {}}
+{"text": "ホテルの部屋に荷物取りに行きたいんだけど", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "津波警報の解除予定は何時ですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "再说一次。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "바닷물이 길로 들어오고 있어요 도와주세요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Debris everywhere, cannot walk.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Could you advise how long we must remain in this shelter?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "请告诉我应该避难到哪一层。", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "지팡이 짚고 뛰기 힘든데 평탄한 대피로 어디죠?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "여기 말고 다른 대피 장소 어디 있어요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다른 피난처 추천해 주세요", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "I need a different evacuation site right now.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "3층이면 돼요? 더 높이 가야 돼요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "走れない、おじいちゃんがいる", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "孩子跑不动了，我也没力气了。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "浪打过来了，路面全积水了，走不了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "다침 피 많이 남 도와줘요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "발목 다쳤어요, 천천히 갈 수 있는 길 없나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "要一直往上跑到顶楼吗？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "早口で分からなかった、もう一回", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "一緒にいた人がいないんです", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "몇 층까지 대피해야 안전해요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "すみません、聞こえなかったのでもう一度お願いします", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Cannot run, walking very slow.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Could you please help me find my travel companion?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Sick, nausea, cannot run anymore.", "lang": "en", "name": "injured", "args": {}}
+{"text": "跑不动！", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "不要楼梯的路线，我推着婴儿车！", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "지금 몇 층 가야 돼?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "何階？上？どこまで？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "다리가 불편해서 계단은 전혀 못 올라갑니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "いつまでここに待機ですか", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "짐이 너무 무거워서 빨리 걷기 힘들어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "不能上台阶，推着宝宝的婴儿车。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "走不快，带着小孩。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "비 올 것 같은데 우산도 없고 큰일이네.", "lang": "ko", "name": "other", "args": {}}
+{"text": "階段で転んで膝から血が出てる", "lang": "ja", "name": "injured", "args": {}}
+{"text": "It's full here, where else can I go?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Take me to a different evacuation point.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "계단 안 돼요 유모차 걸려요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Not here, take me somewhere else.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "怖いよー、どうしよう", "lang": "ja", "name": "other", "args": {}}
+{"text": "救命，我爸妈找不到了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "Where is my husband? We separated at the station.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Can we go to another location instead?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "무거운 짐 들고 뛰기가 너무 힘들어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Hurt my ankle, walking is very difficult.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Could you please repeat the instruction?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "아침에 먹은 호텔 조식 맛있었는데 또 먹고 싶다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "老人拄拐走不动楼梯，有电梯避难点吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我和我老公失联了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "딴 곳으로 가야 할 것 같아", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "다시 한번만요 안 들렸어요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "何階まで上がったらいいでしょうか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "Water is rushing down this street, I can't walk through it!", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "我好像骨折了，站不起来。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "这里的海景其实挺漂亮的。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Find another shelter, please.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "언제쯤 숙소로 돌아가도 안전하다고 나오나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "How long before we can return to the beach area?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "Cut by debris, heavy bleeding, please help.", "lang": "en", "name": "injured", "args": {}}
+{"text": "転んで足をけがして動けません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "제 친구가 아직 안 왔는데 찾을 방법 없나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "No stairs, wheelchair here!", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "靴擦れして足がめっちゃ痛い", "lang": "ja", "name": "other", "args": {}}
+{"text": "ここ入れない、次どこ行けばいい？", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "가족 헤어짐 대피소 어디", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "Wheelchair accessible route to safety, please.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "사람 꽉 차서 못 감 다른 곳 어디?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "请帮我联络我的朋友，我们走散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "저기 근데 혹시 여기 무료 와이파이 되나요?", "lang": "ko", "name": "other", "args": {}}
+{"text": "Help, I lost sight of my child!", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "能换个避难所吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "听不见，再说一遍行不行？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "还要在这里待多久啊？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "車が塞いでて通れません", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "아 힘들어 잠깐만 앉아서 쉬고 싶다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "I am confused, what did you say?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "階段登れない、車いす避難", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Where do I climb to be safe?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "Could you please guide me to a shelter with elevator access?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "水来了！前面全都是水！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "请提供不需要爬楼梯的避难导航，有婴儿推车。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "언제 복귀 가능해요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "Change my evacuation destination.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "My knee is injured, cannot walk quickly.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "没听懂，到底要去哪里？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "刚才跑的时候和我妈走散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "大きな木が倒れてて通れないです", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "おいしいラーメン屋行きたかったな", "lang": "ja", "name": "other", "args": {}}
+{"text": "너무 지쳐서 더는 빨리 못 걷겠어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "いつまで避難してれば安全ですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Too noisy, say again!", "lang": "en", "name": "repeat", "args": {}}
+{"text": "언제까지 대피소에 머물러야 하나요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "길이 끊겼어요 어떻게 가야 해요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "帮我查一下动漫店开门没。", "lang": "zh", "name": "other", "args": {}}
+{"text": "いつまでここにいなきゃいけないの？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "길이 막혀서 못 가요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "Excuse me, is there someone who can help an injured tourist?", "lang": "en", "name": "injured", "args": {}}
+{"text": "What level do we need to reach inside this building?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "몸이 안 좋아서 빨리 걷지 못해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "높이 어디까지 올라가야 해?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "え、ちょっと待って、なんて言った？", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "다른 대피소로 변경해 줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "这里堵住了，请帮我找别的路。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Walking slow, my luggage is too heavy!", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "連れとはぐれたんですけど、どうしたらいいですか？", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "Overcrowded here, find next safe zone.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Would it be alright if I ran back to grab my backpack?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "足が限界で早く歩けないです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "죄송한데 잘 안 들려요 다시요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "啥？去哪？没听清！", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "もう水がそこまで来てます！", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "Did I miss lunch already?", "lang": "en", "name": "other", "args": {}}
+{"text": "啊？你说啥？", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "最上階まで行ったほうがいいですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "넘어져서 다리를 다쳤는데 걸을 수가 없어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "什么时候能离开避难所？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Separated from my group on the way to high ground.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "Hurt leg, cannot run!", "lang": "en", "name": "injured", "args": {}}
+{"text": "Full here, next place please.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is there a wheelchair accessible tower nearby?", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "소리가 안 들려 한번 더", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "아이랑 떨어졌어요 도와주세요 제발", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "지금 숙소 가면 안 됨?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "다리가 너무 아파서 빨리 못 걸어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "あああ、もう嫌だ", "lang": "ja", "name": "other", "args": {}}
+{"text": "足を挫いたみたいで痛くて歩けません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "路上全是水，流得很急，过不去！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Wheelchair, no stairs!", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Walking with a cane, cannot climb stairs fast.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "엥 뭐라고? 다시 말해", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "사람이 너무 많아서 못 가겠어요. 다른 곳 부탁해요.", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "酒店退房时间是几点钟？", "lang": "zh", "name": "other", "args": {}}
+{"text": "마지막 안내 방송 다시 들려줘", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "I have bad knees and use a cane, so avoid stairs please.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "回酒店拿东西行不行？就五分钟。", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "Bleeding bad, where is medical help?", "lang": "en", "name": "injured", "args": {}}
+{"text": "벽이 무너져서 길이 막혔다고요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "サイレンで聞こえなかった、もう一度", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "유모차 있어요. 평지 길로 안내해 주세요.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Hey, what time is it back in London?", "lang": "en", "name": "other", "args": {}}
+{"text": "My feet hurt so much from walking.", "lang": "en", "name": "other", "args": {}}
+{"text": "喂怎么不回答我呢？", "lang": "zh", "name": "other", "args": {}}
+{"text": "다른 대피소 알려줘", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "友達を見失っちゃいました", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "骨折，动不了，快来救我。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "聞き逃した、もう一度言って", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "请问避难路上有电梯或者斜坡吗？坐轮椅无法爬高。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "대피소에 제 가족이 있는지 알고 싶어요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "海水倒灌进这条街了，过不去！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "安全なのは何階以上？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "太吵了听不见，再说一遍！", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "ここやめて他に行きたいです", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "足怪我してて階段が使えません、平坦な避難ルートをお願いします", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "別の高台案内してほしい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "哎呀新买的鞋子都弄脏了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "请问有平缓的路吗？我走不快。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "一瞬だけホテル戻って荷物取るのあり？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "连不上我朋友，失散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "膝を強くぶつけて血が出て痛いです", "lang": "ja", "name": "injured", "args": {}}
+{"text": "我想去别的地方避难", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is the souvenir shop closed today?", "lang": "en", "name": "other", "args": {}}
+{"text": "混んでて入れないから別のところ", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "휠체어인데 높은 곳으로 가는 경사로 길 알려줘.", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "Injured, need medical rescue please!", "lang": "en", "name": "injured", "args": {}}
+{"text": "어머니가 다리가 불편하셔서 빨리 못 걸으십니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "我用拐杖，爬不了楼梯，有没有平缓路线？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "我们推着轮椅，请避开所有台阶路线。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "这里进不去了，换一个", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "いつになったら戻れますか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "这里不行，给我推荐另一个避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "脚脖子扭了，走得很慢很吃力。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "막혀서 못 가겠는데 다른 대피로 없어요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "我的包包好像落在餐厅了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "附近有便利店开着吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "발목을 삐어서 뛸 수가 없습니다.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "还要待多久？孩子一直在哭。", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "ホテルに荷物を取りに戻っても大丈夫ですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "坐轮椅无法避难到高层，有坡道吗？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "What did you tell me to do?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "짐이 많아서 빨리 걷는 게 무리예요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "请推荐其他可以避难的地方", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "案内してくれて本当にありがとうね", "lang": "ja", "name": "other", "args": {}}
+{"text": "안 들렸어요 한번 더요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "숙소로 돌아가도 안전한가요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "転倒して腰を強く打ちました、立ち上がれません", "lang": "ja", "name": "injured", "args": {}}
+{"text": "I didn't get that, where do I go?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "请问我们还需要在这边避难多久？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "여기 사람 너무 붐벼요. 다른 대피소 있나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "おばあちゃんが杖だから階段上がれません", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "今の案内、もう一度聞かせて", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "膝が痛くて階段を走れません", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "充電があと少ししかないや", "lang": "ja", "name": "other", "args": {}}
+{"text": "아 깜짝이야 알림 소리가 너무 크잖아.", "lang": "ko", "name": "other", "args": {}}
+{"text": "救命，我和男朋友走散了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "这个软件界面设计得挺可爱。", "lang": "zh", "name": "other", "args": {}}
+{"text": "Stairs no good, wheelchair.", "lang": "en", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "道が塞がってる、別の道教えて", "lang": "ja", "name": "road_blocked", "args": {}}
+{"text": "車椅子、階段ダメ、どう行けばいい？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "啊啊啊吓死我了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "走不动路，救助。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "楼层，避难楼层是几？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "Change route to another shelter.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is the fourth floor safe or should I go higher?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "无障碍路线，我推着轮椅呢。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "走不了，前面被淹了。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Pardon me, could you repeat the direction?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "여기 언제까지 있어야 해요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "Body shaking, so sick, cannot move forward.", "lang": "en", "name": "injured", "args": {}}
+{"text": "孕妇无法快跑，请指示最近路线。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "嗯嗯好的我知道了。", "lang": "zh", "name": "other", "args": {}}
+{"text": "There are collapsed poles blocking my way to higher ground.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "Please find a route for slow walkers.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "도로가 다 잠겼어요 못 건너가요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "音が小さくて聞こえませんでした、もう一回言ってください", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "Can you repeat the tsunami warning message?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "对不起，请再播放一次刚才的信息。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "脚骨折了，完全走不了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "友達とはぐれちゃったんだけど", "lang": "ja", "name": "lost_family", "args": {}}
+{"text": "건물 어디까지 올라가?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "这里还要待到什么时候？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "找不到我女儿了", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "방에 여권 있어서 가야 하는데 가도 돼요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "무슨 소린지 이해를 못 하겠어", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "車いすなんだけど階段使えない場所ある？", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "How high do I need to climb?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "구토가 계속 나오고 열이 많이 나요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "어디까지 올라가면 안전한가요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "저 피 흘리고 있어요, 살려주세요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "さむい、上着持ってくればよかった", "lang": "ja", "name": "other", "args": {}}
+{"text": "I can't find my friends.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "방금 안내를 놓쳤어요 다시 알려주세요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "痛くて歩けない、誰か助けてください", "lang": "ja", "name": "injured", "args": {}}
+{"text": "逃げる場所が分からなかった、もう一度言って", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "내일 비행기 정상적으로 뜨려나 궁금하네.", "lang": "ko", "name": "other", "args": {}}
+{"text": "人太多了进不去，换一个避难所", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "高齢の親がいて早く歩けないんです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "노약자가 있어서 속도를 낼 수가 없어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "방금 한 말 다시 해주세요", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "I am eight months pregnant, unable to walk fast.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "目的地を変更したいです", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "My arm is bleeding, what should I do?", "lang": "en", "name": "injured", "args": {}}
+{"text": "我需要爬到几楼才不会被淹？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "刚才警报声太响了，没听到你说什么。", "lang": "zh", "name": "repeat", "args": {}}
+{"text": "まだ戻っちゃダメだよね？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "换个避难位置", "lang": "zh", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "拐杖走不了陡峭台阶，请帮帮我。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "婴儿车很大，只能走斜坡不能走楼梯。", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "婴儿推车，阶梯不行，怎么避难？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "몇 층으로 피난 가요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "Please tell me what floor I should evacuate to.", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "行李还在海边民宿，现在能去取吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "The road ahead is flooded with sea water.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "ねぇ、これいつ終わるの？", "lang": "ja", "name": "other", "args": {}}
+{"text": "언제쯤 원래 호텔로 돌아갈 수 있을까요?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "Limping badly, cannot run from the tsunami!", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "일행과 흩어졌는데 위치 추적 되나요?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "어디까지 대피해요? 몇 층요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "이제 호텔로 가도 되나?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "When can I go back to my hotel?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "여기서 얼마나 더 기다려야 해?", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "유모차라 계단 이용 어렵습니다. 다른 길 있나요?", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "けがして血が出てます、救護所どこですか", "lang": "ja", "name": "injured", "args": {}}
+{"text": "水漫上来了，这条路不能走了！", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "Can I return yet?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "숨이 차서 더 이상 못 뛰겠어요.", "lang": "ko", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Thanks a lot, app.", "lang": "en", "name": "other", "args": {}}
+{"text": "몇 층 가야 물 안 차요?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "When is it safe to return to the coast?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "屋上まで上がるべきですか？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "老人走慢，怎么办？", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "不好意思，我身体很不舒服，动不了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "다쳤어요, 피가 나요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "The tsunami water is reaching this street right now.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "We have small kids, we can't run.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "With a senior citizen, we need an easy slope.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "아빠 어디 계시는지 확인할 수 있습니까?", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "出血してる、救急車呼んで", "lang": "ja", "name": "injured", "args": {}}
+{"text": "子ども抱っこしてて走るの無理", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Could you tell me which floor is safe to avoid the tsunami?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "ベビーカーなんですけど段差なしの道教えて", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "能回去拿行李吗？", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "拐杖，台阶不行，有没有坡？", "lang": "zh", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "人多すぎて無理、他探して", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is it going to rain later today?", "lang": "en", "name": "other", "args": {}}
+{"text": "Could you please provide another evacuation route? This one is blocked by debris.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "明天的特急列车会取消吗？", "lang": "zh", "name": "other", "args": {}}
+{"text": "How high up do we need to be?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "路断了，走不通。", "lang": "zh", "name": "road_blocked", "args": {}}
+{"text": "身体不适，请问附近有救护人员吗？", "lang": "zh", "name": "injured", "args": {}}
+{"text": "ここを出ていいタイミングはいつですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "This place is too crowded, show me another option.", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Could you repeat that?", "lang": "en", "name": "repeat", "args": {}}
+{"text": "못 들었어 다시", "lang": "ko", "name": "repeat", "args": {}}
+{"text": "Ugh, my phone battery is down to ten percent.", "lang": "en", "name": "other", "args": {}}
+{"text": "I got split up from my tour group.", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "What a crazy day this turned out to be.", "lang": "en", "name": "other", "args": {}}
+{"text": "Pregnant, walking slowly, where is the nearest safe place?", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "They won't let anyone in, where to go now?", "lang": "en", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "Is it safe to go back now?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "ここやめたいです", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "避难层是几层？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "허리를 다쳐서 한 발자국도 못 움직이겠어요.", "lang": "ko", "name": "injured", "args": {}}
+{"text": "친구 어디", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "アプリさん教えてくれてサンキュー", "lang": "ja", "name": "other", "args": {}}
+{"text": "May I go back to my room to pick up my bags?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "지팡이 환자 있어요. 계단 없는 길 급해요!", "lang": "ko", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "What? Say again!", "lang": "en", "name": "repeat", "args": {}}
+{"text": "宿に戻れるのは何時頃ですか？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Excuse me, this street is blocked by a collapsed wall.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "같이 온 사람이랑 연락이 안 돼요.", "lang": "ko", "name": "lost_family", "args": {}}
+{"text": "저기 물 와요 지나갈 수 없어요", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "脚扭伤了，走得很慢。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "Hotel safe now? Can get luggage?", "lang": "en", "name": "when_to_return", "args": {}}
+{"text": "I feel very sick, I cannot go up the hill.", "lang": "en", "name": "injured", "args": {}}
+{"text": "Flooding ahead, impossible to pass.", "lang": "en", "name": "road_blocked", "args": {}}
+{"text": "もう一度言って", "lang": "ja", "name": "repeat", "args": {}}
+{"text": "ここパスして次行きたい", "lang": "ja", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "突然好想喝冰奶茶。", "lang": "zh", "name": "other", "args": {}}
+{"text": "抱歉，我怀着孕实在跑不动。", "lang": "zh", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "何階まで避難？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "走るの無理、足痛めた", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "대피 언제 끝나요? 호텔 가고 싶어요.", "lang": "ko", "name": "when_to_return", "args": {}}
+{"text": "Where can I buy some hot coffee?", "lang": "en", "name": "other", "args": {}}
+{"text": "急に気持ち悪くなって動けなくなりました", "lang": "ja", "name": "injured", "args": {}}
+{"text": "How high should I climb in this building to be safe?", "lang": "en", "name": "ask_floor", "args": {}}
+{"text": "ホテルに戻っていい基準って何？", "lang": "ja", "name": "when_to_return", "args": {}}
+{"text": "Injured my knee, need an evacuation route for slow people.", "lang": "en", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "친절한 안내 말씀 진심으로 감사드립니다.", "lang": "ko", "name": "other", "args": {}}
+{"text": "高齢者がいて歩くペースが遅いです", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "쓰나미 대피 건물 몇 층 가?", "lang": "ko", "name": "ask_floor", "args": {}}
+{"text": "足痛い、走れない", "lang": "ja", "name": "reselect", "args": {"mobility": "slow"}}
+{"text": "伤口出血严重，我已经走不动了。", "lang": "zh", "name": "injured", "args": {}}
+{"text": "車いすです、エレベーター動いてる避難ビル教えて", "lang": "ja", "name": "reselect", "args": {"mobility": "wheelchair"}}
+{"text": "能出去拿行李吗？就放在前台。", "lang": "zh", "name": "when_to_return", "args": {}}
+{"text": "저기 바닷물 들어와요 다른 길 없나요?", "lang": "ko", "name": "road_blocked", "args": {}}
+{"text": "I'm stuck here because I can't move my leg.", "lang": "en", "name": "injured", "args": {}}
+{"text": "何階まで走ればいいの？", "lang": "ja", "name": "ask_floor", "args": {}}
+{"text": "No see my family, where are they?", "lang": "en", "name": "lost_family", "args": {}}
+{"text": "I think my shoulder is dislocated and I feel faint.", "lang": "en", "name": "injured", "args": {}}
+{"text": "저기요 피가 계속 나는데 어떡해요?", "lang": "ko", "name": "injured", "args": {}}
+{"text": "去顶楼就可以了吗？", "lang": "zh", "name": "ask_floor", "args": {}}
+{"text": "딴 데 갈래", "lang": "ko", "name": "reselect", "args": {"mobility": "normal"}}
+{"text": "和朋友走散，电话也打不通", "lang": "zh", "name": "lost_family", "args": {}}
+{"text": "바람 엄청 부네 모자 날아가겠다 감기 조심해.", "lang": "ko", "name": "other", "args": {}}
+{"text": "前が土砂で埋まってて通れません", "lang": "ja", "name": "road_blocked", "args": {}}
