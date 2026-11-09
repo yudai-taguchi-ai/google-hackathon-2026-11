@@ -17,6 +17,8 @@
 
 言語別: en 91.0% / zh 93.0% / ko 94.0% / ja 96.0%。
 
+危ない間違い5件の内訳は `injured → other` が3件、`road_blocked → other` が1件、`reselect(slow) → other` が1件。`reselect(normal)` に誤って切り替わった例は無い。`other` はボタンに回す動きだが、必要な頼みごとを聞き逃すため目標上はNGとする。
+
 この結果は合成テスト文に対するもので、人がスマホの音声入力を通した文は未評価。危ない間違いが目標を超えるため、この数値だけを根拠に避難行動を自動で切り替えない。端末変換後は出力の一致、応答時間、実際の音声入力を別途確認する。
 
 学習条件: `google/functiongemma-270m-it`、学習1,440件、検証160件、3エポック、最良チェックポイント270。保存先: [Google Drive の学習成果物](https://drive.google.com/drive/folders/1qC0TBPGHmZFSfScrLtEUa47no1QDQSo1)。モデルの重みと予測全文は GitHub に含めない。
