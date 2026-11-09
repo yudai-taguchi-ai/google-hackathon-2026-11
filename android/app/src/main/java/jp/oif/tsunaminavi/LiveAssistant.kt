@@ -45,9 +45,7 @@ class LiveAssistant(
                 inputAudioTranscription = AudioTranscriptionConfig()
                 outputAudioTranscription = AudioTranscriptionConfig()
             },
-            systemInstruction = content { text(INSTRUCTION + "
-
-Current situation (from the app, official data):
+            systemInstruction = content { text(INSTRUCTION + "\n\nCurrent situation (from the app, official data):
 " + situation) },
             tools = listOf(Tool.functionDeclarations(FUNCTIONS)),
         )

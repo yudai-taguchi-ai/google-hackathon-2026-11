@@ -423,8 +423,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 add("- Official answers you may read out (call the matching function first when the user asks):")
                 answers.forEach { (id, text) -> add("  - $id: $text") }
             }
-        }.joinToString("
-")
+        }.joinToString("\n")
     }
 
     private fun stopLive() = viewModelScope.launch {
