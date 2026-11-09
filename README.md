@@ -12,6 +12,7 @@ GDG GoC Japan DevFest Hackathon 2026 ／ カテゴリ：**観光**
 | [docs/android-app.md](docs/android-app.md) | Android アプリの雛形と作り方 |
 | [docs/modes.md](docs/modes.md) | Web・通信あり・通信なしの動きの違いとルール |
 | [docs/intent-model.md](docs/intent-model.md) | 圏外の「聞き分け」モデルを作る担当向けのコンテキスト |
+| [docs/functiongemma-next.md](docs/functiongemma-next.md) | FunctionGemma の次の作業（変換・受け渡し・端末での速さ） |
 | [docs/member-submission-tasks.md](docs/member-submission-tasks.md) | 提出物（説明ドキュメント・著作物利用シート・フォルダ）と Web 版の確認などの担当向け |
 | [docs/plan.md](docs/plan.md) | 何を作るか・担当範囲・構成・日程・役割・提出物 |
 | [docs/verification.md](docs/verification.md) | **確かめないといけないこと**の一覧（致命的なものから順） |
