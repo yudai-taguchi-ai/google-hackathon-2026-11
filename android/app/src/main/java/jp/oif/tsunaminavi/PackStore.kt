@@ -4,6 +4,7 @@ import android.content.Context
 import java.io.File
 import jp.oif.tsunaminavi.offline.InundationMap
 import jp.oif.tsunaminavi.offline.Shelter
+import jp.oif.tsunaminavi.offline.WalkGraph
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -25,6 +26,7 @@ class Pack(
     val answers: Map<String, String>,
     val audioDir: File,
     val sizeBytes: Long,
+    val graph: WalkGraph?,
 ) {
     fun audioFile(id: String): File = File(audioDir, "$id.wav")
 }
@@ -34,6 +36,7 @@ class PackStore(context: Context) {
     private val dir = File(context.filesDir, "pack").apply { mkdirs() }
     private val packFile = File(dir, "pack.json")
     private val audioDir = File(dir, "audio").apply { mkdirs() }
+    private val graphFile = File(dir, "walk_graph.bin")
 
     suspend fun download(area: String, lang: String, expiresAt: String?) {
         val q = "/api/pack?area=$area&lang=$lang" + (expiresAt?.let { "&expires_at=$it" } ?: "")
@@ -45,6 +48,7 @@ class PackStore(context: Context) {
             val id = o["id"]!!.jsonPrimitive.content
             Api.download(o["audio_url"]!!.jsonPrimitive.content, File(audioDir, "$id.wav"))
         }
+        json["graph_url"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content?.let { Api.download(it, graphFile) }
         withContext(Dispatchers.IO) { tmp.renameTo(packFile) }
     }
 
@@ -59,7 +63,8 @@ class PackStore(context: Context) {
                 it.jsonObject["id"]!!.jsonPrimitive.content to it.jsonObject["text"]!!.jsonPrimitive.content
             },
             audioDir = audioDir,
-            sizeBytes = packFile.length() + (audioDir.listFiles()?.sumOf { it.length() } ?: 0L),
+            sizeBytes = packFile.length() + graphFile.length() + (audioDir.listFiles()?.sumOf { it.length() } ?: 0L),
+            graph = if (graphFile.exists()) runCatching { WalkGraph.fromBytes(graphFile.readBytes()) }.getOrNull() else null,
         )
     }
 
@@ -72,6 +77,7 @@ class PackStore(context: Context) {
         inundationDepth = o["inundation_depth"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content,
         floorMin = o["floor_min"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.int,
         openSpace = o["open_space"]?.jsonPrimitive?.boolean ?: false,
+        graphNode = o["graph_node"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.int,
     )
 
     private fun parseInundation(fc: JsonObject): InundationMap =

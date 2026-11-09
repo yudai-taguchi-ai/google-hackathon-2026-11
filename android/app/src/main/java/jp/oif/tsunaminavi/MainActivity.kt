@@ -142,7 +142,7 @@ private fun Home(s: UiState, vm: AppViewModel) {
 private fun Sources(s: UiState) {
     Spacer(Modifier.height(12.dp))
     Ja("Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください")
-    Ja("Shelters: GSI designated emergency evacuation sites (tsunami) · Flood depth: MLIT tsunami inundation (Osaka, 2023) · Warning: JMA (demo uses a training telegram)")
+    Ja("Shelters: GSI designated emergency evacuation sites (tsunami) · Flood depth: MLIT tsunami inundation (Osaka, 2023) · Walking roads: © OpenStreetMap contributors (ODbL) · Warning: JMA (demo uses a training telegram)")
     Ja("出典: 国土地理院 指定緊急避難場所・国土数値情報 津波浸水想定（大阪府 2023）・気象庁 防災情報 XML。データ: ${s.packInfo ?: "未保存"}")
 }
 
@@ -178,7 +178,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         Ja("基準: ${s.timeBasis}。想定より早く来ることがあります")
     }
     Ja("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s")
-    if (s.planSource?.startsWith("device") == true) Ja("Offline estimate: real walking can take longer (rivers, canals). / 圏外の目安。川や運河で実際はもっとかかることがあります")
+    if (s.planSource?.contains("× 1.6") == true) Ja("Offline estimate: real walking can take longer (rivers, canals). / 圏外の目安。川や運河で実際はもっとかかることがあります")
     s.explanation?.let { Text(it, fontSize = 14.sp) }
     s.answer?.let { Banner(it, null, Color(0xFF1D4ED8)) }
     if (vm.liveAvailable && s.online) {
@@ -189,7 +189,14 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             modifier = Modifier.fillMaxWidth(),
         ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 18.sp) }
     }
-    if (!s.online) Ja("Offline: use the buttons below (handled on this device). / 圏外: 下のボタンで受けます")
+    if (!s.liveActive) {
+        val speakLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) vm.listen() }
+        OutlinedButton(onClick = { speakLauncher.launch(Manifest.permission.RECORD_AUDIO) }, modifier = Modifier.fillMaxWidth()) {
+            Text(if (s.listening) "Listening… / 聞いています" else "Speak (works offline) / 話しかける（圏外でも使える）")
+        }
+        s.heard?.let { Ja("Heard: \"$it\"") }
+    }
+    if (!s.online) Ja("Offline: speech is handled on this device; if not understood, use the buttons. / 圏外: 端末の中で聞き分け、分からなければボタン")
     Text("Need help? / 困ったこと", fontWeight = FontWeight.Bold)
     INTENTS.chunked(2).forEach { row ->
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

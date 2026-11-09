@@ -10,6 +10,8 @@ data class Shelter(
     val inundationDepth: String?,
     val floorMin: Int?,
     val openSpace: Boolean,
+    /** 道のグラフで一番近い点（パックに入っている時だけ）。 */
+    val graphNode: Int? = null,
 )
 
 /** 浸水想定の深さの区分。パックの文字列（全角のチルダ「～」を含む）と同じ並びで、浅い順。 */

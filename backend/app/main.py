@@ -78,6 +78,12 @@ def get_pack(area: str = "osaka-bay", lang: str = "en", expires_at: str | None =
     return build_pack(area, lang, date.today().isoformat(), expires_at)
 
 
+@app.get("/api/pack/graph")
+def get_pack_graph() -> FileResponse:
+    """歩ける道のグラフ（圏外で道に沿った距離を出すため）。© OpenStreetMap contributors（ODbL）"""
+    return FileResponse(Path(__file__).resolve().parent.parent / "data" / "walk_graph.bin", media_type="application/octet-stream")
+
+
 @app.get("/api/pack/audio")
 def get_pack_audio(lang: str = "en", id: str = Query(...)) -> Response:
     if id not in ANSWERS_JA:
