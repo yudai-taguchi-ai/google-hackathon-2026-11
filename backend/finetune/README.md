@@ -38,6 +38,12 @@ python -X utf8 -m finetune.score finetune/data/test.jsonl finetune/output/predic
 
 11月9日の学習時に保存した予測ファイルは、このブランチで形式を合わせる前の `predicted`・`predicted_args` 形式。再学習は不要で、採点前に各行のキーを `name`・`args` に変換すればよい。実測した結果だけを提出資料へ転記する。誤分類は予測ファイルで確認できる。
 
+保存済み予測を共通の `score.py` で採点した結果は [evaluation-2026-11-09.md](evaluation-2026-11-09.md)。全体正答率は93.5%だが、危ない間違いは3.125%で目標の2%以下に届いていない。
+
+## 保存済みモデルを端末用に変換
+
+`convert_saved_functiongemma_colab.ipynb` を新しい Colab ランタイムで開き、上から実行する。Drive の `tsunami-functiongemma-output/model/` を読み、`dynamic_int8` の `.litertlm` を `tsunami-functiongemma-output/litertlm/` に保存する。学習の再実行と Hugging Face トークンは不要。変換手順は [Google の Mobile Actions 例](https://ai.google.dev/gemma/docs/mobile-actions) をもとにしている。変換はまだ実測していないため、実行後にファイルの大きさ・端末での関数呼び出し・速度を確認する。
+
 ## 現在の状態
 
-Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。この数値は学習スクリプトの採点結果で、チーム共通 `score.py` による危ない間違いなどの内訳と端末上の速さは未計測。Android への組み込みも未実施。
+Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。共通 `score.py` による採点まで実施済み。端末用変換、端末上の速さ、Android への組み込みは未実施。
