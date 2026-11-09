@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -85,6 +86,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
     private val live = LiveAssistant(::handleLiveCall)
+    @Volatile private var planning = false
     private val speech = Speech(app)
 
     /** 圏外で話した言葉を頼みごとに振り分ける。今はキーワード方式。FunctionGemma の学習が済んだら差し替える。 */
@@ -112,7 +114,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 if (online && !wasOnline) pollAlertOnce()
             }
         }
-        viewModelScope.launch { locationSource.location.collect { loc -> _state.update { it.copy(gps = loc) } } }
+        viewModelScope.launch {
+            locationSource.location.collect { loc ->
+                _state.update { it.copy(gps = loc) }
+                // 案内を始めた時に現在地がまだ無かった場合は、取れた時点で計算する
+                val s = _state.value
+                if (loc != null && s.active && s.target == null && !planning) startGuidance()
+            }
+        }
         viewModelScope.launch { headingSource.heading.collect { h -> _state.update { it.copy(heading = h) } } }
         viewModelScope.launch {
             while (true) {
@@ -204,15 +213,28 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** ルール 1: 端末ですぐ選んで案内し、サーバーの答えは「歩く時間が 2 分以上短い」時だけ採る。 */
     private fun startGuidance() {
         val loc = _state.value.location ?: run {
-            _state.update { it.copy(error = "Waiting for GPS / 現在地を取得中") }
+            _state.update { it.copy(error = "Waiting for GPS… guidance starts automatically / 現在地を取得中。取れたら自動で始めます") }
             return
         }
-        val local = computeLocal(loc)
-        if (local != null) {
-            setChoice(local)
-            speakPlan(local)
+        if (pack == null && !_state.value.online) {
+            _state.update { it.copy(error = "No offline data saved. Save it on Wi-Fi first. / データが保存されていません") }
+            return
         }
-        if (_state.value.online) viewModelScope.launch {
+        planning = true
+        _state.update { it.copy(error = null, busy = "Finding a shelter… / 避難先を計算中") }
+        viewModelScope.launch {
+            val local = withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
+            if (local != null) {
+                setChoice(local)
+                speakPlan(local)
+            }
+            _state.update { it.copy(busy = null) }
+            planning = false
+            if (_state.value.online) askServerAndMaybeAdopt(loc)
+        }
+    }
+
+    private fun askServerAndMaybeAdopt(loc: Pair<Double, Double>) = viewModelScope.launch {
             val server = runCatching { askServer(loc, explain = true) }.getOrNull() ?: return@launch
             val current = _state.value
             val better = current.target == null || server.walkMin + ADOPT_IF_SHORTER_MIN <= (current.targetWalkMin ?: Double.MAX_VALUE)
@@ -227,13 +249,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 _state.update { it.copy(planSource = "${it.planSource} (checked by server)") }
             }
         }
-    }
 
     /** ルール 3: 選び直しは、通信があればサーバー（Routes の道のり）、無ければ端末。 */
     private suspend fun reselect(speakResult: Boolean) {
         val loc = _state.value.location ?: return
-        val choice = if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() ?: computeLocal(loc)
-        else computeLocal(loc)
+        val choice = (if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() else null)
+            ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
         choice ?: return
         setChoice(choice)
         if (speakResult) speakPlan(choice)

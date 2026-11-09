@@ -57,6 +57,8 @@ class LocationSource(context: Context) {
 
     @SuppressLint("MissingPermission")
     fun start() {
+        // まず端末が最後に知っていた位置をすぐ使い、そのあと GPS で正確にする
+        client.lastLocation.addOnSuccessListener { loc -> if (loc != null && _location.value == null) _location.value = loc.latitude to loc.longitude }
         val req = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2_000L).build()
         client.requestLocationUpdates(req, callback, Looper.getMainLooper())
     }
