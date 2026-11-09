@@ -51,6 +51,7 @@ data class UiState(
     val explanation: String? = null,
     val answer: String? = null,
     val error: String? = null,
+    val liveActive: Boolean = false,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
 }
@@ -63,6 +64,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var pack: Pack? = null
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
+    private val live = LiveAssistant(::handleLiveCall)
+    val liveAvailable: Boolean get() = TsunamiApp.firebaseReady
+    val debugSecret: String? get() = TsunamiApp.currentDebugSecret(getApplication())
 
     private val _state = MutableStateFlow(UiState(online = connectivity.online.value))
     val state: StateFlow<UiState> = _state
@@ -79,6 +83,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     val switched = if (it.online && !online && it.active) System.currentTimeMillis() else it.switchedToOfflineAt
                     it.copy(online = online, switchedToOfflineAt = if (online) null else switched)
                 }
+                if (!online && live.active) stopLive()
             }
         }
         viewModelScope.launch { locationSource.location.collect { loc -> _state.update { it.copy(gps = loc) } } }
@@ -137,29 +142,73 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         replan(speak = true)
     }
 
-    fun onIntent(id: String) {
+    /** Gemini Live の会話を始める・止める。 */
+    fun toggleLive() = viewModelScope.launch {
+        if (live.active) {
+            stopLive()
+            return@launch
+        }
+        try {
+            tts?.stop()
+            live.start()
+            _state.update { it.copy(liveActive = true, error = null) }
+        } catch (e: Exception) {
+            _state.update { it.copy(liveActive = false, error = "Gemini Live を始められませんでした: ${e.message}") }
+        }
+    }
+
+    private fun stopLive() = viewModelScope.launch {
+        live.stop()
+        _state.update { it.copy(liveActive = false) }
+    }
+
+    /** Gemini Live が呼ぶ関数。選び直しは端末の中の計算（公式データ）で行い、その結果だけを返す。 */
+    private fun handleLiveCall(name: String, mobility: String?): Map<String, String> {
+        when (name) {
+            "reselect" -> onIntent(if (mobility == "slow" || mobility == "wheelchair") "reselect_slow" else "reselect", fromLive = true)
+            "road_blocked" -> onIntent("road_blocked", fromLive = true)
+            "get_guidance" -> Unit
+            else -> onIntent(name, fromLive = true)
+        }
+        val s = _state.value
+        val t = s.target ?: return mapOf("error" to "no evacuation target yet")
+        val out = mutableMapOf(
+            "target_name" to t.name,
+            "go_upstairs" to s.targetIsUpstairs.toString(),
+            "floor_min" to (t.floorMin ?: 3).toString(),
+            "walk_minutes" to (s.step?.remainingMin?.toInt() ?: 0).toString(),
+            "minutes_left" to (s.minutesLeft?.toInt() ?: 0).toString(),
+            "walking_speed" to if (s.slow) "slow" else "normal",
+        )
+        s.answer?.takeIf { name !in setOf("get_guidance", "reselect", "road_blocked") }?.let { out["answer"] = it }
+        return out
+    }
+
+    fun onIntent(id: String) = onIntent(id, fromLive = false)
+
+    private fun onIntent(id: String, fromLive: Boolean) {
         val s = _state.value
         when (id) {
             "reselect_slow", "reselect_wheelchair" -> {
                 _state.update { it.copy(slow = true) }
-                replan(speak = true)
+                replan(speak = !fromLive, useServer = !fromLive)
             }
             "reselect", "road_blocked" -> {
                 _state.update { st -> st.copy(excluded = st.excluded + listOfNotNull(st.target?.id)) }
-                replan(speak = true)
+                replan(speak = !fromLive, useServer = !fromLive)
             }
-            "ask_floor" -> s.target?.floorMin?.let { speak("Go up to floor $it or higher.") }
+            "ask_floor" -> if (!fromLive) s.target?.floorMin?.let { speak("Go up to floor $it or higher.") }
         }
         val text = pack?.answers?.get(id)
         _state.update { it.copy(answer = text) }
-        playAnswer(id)
+        if (!fromLive) playAnswer(id)
     }
 
     fun reset() = _state.update {
         UiState(online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo)
     }
 
-    private fun replan(speak: Boolean) {
+    private fun replan(speak: Boolean, useServer: Boolean = true) {
         val s = _state.value
         val loc = s.location ?: run {
             _state.update { it.copy(error = "現在地が取れていません（GPS）") }
@@ -173,7 +222,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             setTarget(plan.primary.shelter, plan.decision.apiValue, "端末の中（オフライン）", left)
             if (speak) speakPlan(plan.primary.shelter, plan.decision, plan.primary.walkMin)
         }
-        if (s.online && s.excluded.isEmpty()) askServer(loc, speak = speak && p == null)
+        if (useServer && s.online && s.excluded.isEmpty()) askServer(loc, speak = speak && p == null)
     }
 
     private fun askServer(loc: Pair<Double, Double>, speak: Boolean) = viewModelScope.launch {
@@ -247,6 +296,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private fun describe(p: Pack) = "保存済み ${p.version}・避難先 ${p.shelters.size} 件・${p.sizeBytes / 1_000_000.0}MB"
 
     override fun onCleared() {
+        viewModelScope.launch { live.stop() }
         tts?.shutdown()
         player?.release()
     }

@@ -20,14 +20,37 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
+      - name: 署名の鍵（毎回同じ鍵にする。無ければ作って成果物に出す）
+        env:
+          DEBUG_KEYSTORE_B64: ${{ secrets.DEBUG_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$DEBUG_KEYSTORE_B64" ]; then
+            echo "$DEBUG_KEYSTORE_B64" | base64 -d > android/app/debug.keystore
+          else
+            keytool -genkeypair -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            mkdir -p keystore-out && base64 -w0 android/app/debug.keystore > keystore-out/debug.keystore.b64
+          fi
+          keytool -list -v -keystore android/app/debug.keystore -storepass android | grep -E "SHA1:|SHA256:"
+      - name: Firebase の設定（google-services.json）
+        env:
+          GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON_B64 }}
+        run: |
+          if [ -n "$GOOGLE_SERVICES_JSON_B64" ]; then echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > android/app/google-services.json; echo "Firebase あり"; else echo "Firebase なし"; fi
       - name: 圏外の計算のテスト
         run: gradle -p android :offline:test --no-daemon
       - name: アプリをビルド
+        env:
+          APP_CHECK_DEBUG_SECRET: ${{ secrets.APP_CHECK_DEBUG_SECRET }}
         run: gradle -p android :app:assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: tsunami-navi-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        if: hashFiles('keystore-out/debug.keystore.b64') != ''
+        with:
+          name: debug-keystore-b64
+          path: keystore-out/debug.keystore.b64
       - uses: actions/upload-artifact@v4
         if: always()
         with:
