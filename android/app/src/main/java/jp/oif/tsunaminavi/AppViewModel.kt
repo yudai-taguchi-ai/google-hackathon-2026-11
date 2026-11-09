@@ -65,6 +65,8 @@ data class UiState(
     val error: String? = null,
     val liveActive: Boolean = false,
     val heard: String? = null,
+    /** 気象庁の電文を最後に見た結果（画面に出す）。 */
+    val jmaLine: String? = null,
     val listening: Boolean = false,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
@@ -154,7 +156,23 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private suspend fun pollAlertOnce() {
-        runCatching { applyAlert(Api.getJson("/api/alert")) }
+        runCatching {
+            val a = Api.getJson("/api/alert")
+            _state.update { it.copy(jmaLine = jmaLine(a)) }
+            applyAlert(a)
+        }
+    }
+
+    private fun jmaLine(a: JsonObject): String {
+        val checked = a["jma_checked_at"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content
+            ?.let { OffsetDateTime.parse(it).atZoneSameInstant(java.time.ZoneId.of("Asia/Tokyo")).toLocalTime().withNano(0) }
+        val err = a["jma_error"]?.takeIf { it !is JsonNull }
+        val live = a["source"]?.jsonPrimitive?.content == "jma_live" && a["active"]?.jsonPrimitive?.content == "true"
+        return when {
+            err != null -> "JMA: could not check (last $checked) / 気象庁の電文を確認できません"
+            live -> "JMA: ${a["kind"]?.jsonPrimitive?.content} for Osaka (checked $checked) / 気象庁の発表"
+            else -> "JMA: no tsunami warning for Osaka (checked $checked) / 気象庁: 大阪府に津波の警報・注意報なし"
+        }
     }
 
     /** 警報を受け取ったら到達予想時刻を保存し（圏外になっても使う）、案内中でなければ自動で始める。 */

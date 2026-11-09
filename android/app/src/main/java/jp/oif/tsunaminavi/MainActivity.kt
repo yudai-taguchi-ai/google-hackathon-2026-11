@@ -132,6 +132,7 @@ private fun Home(s: UiState, vm: AppViewModel) {
             Text("揺れた／警報を見た", fontSize = 16.sp)
         }
     }
+    s.jmaLine?.let { Text(it, fontSize = 13.sp, color = Color(0xFF0F766E)) }
     Ja("Warnings are also checked every 15 seconds when online. / 通信がある時は 15 秒ごとに警報を確かめ、出ていれば自動で案内を始めます")
     OutlinedButton(onClick = { vm.replayAlert() }) { Text("Demo: replay a training warning / 訓練電文を流し直す") }
     Sources(s)
@@ -153,7 +154,8 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         Text("Finding a shelter… / 避難先を計算中")
         return
     }
-    s.alertKind?.let { Text(it, color = Color(0xFFB91C1C), fontWeight = FontWeight.Bold) }
+    s.alertKind?.let { Text(it + if (s.isTraining) " (training telegram)" else " (JMA)", color = Color(0xFFB91C1C), fontWeight = FontWeight.Bold) }
+    s.jmaLine?.let { Ja(it) }
     Text("Go to", fontSize = 14.sp)
     Text(t.name, fontSize = 26.sp, fontWeight = FontWeight.Bold)
     Text(

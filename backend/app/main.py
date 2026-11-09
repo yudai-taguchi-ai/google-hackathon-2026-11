@@ -16,7 +16,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 
-from .alerts import current_alert, start_replay
+from .alerts import current_alert, live_alert, start_replay
 from .explain import explain
 from .pack import ANSWERS_JA, ARRIVAL_DEFAULT_MIN, audio_wav, build_pack
 from .planner import plan
@@ -103,19 +103,25 @@ def _minutes_left(alert: dict, req: PlanRequest) -> tuple[float, str]:
 
 
 def _alert_dict() -> dict:
-    """今の警報。訓練電文を流し直している間だけ active。それ以外は「警報は受け取っていない」。"""
+    """今の警報。順番: デモの訓練電文（流し直し中）＞ 気象庁の本物の電文（大阪府 510）＞ 警報なし。"""
     now = datetime.now(timezone.utc)
+    jma = live_alert(now)
+    jma_info = {"jma_checked_at": jma.get("checked_at"), "jma_error": jma.get("error"), "jma_reason": jma.get("reason")}
     a, replaying = current_alert(now)
-    if not replaying or a is None:
-        return {"active": False, "is_training": False, "replaying": False, "kind": None, "area_name": None,
-                "area_code": "510", "arrival_time": None, "minutes_left": None, "max_height": None}
+    if replaying and a is not None:
+        return {**_from_alert(a, now), "is_training": True, "replaying": True, "source": "training_replay", **jma_info}
+    if jma.get("active"):
+        return {**_from_alert(jma["alert"], now), "is_training": False, "replaying": False, "source": "jma_live", **jma_info}
+    return {"active": False, "is_training": False, "replaying": False, "source": "jma_live", "kind": None, "area_name": None,
+            "area_code": "510", "arrival_time": None, "minutes_left": None, "max_height": None, **jma_info}
+
+
+def _from_alert(a, now: datetime) -> dict:
     d = asdict(a)
     d["minutes_left"] = round(a.minutes_left(now), 1)
     d["active"] = True
     d["area_code"] = "510"
     d["arrival_time"] = a.arrival_at.isoformat() if a.arrival_at else None
-    d["is_training"] = True
-    d["replaying"] = True
     for k in ("reported_at", "arrival_at"):
         d[k] = d[k].isoformat() if d[k] else None
     return d
