@@ -332,12 +332,29 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text("GO TO / 避難先", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Brand.Safe, letterSpacing = 1.sp)
             Text(t.name, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, lineHeight = 32.sp)
-            Text(
-                if (s.targetIsUpstairs) "Building — go up to floor ${t.floorMin ?: 3} or higher" else "Outside the flood zone",
-                fontSize = 19.sp,
-                fontWeight = FontWeight.SemiBold,
+            s.step?.let { step ->
+                Row(Modifier.padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Arrow(step.relativeDeg ?: step.bearingDeg)
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            if (step.arrived) "You have arrived."
+                            else "${step.compass.en.replaceFirstChar { it.uppercase() }}, ${step.distanceM.roundToInt()} m",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Ja(if (step.arrived) "着きました" else "この向きに直線で ${step.distanceM.roundToInt()} m")
+                        if (step.relativeDeg == null) Ja("(Arrow points north-up: device direction unknown / 端末の向きが分からないため北が上)")
+                    }
+                }
+            }
+            val walk = s.remainingWalkMin?.roundToInt()
+            Todo(1, "Leave now", "今すぐ出発")
+            if (walk != null) Todo(2, "Walk about $walk min", "歩いて約${walk}分")
+            Todo(
+                if (walk != null) 3 else 2,
+                if (s.targetIsUpstairs) "Go up to floor ${t.floorMin ?: 3} or higher" else "Get outside the flood zone",
+                if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ",
             )
-            Ja(if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ")
             Ja("Residents: follow your local evacuation plan. / 地元の方は、市や自治会が決めた避難先に従ってください")
         }
     }
@@ -350,22 +367,6 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     // 3. どちらへ歩くか
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
     else if (s.online) Ja("（Navigation SDK is off at the demo location. Try with real GPS. / デモ地点ではナビを使いません）")
-    s.step?.let { step ->
-        Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), modifier = Modifier.fillMaxWidth()) {
-            Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Arrow(step.relativeDeg ?: step.bearingDeg)
-                Column(Modifier.weight(1f)) {
-                    Text(
-                        if (step.arrived) "You have arrived. Go up to floor ${t.floorMin ?: 3} or higher."
-                        else "${step.compass.en.replaceFirstChar { it.uppercase() }}, ${step.distanceM.roundToInt()} m in a straight line",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    if (step.relativeDeg == null) Ja("(Arrow points north-up: device direction unknown / 端末の向きが分からないため北が上)")
-                }
-            }
-        }
-    }
 
     s.explanation?.let { Text(it, fontSize = 15.sp) }
     s.answer?.let { Banner(it, null, Brand.Info) }
@@ -450,6 +451,19 @@ private fun TimeCard(s: UiState) {
                 Ja(if (late) "間に合わない恐れ。近くの高い建物へ" else "約${(left - walk).roundToInt()}分の余裕。このまま進む")
             }
             Ja("基準: ${s.timeBasis}。想定より早く来ることがあります。歩く時間は避難の速さで計算（地図の時間は普通の速さ約 1.2 m/秒なので短く出ます）")
+        }
+    }
+}
+
+@Composable
+private fun Todo(n: Int, en: String, ja: String) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Box(Modifier.size(26.dp).clip(CircleShape).background(Brand.Safe), contentAlignment = Alignment.Center) {
+            Text("$n", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold)
+        }
+        Column {
+            Text(en, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+            Ja(ja)
         }
     }
 }

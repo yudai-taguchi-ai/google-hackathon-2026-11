@@ -144,6 +144,21 @@
   #retry[hidden] { display: none; }
   footer { margin-top: 20px; }
 
+  .how { list-style: none; padding: 0; margin: 0 0 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .how li { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px; display: grid; gap: 2px; align-content: start; font-size: 14px; }
+  .how .ic { width: 24px; height: 24px; border-radius: 50%; background: var(--danger); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+  .how li:nth-child(2) .ic { background: var(--accent); }
+  .how li:nth-child(3) .ic { background: var(--ok); }
+  .how .ja { font-size: 12px; }
+  .warnpanel { padding: 12px; }
+  .warnpanel .row { margin-top: 8px; }
+  .warnpanel .ghost { font-size: 13px; padding: 6px 12px; }
+  .placeholder { border: 2px dashed var(--line); border-radius: var(--radius); padding: 22px 16px; text-align: center; color: var(--muted); margin: 12px 0 0; }
+  #out:not(:empty) ~ .placeholder { display: none; }
+  .todo { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; counter-reset: todo; }
+  .todo li { counter-increment: todo; display: flex; gap: 10px; align-items: baseline; font-size: 17px; font-weight: 600; }
+  .todo li::before { content: counter(todo); flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; transform: translateY(3px); }
+  .todo .ja { display: block; font-weight: 400; }
   :root { view-transition-name: none; }
   ::view-transition-old(result), ::view-transition-new(result) { animation-duration: .22s; }
   @media (prefers-reduced-motion: reduce) {
@@ -159,12 +174,17 @@
   </div>
   <div>
     <h1>Tsunami Evacuation Navi</h1>
-    <p class="ja">津波避難ナビ（旅行者向け）Web 版。スマホのアプリは通信が無くても動きます。この Web 版は通信がある時だけ動きます。</p>
+    <p class="ja">Where to run from a tsunami, and whether you will make it in time. / 津波から逃げる先と、間に合うかを出します（旅行者向け Web 版）</p>
   </div>
 </header>
 
-<section class="panel" aria-labelledby="s1">
-  <h2 class="step" id="s1"><span class="n">1</span>Warning <span class="ja">警報</span></h2>
+<ol class="how" aria-label="How it works / 使い方">
+  <li><span class="ic">1</span><b>Press</b><span class="ja">赤いボタンか地点を押す</span></li>
+  <li><span class="ic">2</span><b>See where to go</b><span class="ja">避難先と間に合うかが出る</span></li>
+  <li><span class="ic">3</span><b>Walk there</b><span class="ja">緑のボタンで道案内</span></li>
+</ol>
+
+<section class="panel warnpanel" aria-label="Warning / 警報">
   <div id="alertbox" role="status" aria-live="polite">Checking warning status… / 警報を確認中</div>
   <div class="row">
     <button id="refreshAlert" class="ghost">Check again / 警報を再確認</button>
@@ -173,12 +193,12 @@
 </section>
 
 <section class="panel" aria-labelledby="s2">
-  <h2 class="step" id="s2"><span class="n">2</span>Where are you? <span class="ja">いる場所</span></h2>
+  <h2 class="step" id="s2"><span class="n">1</span>Tell us where you are <span class="ja">いる場所を伝える</span></h2>
   <button id="here" class="cta">
     <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="7"/></svg>
     <span>I felt shaking — use my location <span class="ja">揺れた（現在地）</span></span>
   </button>
-  <p class="or">Or try a demo location / デモ地点で試す</p>
+  <p class="or">Not in Osaka? Try a sample place on the coast / 大阪にいない時は、海沿いの地点で試せます</p>
   <div class="places">
     <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
     <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
@@ -195,9 +215,10 @@
 </section>
 
 <section aria-labelledby="s3">
-  <h2 class="step" id="s3" style="margin-top:20px"><span class="n">3</span>Where to go <span class="ja">避難先</span></h2>
+  <h2 class="step" id="s3" style="margin-top:20px"><span class="n">2</span>Go here <span class="ja">ここへ逃げる</span></h2>
   <div id="out" role="status" aria-live="polite"></div>
   <button id="retry" hidden>Retry / 再試行</button>
+  <p class="placeholder">Your shelter and the time you have will appear here. / 押すと、ここに避難先と残り時間が出ます</p>
 </section>
 
 <footer class="note">Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください。</footer>
@@ -354,7 +375,11 @@ function primaryCard(o) {
     <div class="label">Go to / 避難先</div>
     <div class="name">${esc(o.name)}</div>
     <div class="ja">${esc(o.city)} · ${esc(o.address)}</div>
-    <div class="what">${destinationText(o)}</div>
+    <ol class="todo">
+      <li><span>Leave now <span class="ja">今すぐ出発</span></span></li>
+      <li><span>Walk about ${Math.round(o.walk_min)} min <span class="ja">歩いて約${Math.round(o.walk_min)}分</span></span></li>
+      <li><span>${destinationText(o)}</span></li>
+    </ol>
     <a class="navbtn" href="${esc(mapsHref(o))}" target="_blank" rel="noopener">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-8-8 18-2-8-8-2z"/></svg>
       <span>Start walking directions <span class="ja">Google マップで道案内</span></span>
