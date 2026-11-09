@@ -56,7 +56,7 @@
 
 6 章に書くこと（案）:
 - テストアカウント: 不要
-- 手順: 上の URL を開く →「Receive warning (training replay)」→「Nankai Sakai Sta.」→ 避難先と説明が出る。「Cannot walk fast」にチェックしてもう一度押すと選び直す
+- 手順: 上の URL を開く →「Receive warning (training replay)」→「Nankai Sakai Sta.」→ 避難先と説明が出る。「Cannot walk fast」にチェックすると同じ地点で自動的に選び直す。言語変更も自動反映する
 - サンプルデータ: 気象庁の訓練電文（南海トラフ想定）・国土地理院の指定緊急避難場所（大阪市・堺市）
 
 注意:
@@ -87,16 +87,22 @@ PC とスマホのブラウザの両方で、次を確かめる。結果を ○�
 
 | # | 操作 | 期待すること |
 |---|---|---|
-| W-1 | 開く | 「JMA live check: no tsunami warning for Osaka (checked ○○:○○)」が出る |
+| W-1 | 開く → 必要なら「Check again / 警報を再確認」 | 確認中→結果が出る。正常に取得でき警報が無い時だけ「no tsunami warning」。実警報・訓練中・取得失敗はそれぞれ区別して表示 |
 | W-2 | 「Nankai Sakai Sta.」 | 警報なしの帯（黄色）・避難先・Gemini の説明・「Open walking directions in Google Maps」 |
 | W-3 | 「Receive warning (training replay)」→「Nankai Sakai Sta.」 | 赤い帯（大津波警報）・残り時間が「JMA arrival time（訓練電文）」の基準になる |
-| W-4 | 「Cannot walk fast」にチェック → もう一度 | 避難先が近いビルに変わる |
-| W-5 | 言語を「日本語」 | 説明が日本語になる |
+| W-4 | 地点を選んだ後「Cannot walk fast」にチェック | 地点ボタンを押し直さずに再計算し、遅い歩行条件で避難先を選び直す。地点と開始時刻は維持し、0.5m/秒の条件が表示される |
+| W-5 | 地点を選んだ後、言語を「日本語」に変更 | 自動で再計算して説明が日本語になる。素早く条件を変更しても最後の条件の結果が残る |
 | W-6 | 「Open walking directions in Google Maps」 | Google マップで徒歩の道が出る |
-| W-7 | スマホで「I felt shaking — use my location」 | 位置情報の許可 → 今いる所から計算（大阪の外だとエラーでよい） |
+| W-7 | スマホで「I felt shaking — use my location」 | 位置情報の許可 → 今いる所から計算。拒否・取得失敗・タイムアウト・対象地域外はエラーを表示し、「Retry / 再試行」または地点ボタンでやり直せる |
 | W-8 | 表示の崩れ | スマホの幅で、横にはみ出さない |
 
 ---
+
+### Web版の追加確認（通信失敗からの復帰）
+- 計算中に通信が失敗したら、計算中のまま止まらずエラーと「Retry / 再試行」が出る。
+- 通信を戻して再試行すると、同じ地点・歩行条件・言語・開始時刻で再計算できる。
+- 警報取得失敗は「警報なし」と表示しない。訓練中にページを開き直しても訓練と表示する。
+- 自動テストの実行方法: `backend/tests/web/README.md`。API応答を模擬したPC幅・スマホ幅のChromiumテストであり、実スマホや公開サーバーの確認結果とは区別する。
 
 ## 4. 人が書いたテスト用の文（50 件）
 目的: 聞き分けモデルを、Gemini が作った文だけで測ると「Gemini の癖に合わせただけ」になる。人が実際に話した文で測る。
