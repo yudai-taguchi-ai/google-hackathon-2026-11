@@ -35,12 +35,13 @@ data class Plan(
 
 /**
  * 圏外の時に、保存したパックだけで避難先を選ぶ。サーバーの planner.py と同じ手順。
- * 違いは歩く距離だけで、圏外では Routes API が使えないので「直線距離 × 1.3」の目安を使う。
+ * 違いは歩く距離だけで、圏外では Routes API が使えないので「直線距離 × 1.6」の目安を使う。
+ * 1.6 は大阪湾岸 150 組の実測（本物の道のり ÷ 直線距離の中央値 1.53）から、安全側に決めた（2026-11-09）。
  */
 object Planner {
     const val WALK_SPEED_M_PER_S = 0.62
     const val SLOW_WALK_SPEED_M_PER_S = 0.5
-    const val DETOUR = 1.3
+    const val DETOUR = 1.6
     const val SAFETY_MARGIN_MIN = 3.0
     const val CANDIDATES = 12
     const val ARRIVAL_DEFAULT_MIN = 26.0

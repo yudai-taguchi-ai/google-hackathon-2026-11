@@ -30,15 +30,15 @@ class PlannerTest {
 
     @Test
     fun 間に合えば区域の外へ() {
-        val p = Planner.plan(user.first, user.second, 20.0, false, all, zone)
+        val p = Planner.plan(user.first, user.second, 25.0, false, all, zone)
         assertEquals(Decision.REACH_OUTSIDE_ZONE, p.decision)
         assertEquals("out", p.primary.shelter.id)
     }
 
     @Test
     fun 遅いと間に合わず近いビルの上へ_公園は選ばない() {
-        // 通常: 460m×1.3 ÷ 0.62m/秒 ≒ 16.1 分 ≦ 17 分 ／ 遅い: ÷ 0.5m/秒 ≒ 20.0 分 > 残り 20 − 余裕 3 = 17 分
-        val p = Planner.plan(user.first, user.second, 20.0, true, all, zone)
+        // 通常: 460m×1.6 ÷ 0.62m/秒 ≒ 19.8 分 ≦ 22 分 ／ 遅い: ÷ 0.5m/秒 ≒ 24.6 分 > 残り 25 − 余裕 3 = 22 分
+        val p = Planner.plan(user.first, user.second, 25.0, true, all, zone)
         assertEquals(Decision.GO_UPSTAIRS, p.decision)
         assertEquals("bld", p.primary.shelter.id)
         assertEquals(Planner.SLOW_WALK_SPEED_M_PER_S, p.walkSpeedMPerS)
@@ -59,8 +59,8 @@ class PlannerTest {
 
     @Test
     fun 歩く時間は距離かける回り道を速さで割る() {
-        val p = Planner.plan(user.first, user.second, 20.0, false, all, zone)
-        val expected = Planner.distanceM(user.first, user.second, outside.lat, outside.lon) * 1.3 / 0.62 / 60.0
+        val p = Planner.plan(user.first, user.second, 25.0, false, all, zone)
+        val expected = Planner.distanceM(user.first, user.second, outside.lat, outside.lon) * Planner.DETOUR / 0.62 / 60.0
         assertEquals(expected, p.primary.walkMin, 1e-9)
     }
 
