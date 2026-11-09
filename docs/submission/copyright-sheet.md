@@ -33,7 +33,7 @@
 | Android Jetpack（AndroidX・Compose）・Kotlin・kotlinx（serialization・coroutines） | Android アプリ | Apache 2.0 |
 | Google Play services（位置情報） | 現在地 | Android Software Development Kit License |
 | Firebase Android SDK（AI Logic・App Check） | Gemini Live | Apache 2.0 |
-| Navigation SDK for Android【実装中】 | 徒歩の案内 | Google Maps Platform の利用規約 |
+| Navigation SDK for Android 6.3.0 | 徒歩の案内 | Google Maps Platform の利用規約 |
 | Transformers / TRL / datasets（Hugging Face） | 追加学習 | Apache 2.0 |
 | AI Edge Torch / LiteRT | .litertlm への変換 | Apache 2.0 |
 

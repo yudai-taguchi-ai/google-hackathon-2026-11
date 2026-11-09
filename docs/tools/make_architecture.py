@@ -61,7 +61,7 @@ d.rounded_rectangle((40, 120, 640, 1080), radius=18, outline="#2563EB", width=3)
 icon("mobile", 56, 136)
 d.text((140, 150), "Android アプリ（Kotlin・Jetpack Compose）", font=f(24, True), fill="#1D4ED8")
 box(60, 230, 560, 280, "通信あり", [
-    "・Navigation SDK：アプリの中で徒歩の案内",
+    "・Navigation SDK：目的地まで徒歩の案内",
     "・Gemini Live（Firebase AI Logic）",
     "　声で会話。頼みごとは関数で受け取り、",
     "　選び直しはアプリが公式データで行う",
@@ -72,8 +72,8 @@ box(60, 540, 560, 330, "通信なし（圏外・機内モード）", [
     "・避難先の計算：間に合う所を選ぶ",
     "　（0.62m/秒・3階以上・到達＝揺れた＋26分）",
     "・方角の矢印と距離・端末の読み上げ",
-    "・FunctionGemma 270M（LiteRT-LM）が",
-    "　頼みごとを聞き分ける（無ければボタン）",
+    "・頼みごとはボタンで受ける",
+    "　（FunctionGemma 270M を追加学習中）",
 ], key="ai", fill="#F0FDF4", edge="#86EFAC")
 d.text((70, 890), "通信が落ちたことを検知して自動で切り替える", font=f(20, True), fill="#15803D")
 d.text((70, 930), "現在地：GPS（通信なしでも動く）", font=f(20), fill="#334155")
@@ -81,7 +81,7 @@ d.text((70, 930), "現在地：GPS（通信なしでも動く）", font=f(20), f
 # Cloud Run（中央）
 box(740, 330, 480, 330, "Cloud Run（東京）", [
     "Python・FastAPI",
-    "/api/alert  気象庁の電文（デモは訓練）",
+    "/api/alert  警報（デモは訓練電文）",
     "/api/plan   間に合う避難先を選ぶ",
     "            ＋浸水の浅い道と経由地",
     "/api/pack   オフライン用のパック",
