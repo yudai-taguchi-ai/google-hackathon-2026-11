@@ -50,3 +50,15 @@ gcloud run deploy tsunami-navi --source . --region asia-northeast1 --quiet
 ```
 - `.gcloudignore` で `data/raw/`（浸水想定）を含めて送る（Git には入れていない）
 - 予算アラート: 約 45,000 円（≒$300）の 20/50/80/100% で通知（自動では止まらない）
+
+## API（2026-11-09）
+| API | 中身 |
+|---|---|
+| `GET /api/alert` | 今の警報（訓練電文）。`minutes_left`・`arrival_time`・`replaying` |
+| `POST /api/alert/replay` | 訓練電文を「今」発表されたものとして流し直す（残り時間は電文と同じ 17 分から減っていく）。Cloud Run は 1 台で動かしている（状態を共有するため） |
+| `POST /api/plan` | `{lat, lon, lang, slow}` → 避難先・`route`（浸水想定の浅い道・`encoded_polyline`）・`waypoints`（Navigation SDK に渡す経由地・最大8点）・Gemini の説明 |
+| `GET /api/pack?area=osaka-bay&lang=en&expires_at=YYYY-MM-DD` | オフライン用のパック（避難先 2,335 件・簡略化した浸水想定・答えの文・到達時刻の既定値 26 分・歩く速さ）。gzip で約 1MB |
+| `GET /api/pack/audio?lang=en&id=reselect_slow` | 答えの音声（WAV）。Gemini の音声生成で作る |
+
+- 答えの元の文（日本語）は `app/pack.py` の `ANSWERS_JA`。他の言語は Gemini で訳す
+- 浸水想定のパック用データは `scripts/prepare_pack.py` で作る（`data/inundation_pack.geojson`）
