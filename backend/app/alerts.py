@@ -81,3 +81,74 @@ def current_alert(now: datetime) -> tuple[TsunamiAlert, bool]:
         arrival_condition=a.arrival_condition,
         max_height=a.max_height,
     ), True
+
+
+# ---- 気象庁の本物の電文（防災情報 XML のフィード。登録不要）----
+import time
+import urllib.request
+import xml.etree.ElementTree as _ET
+
+FEEDS = [
+    "https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml",
+    "https://www.data.jma.go.jp/developer/xml/feed/eqvol_l.xml",
+]
+TSUNAMI_TITLE = "津波警報・注意報・予報a"
+WARNING_KINDS = ("大津波警報", "津波警報", "津波注意報")
+CACHE_SEC = 60
+ATOM = {"a": "http://www.w3.org/2005/Atom"}
+_live: dict = {"at": 0.0, "value": None}
+
+
+def _get(url: str) -> str:
+    req = urllib.request.Request(url, headers={"User-Agent": "tsunami-navi-hackathon/0.1"})
+    with urllib.request.urlopen(req, timeout=10) as r:
+        return r.read().decode("utf-8")
+
+
+def latest_tsunami_telegram_url() -> str | None:
+    """フィードの中で一番新しい「津波警報・注意報・予報a」の電文の URL。"""
+    best = None
+    for feed in FEEDS:
+        root = _ET.fromstring(_get(feed))
+        for e in root.findall("a:entry", ATOM):
+            if e.findtext("a:title", namespaces=ATOM) != TSUNAMI_TITLE:
+                continue
+            updated = e.findtext("a:updated", namespaces=ATOM)
+            if best is None or updated > best[0]:
+                best = (updated, e.find("a:link", ATOM).get("href"))
+    return best[1] if best else None
+
+
+def live_status(xml_text: str | None, now: datetime, area_code: str = "510") -> dict:
+    """一番新しい電文から、大阪府（510）に今、津波の警報・注意報が出ているかを返す。
+    訓練・試験の電文、取消、予報（若干の海面変動）、解除は「出ていない」とする。"""
+    if xml_text is None:
+        return {"active": False, "reason": "no_tsunami_telegram"}
+    root = _ET.fromstring(xml_text)
+    if root.findtext("jmx:Control/jmx:Status", namespaces=NS) != "通常":
+        return {"active": False, "reason": "not_real_telegram"}
+    if root.findtext("ib:Head/ib:InfoType", namespaces=NS) == "取消":
+        return {"active": False, "reason": "cancelled"}
+    a = parse(xml_text, area_code)
+    if a is None or not a.kind or "解除" in a.kind or not any(a.kind.startswith(k) for k in WARNING_KINDS):
+        return {"active": False, "reason": "no_warning_for_area", "kind": a.kind if a else None}
+    arrival = a.arrival_at
+    if arrival is None:
+        # 「ただちに津波来襲と予測」「第１波の到達を確認」など: 時刻が無い時は今すぐ来るものとして扱う
+        arrival = now.astimezone(a.reported_at.tzinfo)
+    return {"active": True, "alert": TsunamiAlert(a.status, a.area_name, a.kind, a.reported_at, arrival, a.arrival_condition, a.max_height)}
+
+
+def live_alert(now: datetime) -> dict:
+    """気象庁のフィードを見る（1 分は使い回す）。失敗した時は前回の結果に error を付けて返す。"""
+    if time.time() - _live["at"] < CACHE_SEC and _live["value"] is not None:
+        return _live["value"]
+    try:
+        url = latest_tsunami_telegram_url()
+        value = live_status(_get(url) if url else None, now)
+        value["checked_at"] = now.isoformat()
+        value["telegram_url"] = url
+    except Exception as e:
+        value = dict(_live["value"] or {"active": False}, error=str(e), checked_at=now.isoformat())
+    _live.update(at=time.time(), value=value)
+    return value

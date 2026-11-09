@@ -59,6 +59,13 @@ const SOURCE = {
   default_26: "now + 26 min (estimate) / 今＋26分（目安）",
 };
 
+fetch("/api/alert").then((r) => r.json()).then((a) => {
+  const t = a.jma_checked_at ? new Date(a.jma_checked_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) : "?";
+  document.getElementById("alertbox").innerHTML = a.active && a.source === "jma_live"
+    ? `<div class="alert">JMA: ${esc(a.kind)} — Osaka (checked ${t})</div>`
+    : `JMA live check: no tsunami warning for Osaka (checked ${t}). <span class="ja">気象庁の電文を確認: 大阪府に津波の警報・注意報なし。警報が無い時は「揺れた時刻＋26分」で計算します</span>`;
+});
+
 document.getElementById("replay").addEventListener("click", async () => {
   const a = await (await fetch("/api/alert/replay", { method: "POST" })).json();
   document.getElementById("alertbox").innerHTML =
