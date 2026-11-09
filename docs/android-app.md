@@ -20,6 +20,22 @@
    - Build configuration language: Kotlin DSL
 3. そのまま実機で動かし、「Hello Android」が出たら `feat/android-scaffold` ブランチで push → PR → main
 
+## 2.5 圏外の計算のモジュール（android/offline・先に入っている）
+`android/offline/` に、Android に依存しない Kotlin だけのモジュールが先に入っている（Planner.kt・Guidance.kt・Model.kt とテスト）。雛形を作ったら次の 3 か所を足す。
+- Android Studio の New Project が「フォルダが空でない」と止まる時は、別のフォルダで作ってから `android/` に中身を移す
+- `android/gradle/libs.versions.toml` の `[plugins]` に: `kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }`
+- `android/settings.gradle.kts` に: `include(":offline")`
+- `android/app/build.gradle.kts` の dependencies に: `implementation(project(":offline"))`
+- 確かめ方: `./gradlew :offline:test`（PC だけで動く。実機は要らない）
+
+使い方（画面側から呼ぶ形）:
+```kotlin
+val map = InundationMap.fromMultiPolygons(depthToCoordinates)   // パックの inundation から
+val left = Planner.minutesLeftOffline(System.currentTimeMillis(), cachedArrivalMillis, shakePressedMillis)
+val plan = Planner.plan(lat, lon, left, slow = false, shelters = packShelters, inundation = map)
+val step = Guidance.step(lat, lon, plan.primary.shelter, headingDeg, plan.walkSpeedMPerS)
+```
+
 ## 3. 足す部品（app/build.gradle.kts の dependencies）
 | 部品 | 何のため | 公式の手順 |
 |---|---|---|
@@ -50,9 +66,8 @@ android/app/src/main/java/jp/oif/tsunaminavi/
   ui/            画面（Compose）。ホーム・案内中・設定           … Android 担当
   data/          API の呼び出し・パックの保存と読み込み          … Android 担当
   online/        Navigation SDK・Gemini Live                   … Android 担当
+  （圏外の計算 Planner・Guidance は別モジュール android/offline/ … 田口＋Claude Code・済）
   offline/
-    Planner.kt   避難先を選ぶ計算（planner.py を移す）          … 田口＋Claude Code
-    Guidance.kt  方角の矢印と距離                               … 田口＋Claude Code
     Intent.kt    小さいモデルで頼みごとを聞き分ける・ボタン       … 追加学習の担当
   net/           通信が落ちたことの検知（ConnectivityManager）  … Android 担当
 ```
