@@ -165,6 +165,25 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
     LaunchedEffect(s.listening) { if (!s.listening && tapMode && s.speechError != null) tapMode = false }
 }
 
+/** 聞き取った頼みごとを確かめる（はい／いいえ）。 */
+@Composable
+private fun ConfirmIntent(id: String, vm: AppViewModel) {
+    val (en, ja) = INTENTS.firstOrNull { it.first == id }?.let { it.second to it.third }
+        ?: when (id) {
+            "reselect" -> "Choose another place" to "別の避難先にする"
+            "repeat" -> "Repeat the guidance" to "もう一度言って"
+            else -> id to id
+        }
+    Column(Modifier.fillMaxWidth().background(Color(0xFFFEF3C7)).padding(12.dp)) {
+        Text("Did you mean: $en?", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text("「$ja」でよいですか？", fontSize = 14.sp)
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Button(onClick = { vm.confirmIntent(true) }) { Text("Yes / はい") }
+            OutlinedButton(onClick = { vm.confirmIntent(false) }) { Text("No / いいえ") }
+        }
+    }
+}
+
 /** 案内中は画面を消さない（歩きながら見るため）。 */
 @Composable
 private fun KeepScreenOn(on: Boolean) {
@@ -246,6 +265,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         fontSize = 20.sp,
     )
     Ja(if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ")
+    Ja("Residents: follow your local evacuation plan. / 地元の方は、市や自治会が決めた避難先に従ってください")
     s.notice?.let { Banner(it, null, Color(0xFF0E7490)) }
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
     else if (s.online) Ja("（Navigation SDK is off at the demo location. Try with real GPS. / デモ地点ではナビを使いません）")
@@ -278,7 +298,17 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             modifier = Modifier.fillMaxWidth(),
         ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 18.sp) }
     }
-    if (!s.liveActive) HoldToTalk(s, vm)
+    if (!s.liveActive) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Speak in:", fontSize = 13.sp)
+            listOf("en-US" to "English", "ja-JP" to "日本語").forEach { (code, label) ->
+                if (s.speechLang == code) Button(onClick = {}) { Text(label, fontSize = 13.sp) }
+                else OutlinedButton(onClick = { vm.setSpeechLang(code) }) { Text(label, fontSize = 13.sp) }
+            }
+        }
+        HoldToTalk(s, vm)
+        s.pendingIntent?.let { id -> ConfirmIntent(id, vm) }
+    }
     if (!s.online) Ja("Offline: speech is handled on this device; if not understood, use the buttons. / 圏外: 端末の中で聞き分け、分からなければボタン")
     Text("Need help? / 困ったこと", fontWeight = FontWeight.Bold)
     INTENTS.chunked(2).forEach { row ->

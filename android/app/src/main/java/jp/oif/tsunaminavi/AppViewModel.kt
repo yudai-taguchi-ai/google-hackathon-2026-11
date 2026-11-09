@@ -73,6 +73,10 @@ data class UiState(
     val listening: Boolean = false,
     val speechError: String? = null,
     val offlineSpeech: String? = null,
+    /** 聞き取る言語（en-US / ja-JP）。 */
+    val speechLang: String = "en-US",
+    /** 聞き取った頼みごと。確かめてから動く（聞き間違いで避難先が変わらないように）。 */
+    val pendingIntent: String? = null,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
 
@@ -309,7 +313,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         runCatching { player?.stop() }
         _state.update { it.copy(listening = true, heard = null, speechError = null) }
         speech.start(
-            "en-US",
+            _state.value.speechLang,
             offline = !_state.value.online,
             onPartial = { text -> _state.update { it.copy(heard = text) } },
             onFinal = { text, error -> handleHeard(text, error) },
@@ -326,11 +330,23 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         val id = classifier.classify(text)
         if (id == "other") {
-            _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください") }
+            _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください", pendingIntent = null) }
             speak("Please choose a button on the screen.")
         } else {
-            onIntent(id)
+            // すぐには動かず、「これでよいか」を確かめる
+            _state.update { it.copy(pendingIntent = id, answer = null) }
+            speak("Is this right? Tap yes or no.")
         }
+    }
+
+    fun setSpeechLang(lang: String) = _state.update { it.copy(speechLang = lang) }
+
+    /** 聞き取った頼みごとを確かめた結果。はい → その頼みごとを実行／いいえ → ボタンで選んでもらう。 */
+    fun confirmIntent(yes: Boolean) {
+        val id = _state.value.pendingIntent ?: return
+        _state.update { it.copy(pendingIntent = null) }
+        if (yes) onIntent(id)
+        else _state.update { it.copy(answer = "OK. Please choose a button below. / 下のボタンから選んでください") }
     }
 
     fun toggleLive() = viewModelScope.launch {
@@ -344,7 +360,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             live.start()
             _state.update { it.copy(liveActive = true, error = null) }
         } catch (e: Exception) {
-            _state.update { it.copy(liveActive = false, error = "Gemini Live could not start / 始められませんでした: ${e.message}") }
+            val detail = generateSequence(e as Throwable?) { it.cause }.take(4).joinToString(" ← ") { "${it::class.simpleName}: ${it.message}" }
+            android.util.Log.e("TsunamiNavi", "Gemini Live failed", e)
+            _state.update { it.copy(liveActive = false, error = "Gemini Live could not start / 始められませんでした: $detail") }
         }
     }
 
