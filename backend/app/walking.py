@@ -42,7 +42,7 @@ def _routes_api(lat: float, lon: float, dests: list[dict], key: str) -> list[flo
 
 
 def walking_distances(lat: float, lon: float, dests: list[dict]) -> tuple[list[float], str]:
-    key = os.environ.get("GOOGLE_MAPS_API_KEY")
+    key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
     if key:
         return _routes_api(lat, lon, dests, key), "routes_api"
     return _estimate(lat, lon, dests), "estimate"
