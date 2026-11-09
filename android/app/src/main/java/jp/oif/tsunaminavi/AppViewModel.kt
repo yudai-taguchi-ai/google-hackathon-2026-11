@@ -55,6 +55,8 @@ data class UiState(
     val excluded: Set<String> = emptySet(),
     val target: Shelter? = null,
     val targetWalkMin: Double? = null,
+    /** 避難先を選んだ時の、そこまでの直線距離（残りの歩く時間を、選んだ時の道のりから割合で出すため）。 */
+    val targetStraightM: Double? = null,
     val targetIsUpstairs: Boolean = false,
     val decision: String? = null,
     val planSource: String? = null,
@@ -73,6 +75,14 @@ data class UiState(
     val offlineSpeech: String? = null,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
+
+    /** 残りの歩く時間（避難の速さ）。選んだ時の道のりの時間を、今の残りの直線距離の割合で減らす。表示する歩く時間はこれ 1 つだけ。 */
+    val remainingWalkMin: Double? get() {
+        val total = targetWalkMin ?: return null
+        val start = targetStraightM ?: return total
+        val now = step?.distanceM ?: return total
+        return if (start <= 1.0) 0.0 else total * (now / start).coerceIn(0.0, 1.0)
+    }
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
 }
 
@@ -260,7 +270,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 }
                 if (current.target == null) speakPlan(server)
             } else {
-                _state.update { it.copy(planSource = "${it.planSource} (checked by server)") }
+                _state.update { st -> if (st.planSource?.endsWith("(checked by server)") == true) st else st.copy(planSource = "${st.planSource} (checked by server)") }
             }
         }
 
@@ -417,6 +427,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         it.copy(
             target = c.shelter,
             targetWalkMin = c.walkMin,
+            targetStraightM = it.location?.let { (la, lo) -> Planner.distanceM(la, lo, c.shelter.lat, c.shelter.lon) },
             targetIsUpstairs = c.shelter.inundationDepth != null,
             decision = c.decision,
             planSource = c.source,

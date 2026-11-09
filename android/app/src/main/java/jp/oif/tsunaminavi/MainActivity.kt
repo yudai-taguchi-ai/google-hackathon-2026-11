@@ -253,10 +253,14 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         Arrow(step.relativeDeg ?: step.bearingDeg)
         Text(
             if (step.arrived) "You have arrived. Go up to floor ${t.floorMin ?: 3} or higher."
-            else "${step.compass.en.replaceFirstChar { it.uppercase() }}, about ${step.distanceM.roundToInt()} m (≈ ${step.remainingMin.roundToInt()} min on foot)",
+            else "${step.compass.en.replaceFirstChar { it.uppercase() }}, ${step.distanceM.roundToInt()} m in a straight line",
             fontSize = 20.sp,
         )
         if (step.relativeDeg == null) Ja("(Arrow points north-up: device direction unknown / 端末の向きが分からないため北が上)")
+    }
+    s.remainingWalkMin?.let {
+        Text("Walking at evacuation pace (${if (s.slow) "0.5" else "0.62"} m/s): about ${it.roundToInt()} min", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Ja("避難の速さで歩いた時間（これで間に合うかを判断）。地図の時間は普通の歩く速さ（約 1.2 m/秒）なので短く出ます")
     }
     s.minutesLeft?.let {
         Text("About ${it.roundToInt()} min until the tsunami may arrive", fontSize = 16.sp)
