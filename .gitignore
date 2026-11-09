@@ -40,3 +40,5 @@ backend/data/raw/
 # 作業の記録
 backend/eval/last_run.log
 backend/finetune/last_run.log
+backend/finetune/output/
+backend/finetune/colab_upload/
