@@ -18,7 +18,7 @@
 | 名前 | 提供元 | 使い方 | ライセンス |
 |---|---|---|---|
 | Gemini 3.8 Flash（Vertex AI） | Google | 説明・翻訳・音声・学習データ・評価 | Google Cloud の利用規約 |
-| Gemini Live（Firebase AI Logic・Gemini Developer API） | Google | 声の会話 | Firebase・Gemini API の利用規約 |
+| Gemini Live（Firebase AI Logic・Vertex AI。モデル gemini-live-2.5-flash-native-audio） | Google | 声の会話 | Firebase・Google Cloud の利用規約 |
 | Gemini 4 Argon | Google | 評価の比べる相手 | Google Cloud の利用規約 |
 | FunctionGemma 270M | Google | 端末の中の聞き分け（追加学習） | Gemma Terms of Use【要確認】 |
 

@@ -32,7 +32,7 @@ class LiveAssistant(private val handle: (name: String, mobility: String?) -> Map
 
     suspend fun start() {
         if (session != null) return
-        val model = Firebase.ai(backend = GenerativeBackend.googleAI()).liveModel(
+        val model = Firebase.ai(backend = GenerativeBackend.vertexAI(location = "us-central1")).liveModel(
             modelName = BuildConfig.LIVE_MODEL,
             generationConfig = liveGenerationConfig {
                 responseModality = ResponseModality.AUDIO
