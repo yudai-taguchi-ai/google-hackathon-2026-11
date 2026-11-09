@@ -7,7 +7,7 @@ import requests
 ROUTES_URL = "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix"
 WALK_SPEED_M_PER_S = 0.62
 SLOW_WALK_SPEED_M_PER_S = 0.5
-FALLBACK_DETOUR = 1.3
+FALLBACK_DETOUR = 1.6
 
 
 def distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

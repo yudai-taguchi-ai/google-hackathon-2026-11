@@ -134,6 +134,16 @@ private fun Home(s: UiState, vm: AppViewModel) {
     }
     Ja("Warnings are also checked every 15 seconds when online. / 通信がある時は 15 秒ごとに警報を確かめ、出ていれば自動で案内を始めます")
     OutlinedButton(onClick = { vm.replayAlert() }) { Text("Demo: replay a training warning / 訓練電文を流し直す") }
+    Sources(s)
+}
+
+/** 出典と更新日。「公式情報に基づく参考の案内」であり、現地の指示を優先することを常に出す。 */
+@Composable
+private fun Sources(s: UiState) {
+    Spacer(Modifier.height(12.dp))
+    Ja("Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください")
+    Ja("Shelters: GSI designated emergency evacuation sites (tsunami) · Flood depth: MLIT tsunami inundation (Osaka, 2023) · Warning: JMA (demo uses a training telegram)")
+    Ja("出典: 国土地理院 指定緊急避難場所・国土数値情報 津波浸水想定（大阪府 2023）・気象庁 防災情報 XML。データ: ${s.packInfo ?: "未保存"}")
 }
 
 @Composable
@@ -168,6 +178,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         Ja("基準: ${s.timeBasis}。想定より早く来ることがあります")
     }
     Ja("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s")
+    if (s.planSource?.startsWith("device") == true) Ja("Offline estimate: real walking can take longer (rivers, canals). / 圏外の目安。川や運河で実際はもっとかかることがあります")
     s.explanation?.let { Text(it, fontSize = 14.sp) }
     s.answer?.let { Banner(it, null, Color(0xFF1D4ED8)) }
     if (vm.liveAvailable && s.online) {
@@ -193,6 +204,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
         }
     }
     OutlinedButton(onClick = { vm.reset() }) { Text("Back to start / 最初の画面に戻る") }
+    Sources(s)
 }
 
 @Composable
