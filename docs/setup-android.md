@@ -1,5 +1,7 @@
 # Android の準備と、最初に作る検証アプリ
 
+> 本番のアプリの雛形と作り方は [android-app.md](android-app.md)（2026-11-09）。
+
 最終更新: 2026-11-07
 
 目的: verification.md の **V1**（Navigation SDK で「徒歩」と「複数の経由地」を同時に使えるか）を確かめる。ほかに V2・V10・V13 も同じアプリで確かめる。

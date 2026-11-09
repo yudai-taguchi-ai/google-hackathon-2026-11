@@ -7,6 +7,9 @@ GDG GoC Japan DevFest Hackathon 2026 ／ カテゴリ：**観光**
 ## まず読むもの
 | ファイル | 中身 |
 |---|---|
+| [docs/implementation-plan.md](docs/implementation-plan.md) | **最新の実装計画**（担当・日程・API の約束） |
+| [docs/requirements.md](docs/requirements.md) | 要件表（デモの場面ごとの合格の条件） |
+| [docs/android-app.md](docs/android-app.md) | Android アプリの雛形と作り方 |
 | [docs/plan.md](docs/plan.md) | 何を作るか・担当範囲・構成・日程・役割・提出物 |
 | [docs/verification.md](docs/verification.md) | **確かめないといけないこと**の一覧（致命的なものから順） |
 | [docs/setup-android.md](docs/setup-android.md) | Android Studio の導入と、最初に作る検証アプリ |

@@ -50,17 +50,18 @@
 - `arrival_default_min` は §5 の N1（案）
 - `answers` は §4 の頼みごとの一覧から作る
 
-## 3. 担当
-メンバーの得意なことが分かったら名前を入れる。
+## 3. 担当（2026-11-09 更新）
+メンバーへの条件は「追加学習はメンバーに任せる」だけ。名前は打ち合わせで入れる。
 
 | 担当 | 範囲 | 主な確認 |
 |---|---|---|
-| **A：サーバー** | Cloud Run・/api/alert・/api/plan の経由地・/api/pack・答えの文と音声づくり | V14・N9・N6 |
-| **B：Android（オンライン）** | アプリの骨組み・現在地・Navigation SDK・Gemini Live・通信が落ちたことの検知 | V1・O3・V9・N8 |
-| **C：Android（オフライン）** | 保存したパックで避難先を計算・矢印と距離・音声の再生・小さいモデルの組み込み・質問のボタン | N4・N5 |
-| **田口** | 頼みごとの一覧・追加学習（Claude Code が手順とコードを用意し、Colab で動かす）・評価 V8・提出物・動画の編集 | O1・O2 |
+| **田口＋Claude Code** | サーバー（Cloud Run・/api/alert・/api/plan の経由地・/api/pack・答えの文と音声）・Android の offline/Planner.kt と Guidance.kt（planner.py を Kotlin に移す）・評価 V8・提出物・動画の編集・頼みごとの一覧 | V14・N9・N6 |
+| **メンバー1：Android** | 雛形・画面・現在地・API の呼び出し・パックの保存・Navigation SDK・通信の検知と切り替え・Gemini Live | V1・O3・V9・N8・N4・N5 |
+| **メンバー2：追加学習** | Gemini で学習データ → Colab で FunctionGemma を学習 → 正答率の表 → `.litertlm` に変換 → offline/Intent.kt でアプリに組み込む（質問のボタンも）・撮影 | O1・O2 |
 
-3人で4つの枠を持つので、C はメンバーのどちらかと兼ねる。
+- Android の作り方とフォルダの分け方は docs/android-app.md
+- 合格の条件は docs/requirements.md
+- クレジット: GCP 無料トライアルの $300（新しいアカウント）。Gemini は Vertex AI 経由で使う
 
 ## 4. 圏外の会話：小さいモデルの追加学習
 ### モデルの選び方（端末に合わせて切り替える）
