@@ -103,6 +103,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var player: MediaPlayer? = null
     private val live = LiveAssistant(::handleLiveCall)
     @Volatile private var planning = false
+    /** この案内で、最初の計算をもう始めたか（座標が更新されるたびにやり直さないため）。 */
+    @Volatile private var guidanceStarted = false
     private var dismissedArrival: Long? = null
     private val speech = Speech(app)
 
@@ -136,7 +138,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 _state.update { it.copy(gps = loc) }
                 // 案内を始めた時に現在地がまだ無かった場合は、取れた時点で計算する
                 val s = _state.value
-                if (loc != null && s.active && s.target == null && !planning) startGuidance()
+                if (loc != null && s.active && s.target == null && !planning && !guidanceStarted) startGuidance()
             }
         }
         viewModelScope.launch { headingSource.heading.collect { h -> _state.update { it.copy(heading = h) } } }
@@ -249,6 +251,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         planning = true
+        guidanceStarted = true
         _state.update { it.copy(error = null, busy = "Finding a shelter… / 避難先を計算中") }
         viewModelScope.launch {
             val local = withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
@@ -396,6 +399,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun reset() = _state.update {
+        guidanceStarted = false
         dismissedArrival = it.alertArrivalMillis
         UiState(online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo)
     }
