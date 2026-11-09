@@ -89,6 +89,8 @@ private fun Home(s: UiState, vm: AppViewModel) {
     Text("旅行の前に（Wi-Fi のある所で）", fontWeight = FontWeight.Bold)
     Text(s.packInfo ?: "まだ保存していません")
     OutlinedButton(onClick = { vm.downloadPack() }) { Text("大阪湾岸のデータを保存") }
+    if (vm.liveAvailable) Text("Gemini Live: 使える（App Check デバッグ用: ${vm.debugSecret?.take(8) ?: "未設定"}…）", fontSize = 12.sp)
+    else Text("Gemini Live: このビルドには Firebase の設定が入っていません", fontSize = 12.sp)
     Row(verticalAlignment = Alignment.CenterVertically) {
         Switch(checked = s.useDemoPoint, onCheckedChange = vm::setDemoPoint)
         Text("  デモ地点を使う（屋内の試験用）")
@@ -128,6 +130,15 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     Text("計算: ${s.planSource}${if (s.slow) "・遅い歩き（0.5m/秒）" else "・0.62m/秒"}", fontSize = 12.sp)
     s.explanation?.let { Text(it, fontSize = 14.sp) }
     s.answer?.let { Banner(it, Color(0xFF1D4ED8)) }
+    if (vm.liveAvailable && s.online) {
+        val micLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) vm.toggleLive() }
+        Button(
+            onClick = { if (s.liveActive) vm.toggleLive() else micLauncher.launch(Manifest.permission.RECORD_AUDIO) },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8)),
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(if (s.liveActive) "会話を止める（Gemini Live）" else "Gemini と話す（Gemini Live）", fontSize = 18.sp) }
+    }
+    if (!s.online) Text("圏外: 会話は下のボタン（端末の中）で受けます", fontSize = 12.sp)
     Text("困ったこと（押すと選び直し・案内します）", fontWeight = FontWeight.Bold)
     INTENTS.chunked(2).forEach { row ->
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

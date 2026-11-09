@@ -1,0 +1,87 @@
+package jp.oif.tsunaminavi
+
+import com.google.firebase.Firebase
+import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.FunctionCallPart
+import com.google.firebase.ai.type.FunctionDeclaration
+import com.google.firebase.ai.type.FunctionResponsePart
+import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.LiveSession
+import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.Schema
+import com.google.firebase.ai.type.SpeechConfig
+import com.google.firebase.ai.type.Tool
+import com.google.firebase.ai.type.Voice
+import com.google.firebase.ai.type.content
+import com.google.firebase.ai.type.liveGenerationConfig
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
+
+/**
+ * 通信がある時の声の会話（Gemini Live）。
+ * Gemini は避難先を自分で決めない。頼みごとを関数で受け取り、アプリが公式データから選び直した結果だけを話す。
+ * 頼みごとの一覧は、圏外の小さいモデル・ボタンと同じ（docs/decisions.md）。
+ */
+@OptIn(PublicPreviewAPI::class)
+class LiveAssistant(private val handle: (name: String, mobility: String?) -> Map<String, String>) {
+    private var session: LiveSession? = null
+
+    val active: Boolean get() = session != null
+
+    suspend fun start() {
+        if (session != null) return
+        val model = Firebase.ai(backend = GenerativeBackend.googleAI()).liveModel(
+            modelName = BuildConfig.LIVE_MODEL,
+            generationConfig = liveGenerationConfig {
+                responseModality = ResponseModality.AUDIO
+                speechConfig = SpeechConfig(voice = Voice("Puck"))
+            },
+            systemInstruction = content { text(INSTRUCTION) },
+            tools = listOf(Tool.functionDeclarations(FUNCTIONS)),
+        )
+        session = model.connect().also { it.startAudioConversation(::onCall) }
+    }
+
+    suspend fun stop() {
+        val s = session ?: return
+        session = null
+        runCatching { s.stopAudioConversation() }
+        runCatching { s.close() }
+    }
+
+    private fun onCall(call: FunctionCallPart): FunctionResponsePart {
+        val mobility = call.args["mobility"]?.jsonPrimitive?.content
+        val result = runCatching { handle(call.name, mobility) }
+            .getOrElse { mapOf("error" to (it.message ?: "failed")) }
+        return FunctionResponsePart(call.name, JsonObject(result.mapValues { JsonPrimitive(it.value) }))
+    }
+
+    companion object {
+        private const val INSTRUCTION = """You are a tsunami evacuation guide for a traveler in Osaka. A major tsunami warning is in effect.
+Rules:
+- Speak in the user's language. Keep every reply under 3 short sentences, in the imperative.
+- Never name or invent an evacuation place, floor, distance or time yourself. Use only values returned by the functions.
+- At the start, call get_guidance and tell the user where to go now.
+- When the user says they cannot walk fast, use a wheelchair, the road is blocked, or asks for another place, call the matching function, then read the new guidance.
+- For lost family, injury, when to return, or floors, call the function and say its "answer".
+- Always remind: do not use a car, stay away from rivers, do not go back until the warning is lifted."""
+
+        private fun fn(name: String, description: String, params: Map<String, Schema> = emptyMap()) =
+            FunctionDeclaration(name, description, params)
+
+        private val FUNCTIONS = listOf(
+            fn("get_guidance", "Get the current evacuation target, floor, walking minutes and minutes left. Call first."),
+            fn(
+                "reselect", "Choose another evacuation site from official data.",
+                mapOf("mobility" to Schema.enumeration(listOf("normal", "slow", "wheelchair"), "normal: just another place, slow: cannot walk fast (child, elderly, injury), wheelchair: wheelchair or stroller")),
+            ),
+            fn("road_blocked", "The road is blocked or flooded. Choose another site."),
+            fn("ask_floor", "How high to go up."),
+            fn("lost_family", "The user lost family or friends."),
+            fn("injured", "The user is injured or cannot move."),
+            fn("when_to_return", "When the user can go back."),
+        )
+    }
+}
