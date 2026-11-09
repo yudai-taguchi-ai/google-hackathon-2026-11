@@ -42,8 +42,8 @@ python -X utf8 -m finetune.score finetune/data/test.jsonl finetune/output/predic
 
 ## 保存済みモデルを端末用に変換
 
-`convert_saved_functiongemma_colab.ipynb` を新しい Colab ランタイムで開き、上から実行する。Drive の `tsunami-functiongemma-output/model/` を読み、`dynamic_int8` の `.litertlm` を `tsunami-functiongemma-output/litertlm/` に保存する。学習の再実行と Hugging Face トークンは不要。変換手順は [Google の Mobile Actions 例](https://ai.google.dev/gemma/docs/mobile-actions) をもとにしている。変換はまだ実測していないため、実行後にファイルの大きさ・端末での関数呼び出し・速度を確認する。
+変換は WSL Ubuntu の `litert-torch==0.10.0` と `litert-lm-builder==0.18.0` で完了した。モデルは Google Drive の `tsunami-functiongemma-output/litertlm/tsunami-functiongemma-270m-dynamic-wi8.litertlm` に保存している。`dynamic_wi8_afp32` 量子化後の大きさは273 MB（元の1.00 GiBから3.8倍圧縮）、`litert-lm-peek` で `function_gemma` のメタデータと1,024トークンのKVキャッシュを確認済み。端末上の関数呼び出しと速度は実機で確認する。
 
 ## 現在の状態
 
-Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。共通 `score.py` による採点まで実施済み。端末用変換、端末上の速さ、Android への組み込みは未実施。
+Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。共通 `score.py` による採点と、端末用 `.litertlm` への変換まで実施済み。端末上の速さとAndroidへの組み込みは未実施。
