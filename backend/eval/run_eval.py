@@ -155,7 +155,7 @@ def main() -> None:
             done[r["point"]["label"]] = r
     rows = []
     for i, p in enumerate(points(), 1):
-        app_plan = plan(p["lat"], p["lon"], MINUTES_LEFT)
+        app_plan = gcp_auth.retry(lambda: plan(p["lat"], p["lon"], MINUTES_LEFT))
         best = app_plan["primary"]
         row = {"point": p, "user_depth": inundation_at(p["lat"], p["lon"]), "app": {
             "name": best["name"], "id": best["id"], "walk_min": best["walk_min"], "reachable": best["reachable"],
@@ -171,15 +171,16 @@ def main() -> None:
             except Exception as e:
                 row["gemini"][model] = {"error": str(e)}
                 continue
-            scored = [score_place(p, pl, key) for pl in places]
+            scored = [gcp_auth.retry(lambda pl=pl: score_place(p, pl, key)) for pl in places]
             first = scored[0] if scored else None
             first_walk = None
             if first and first["geocoded"]:
-                meters = walk_meters(p["lat"], p["lon"], first["geocoded"], key)
+                meters = gcp_auth.retry(lambda: walk_meters(p["lat"], p["lon"], first["geocoded"], key))
                 first_walk = round(to_minutes(meters), 1) if meters else None
             row["gemini"][model] = {"places": scored, "first_walk_min": first_walk, "raw": raw}
             time.sleep(1)
         rows.append(row)
+        (OUT / "eval-partial.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"{i}/30 {p['label']}", file=sys.stderr)
 
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
