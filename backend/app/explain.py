@@ -50,7 +50,11 @@ def explain(alert: dict, plan: dict, lang: str = "ja") -> dict:
     facts = _facts(alert, plan)
     allowed = {facts["primary"]["id"], *(o["id"] for o in facts["alternatives"])}
     try:
-        client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        client = genai.Client(
+            vertexai=True,
+            project=os.environ["GOOGLE_CLOUD_PROJECT"],
+            location=os.environ.get("GOOGLE_CLOUD_LOCATION", "global"),
+        )
         res = client.models.generate_content(
             model=MODEL,
             contents=f"言語: {LANG_NAMES.get(lang, lang)}\n{json.dumps(facts, ensure_ascii=False)}",
@@ -58,7 +62,6 @@ def explain(alert: dict, plan: dict, lang: str = "ja") -> dict:
                 system_instruction=INSTRUCTION,
                 response_mime_type="application/json",
                 response_schema=SCHEMA,
-                temperature=0,
             ),
         )
         out = json.loads(res.text)

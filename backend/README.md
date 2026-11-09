@@ -39,3 +39,14 @@ set -a; source .env; set +a
 - 屋外（公園など）か建物かは、名前から推測している（国のデータに列が無い）
 - 「何階以上」は浸水の深さからの目安（津波避難ビルの指定基準の 3 階以上を下限にし、深い所は 1 階 3m として浸水の深さから上げる）
 - 浸水想定は 2023 年版。USJ は区画の外と判定されたが、座標はおおよそで、理由（盛土・防潮堤など）は未確認
+
+## Cloud Run（本番）
+- URL: https://tsunami-navi-129745156402.asia-northeast1.run.app （11/14 まで止めない）
+- プロジェクト: `project-288752b0-6771-48a6-bf3`（OIF のアカウント・GCP 無料トライアル）／地域: 東京（asia-northeast1）
+- Gemini は Vertex AI 経由（`GOOGLE_CLOUD_PROJECT`・`GOOGLE_CLOUD_LOCATION=global`）。Routes API のキーは Secret Manager の `routes-api-key`
+- 載せ直し（backend/ で）:
+```bash
+gcloud run deploy tsunami-navi --source . --region asia-northeast1 --quiet
+```
+- `.gcloudignore` で `data/raw/`（浸水想定）を含めて送る（Git には入れていない）
+- 予算アラート: 約 45,000 円（≒$300）の 20/50/80/100% で通知（自動では止まらない）
