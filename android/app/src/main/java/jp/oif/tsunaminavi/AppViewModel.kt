@@ -12,11 +12,14 @@ import jp.oif.tsunaminavi.offline.Guidance
 import jp.oif.tsunaminavi.offline.GuidanceStep
 import jp.oif.tsunaminavi.offline.Planner
 import jp.oif.tsunaminavi.offline.Shelter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.double
@@ -24,8 +27,13 @@ import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-/** 撮影の地点（docs/demo-and-verification.md）。屋内で試す時だけ使い、画面に「デモ地点」と出す。 */
+/** 撮影の地点（docs/demo-and-verification.md）。屋内で試す時だけ使い、画面に「Demo location」と出す。 */
 private val DEMO_POINT = 34.5813 to 135.4673
+
+/** サーバーの答えに乗り換えるのは、歩く時間がこれ以上短い時だけ（docs/modes.md ルール 1）。 */
+private const val ADOPT_IF_SHORTER_MIN = 2.0
+private const val ALERT_POLL_MS = 15_000L
+private const val LIVE_SERVER_TIMEOUT_MS = 8_000L
 
 data class UiState(
     val online: Boolean = true,
@@ -43,18 +51,24 @@ data class UiState(
     val slow: Boolean = false,
     val excluded: Set<String> = emptySet(),
     val target: Shelter? = null,
+    val targetWalkMin: Double? = null,
     val targetIsUpstairs: Boolean = false,
     val decision: String? = null,
     val planSource: String? = null,
     val minutesLeft: Double? = null,
     val step: GuidanceStep? = null,
     val explanation: String? = null,
+    val notice: String? = null,
     val answer: String? = null,
     val error: String? = null,
     val liveActive: Boolean = false,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
+    val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
 }
+
+/** 計算した避難先 1 件（端末かサーバーのどちらで計算したか付き）。 */
+private data class Choice(val shelter: Shelter, val walkMin: Double, val decision: String, val source: String, val explanation: String?)
 
 class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val store = PackStore(app)
@@ -79,11 +93,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch {
             connectivity.online.collect { online ->
+                val wasOnline = _state.value.online
                 _state.update {
                     val switched = if (it.online && !online && it.active) System.currentTimeMillis() else it.switchedToOfflineAt
                     it.copy(online = online, switchedToOfflineAt = if (online) null else switched)
                 }
                 if (!online && live.active) stopLive()
+                if (online && !wasOnline) pollAlertOnce()
             }
         }
         viewModelScope.launch { locationSource.location.collect { loc -> _state.update { it.copy(gps = loc) } } }
@@ -92,6 +108,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             while (true) {
                 tick()
                 delay(1_000)
+            }
+        }
+        viewModelScope.launch {
+            while (true) {
+                if (_state.value.online) pollAlertOnce()
+                delay(ALERT_POLL_MS)
             }
         }
     }
@@ -104,45 +126,112 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun setDemoPoint(on: Boolean) = _state.update { it.copy(useDemoPoint = on) }
 
     fun downloadPack() = viewModelScope.launch {
-        _state.update { it.copy(busy = "パックをダウンロード中…", error = null) }
+        _state.update { it.copy(busy = "Saving offline data… / データを保存中", error = null) }
         try {
             store.download("osaka-bay", "en", null)
             pack = store.load()
             _state.update { it.copy(packInfo = pack?.let(::describe), busy = null) }
         } catch (e: Exception) {
-            _state.update { it.copy(busy = null, error = "パックを取れませんでした: ${e.message}") }
+            _state.update { it.copy(busy = null, error = "Could not save data / 保存できませんでした: ${e.message}") }
         }
     }
 
-    /** 警報を受け取る（デモは訓練電文の流し直し）。受け取った到達予想時刻は、圏外になっても使う。 */
-    fun receiveAlert(replay: Boolean) = viewModelScope.launch {
-        _state.update { it.copy(busy = "警報を確認中…", error = null) }
+    /** デモ用: 訓練電文を「今」出たことにする。受け取りは 15 秒ごとの確認でも行う。 */
+    fun replayAlert() = viewModelScope.launch {
         try {
-            val a = if (replay) Api.postJson("/api/alert/replay") else Api.getJson("/api/alert")
-            val arrival = a["arrival_time"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content
-                ?.let { OffsetDateTime.parse(it).toInstant().toEpochMilli() }
-            _state.update {
-                it.copy(
-                    busy = null,
-                    alertKind = a["kind"]?.jsonPrimitive?.content,
-                    alertArrivalMillis = arrival,
-                    isTraining = a["is_training"]?.jsonPrimitive?.content == "true",
-                    active = true,
-                )
-            }
-            replan(speak = true)
+            applyAlert(Api.postJson("/api/alert/replay"))
         } catch (e: Exception) {
-            _state.update { it.copy(busy = null, error = "警報を取れませんでした: ${e.message}") }
+            _state.update { it.copy(error = "Could not reach the server / サーバーにつながりません: ${e.message}") }
         }
     }
 
-    /** 「揺れた／警報を見た」ボタン。通信が無くても、保存したパックだけで案内を始める。 */
-    fun onShake() {
-        _state.update { it.copy(shakePressedMillis = System.currentTimeMillis(), active = true, error = null) }
-        replan(speak = true)
+    private suspend fun pollAlertOnce() {
+        runCatching { applyAlert(Api.getJson("/api/alert")) }
     }
 
-    /** Gemini Live の会話を始める・止める。 */
+    /** 警報を受け取ったら到達予想時刻を保存し（圏外になっても使う）、案内中でなければ自動で始める。 */
+    private fun applyAlert(a: JsonObject) {
+        if (a["active"]?.jsonPrimitive?.content != "true") return
+        val arrival = a["arrival_time"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content
+            ?.let { OffsetDateTime.parse(it).toInstant().toEpochMilli() } ?: return
+        val wasActive = _state.value.active
+        _state.update {
+            it.copy(
+                alertKind = a["kind"]?.jsonPrimitive?.content,
+                alertArrivalMillis = arrival,
+                isTraining = a["is_training"]?.jsonPrimitive?.content == "true",
+                active = true,
+            )
+        }
+        if (!wasActive) {
+            speak("Tsunami warning. Evacuate now.")
+            startGuidance()
+        }
+    }
+
+    /** 「揺れた／警報を見た」ボタン。警報を待たず、保存したパックだけで案内を始める。 */
+    fun onShake() {
+        _state.update { it.copy(shakePressedMillis = it.shakePressedMillis ?: System.currentTimeMillis(), active = true, error = null) }
+        startGuidance()
+    }
+
+    /** ルール 1: 端末ですぐ選んで案内し、サーバーの答えは「歩く時間が 2 分以上短い」時だけ採る。 */
+    private fun startGuidance() {
+        val loc = _state.value.location ?: run {
+            _state.update { it.copy(error = "Waiting for GPS / 現在地を取得中") }
+            return
+        }
+        val local = computeLocal(loc)
+        if (local != null) {
+            setChoice(local)
+            speakPlan(local)
+        }
+        if (_state.value.online) viewModelScope.launch {
+            val server = runCatching { askServer(loc, explain = true) }.getOrNull() ?: return@launch
+            val current = _state.value
+            val better = current.target == null || server.walkMin + ADOPT_IF_SHORTER_MIN <= (current.targetWalkMin ?: Double.MAX_VALUE)
+            if (better) {
+                setChoice(server)
+                if (current.target != null && current.target.id != server.shelter.id) {
+                    _state.update { it.copy(notice = "Updated with a more accurate walking route / より正確な道のりで選び直しました") }
+                    speak("Updated with a more accurate walking route.")
+                }
+                if (current.target == null) speakPlan(server)
+            } else {
+                _state.update { it.copy(planSource = "${it.planSource} (checked by server)") }
+            }
+        }
+    }
+
+    /** ルール 3: 選び直しは、通信があればサーバー（Routes の道のり）、無ければ端末。 */
+    private suspend fun reselect(speakResult: Boolean) {
+        val loc = _state.value.location ?: return
+        val choice = if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() ?: computeLocal(loc)
+        else computeLocal(loc)
+        choice ?: return
+        setChoice(choice)
+        if (speakResult) speakPlan(choice)
+    }
+
+    fun onIntent(id: String) = viewModelScope.launch { handleIntent(id, fromLive = false) }
+
+    private suspend fun handleIntent(id: String, fromLive: Boolean) {
+        val target = _state.value.target
+        when (id) {
+            "reselect_slow", "reselect_wheelchair" -> {
+                _state.update { it.copy(slow = true) }
+                reselect(speakResult = !fromLive)
+            }
+            "reselect", "road_blocked" -> {
+                _state.update { st -> st.copy(excluded = st.excluded + listOfNotNull(st.target?.id)) }
+                reselect(speakResult = !fromLive)
+            }
+            "ask_floor" -> if (!fromLive && target != null) speak("Go up to floor ${target.floorMin ?: 3} or higher.")
+        }
+        _state.update { it.copy(answer = pack?.answers?.get(id)) }
+        if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
+    }
+
     fun toggleLive() = viewModelScope.launch {
         if (live.active) {
             stopLive()
@@ -150,10 +239,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         try {
             tts?.stop()
+            player?.stop()
             live.start()
             _state.update { it.copy(liveActive = true, error = null) }
         } catch (e: Exception) {
-            _state.update { it.copy(liveActive = false, error = "Gemini Live を始められませんでした: ${e.message}") }
+            _state.update { it.copy(liveActive = false, error = "Gemini Live could not start / 始められませんでした: ${e.message}") }
         }
     }
 
@@ -162,13 +252,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(liveActive = false) }
     }
 
-    /** Gemini Live が呼ぶ関数。選び直しは端末の中の計算（公式データ）で行い、その結果だけを返す。 */
+    /** Gemini Live が呼ぶ関数。選び直しはアプリが公式データで行い、その結果だけを返す（ルール 3）。 */
     private fun handleLiveCall(name: String, mobility: String?): Map<String, String> {
-        when (name) {
-            "reselect" -> onIntent(if (mobility == "slow" || mobility == "wheelchair") "reselect_slow" else "reselect", fromLive = true)
-            "road_blocked" -> onIntent("road_blocked", fromLive = true)
-            "get_guidance" -> Unit
-            else -> onIntent(name, fromLive = true)
+        val id = when (name) {
+            "reselect" -> if (mobility == "slow" || mobility == "wheelchair") "reselect_slow" else "reselect"
+            else -> name
+        }
+        if (id != "get_guidance") runBlocking(Dispatchers.IO) {
+            withTimeoutOrNull(LIVE_SERVER_TIMEOUT_MS) { handleIntent(id, fromLive = true) }
         }
         val s = _state.value
         val t = s.target ?: return mapOf("error" to "no evacuation target yet")
@@ -176,69 +267,46 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             "target_name" to t.name,
             "go_upstairs" to s.targetIsUpstairs.toString(),
             "floor_min" to (t.floorMin ?: 3).toString(),
-            "walk_minutes" to (s.step?.remainingMin?.toInt() ?: 0).toString(),
+            "walk_minutes" to (s.targetWalkMin?.toInt() ?: 0).toString(),
             "minutes_left" to (s.minutesLeft?.toInt() ?: 0).toString(),
+            "time_basis" to s.timeBasis,
             "walking_speed" to if (s.slow) "slow" else "normal",
         )
-        s.answer?.takeIf { name !in setOf("get_guidance", "reselect", "road_blocked") }?.let { out["answer"] = it }
+        s.answer?.takeIf { id !in setOf("get_guidance", "reselect", "reselect_slow", "road_blocked") }?.let { out["answer"] = it }
         return out
-    }
-
-    fun onIntent(id: String) = onIntent(id, fromLive = false)
-
-    private fun onIntent(id: String, fromLive: Boolean) {
-        val s = _state.value
-        when (id) {
-            "reselect_slow", "reselect_wheelchair" -> {
-                _state.update { it.copy(slow = true) }
-                replan(speak = !fromLive, useServer = !fromLive)
-            }
-            "reselect", "road_blocked" -> {
-                _state.update { st -> st.copy(excluded = st.excluded + listOfNotNull(st.target?.id)) }
-                replan(speak = !fromLive, useServer = !fromLive)
-            }
-            "ask_floor" -> if (!fromLive) s.target?.floorMin?.let { speak("Go up to floor $it or higher.") }
-        }
-        val text = pack?.answers?.get(id)
-        _state.update { it.copy(answer = text) }
-        if (!fromLive) playAnswer(id)
     }
 
     fun reset() = _state.update {
         UiState(online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo)
     }
 
-    private fun replan(speak: Boolean, useServer: Boolean = true) {
+    private fun minutesLeftNow(): Double {
         val s = _state.value
-        val loc = s.location ?: run {
-            _state.update { it.copy(error = "現在地が取れていません（GPS）") }
-            return
-        }
-        val p = pack
-        if (p != null) {
-            val left = Planner.minutesLeftOffline(System.currentTimeMillis(), s.alertArrivalMillis, s.shakePressedMillis)
-            val shelters = p.shelters.filter { it.id !in s.excluded }
-            val plan = Planner.plan(loc.first, loc.second, left, s.slow, shelters, p.inundation)
-            setTarget(plan.primary.shelter, plan.decision.apiValue, "端末の中（オフライン）", left)
-            if (speak) speakPlan(plan.primary.shelter, plan.decision, plan.primary.walkMin)
-        }
-        if (useServer && s.online && s.excluded.isEmpty()) askServer(loc, speak = speak && p == null)
+        return Planner.minutesLeftOffline(System.currentTimeMillis(), s.alertArrivalMillis, s.shakePressedMillis)
     }
 
-    private fun askServer(loc: Pair<Double, Double>, speak: Boolean) = viewModelScope.launch {
-        try {
-            val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"en","slow":${_state.value.slow}}"""
-            val res = Api.postJson("/api/plan", body)
-            val plan = res["plan"]!!.jsonObject
-            val primary = plan["primary"]!!.jsonObject
-            val shelter = toShelter(primary)
-            val left = res["alert"]!!.jsonObject["minutes_left"]!!.jsonPrimitive.double
-            setTarget(shelter, plan["decision"]!!.jsonPrimitive.content, "サーバー（Routes API・Gemini）", left)
-            _state.update { it.copy(explanation = res["explanation"]?.jsonObject?.get("message")?.jsonPrimitive?.content) }
-            if (speak) speakPlan(shelter, Decision.entries.first { it.apiValue == plan["decision"]!!.jsonPrimitive.content }, primary["walk_min"]!!.jsonPrimitive.double)
-        } catch (e: Exception) {
-            _state.update { it.copy(error = if (pack == null) "サーバーにつながらず、パックもありません" else null) }
-        }
+    private fun computeLocal(loc: Pair<Double, Double>): Choice? {
+        val p = pack ?: return null
+        val s = _state.value
+        val plan = Planner.plan(loc.first, loc.second, minutesLeftNow(), s.slow, p.shelters.filter { it.id !in s.excluded }, p.inundation)
+        return Choice(plan.primary.shelter, plan.primary.walkMin, plan.decision.apiValue, "device (offline data)", null)
+    }
+
+    private suspend fun askServer(loc: Pair<Double, Double>, explain: Boolean): Choice {
+        val s = _state.value
+        val exclude = s.excluded.joinToString(",") { "\"$it\"" }
+        val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"en","slow":${s.slow},"explain":$explain,""" +
+            """"arrival_ms":${s.alertArrivalMillis},"shake_at_ms":${s.shakePressedMillis},"exclude_ids":[$exclude]}"""
+        val res = Api.postJson("/api/plan", body)
+        val plan = res["plan"]!!.jsonObject
+        val primary = plan["primary"]!!.jsonObject
+        return Choice(
+            shelter = toShelter(primary),
+            walkMin = primary["walk_min"]!!.jsonPrimitive.double,
+            decision = plan["decision"]!!.jsonPrimitive.content,
+            source = "server (Routes API walking distance)",
+            explanation = res["explanation"]?.takeIf { it !is JsonNull }?.jsonObject?.get("message")?.jsonPrimitive?.content,
+        )
     }
 
     private fun toShelter(o: JsonObject) = Shelter(
@@ -252,39 +320,48 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         openSpace = false,
     )
 
-    private fun setTarget(target: Shelter, decision: String, source: String, minutesLeft: Double) =
-        _state.update {
-            it.copy(target = target, targetIsUpstairs = target.inundationDepth != null, decision = decision, planSource = source, minutesLeft = minutesLeft)
-        }
+    private fun setChoice(c: Choice) = _state.update {
+        it.copy(
+            target = c.shelter,
+            targetWalkMin = c.walkMin,
+            targetIsUpstairs = c.shelter.inundationDepth != null,
+            decision = c.decision,
+            planSource = c.source,
+            explanation = c.explanation ?: if (it.target?.id == c.shelter.id) it.explanation else null,
+            minutesLeft = minutesLeftNow(),
+        )
+    }
 
     private fun tick() {
         val s = _state.value
         val loc = s.location ?: return
         val t = s.target ?: return
         val speed = if (s.slow) Planner.SLOW_WALK_SPEED_M_PER_S else Planner.WALK_SPEED_M_PER_S
-        val left = if (s.alertArrivalMillis != null || s.shakePressedMillis != null)
-            Planner.minutesLeftOffline(System.currentTimeMillis(), s.alertArrivalMillis, s.shakePressedMillis) else s.minutesLeft
-        _state.update { it.copy(step = Guidance.step(loc.first, loc.second, t, s.heading, speed), minutesLeft = left) }
+        _state.update { it.copy(step = Guidance.step(loc.first, loc.second, t, s.heading, speed), minutesLeft = minutesLeftNow()) }
     }
 
-    private fun speakPlan(target: Shelter, decision: Decision, walkMin: Double) {
-        val minutes = maxOf(1, walkMin.toInt())
-        val text = when (decision) {
+    private fun speakPlan(c: Choice) {
+        val minutes = maxOf(1, c.walkMin.toInt())
+        val text = when (Decision.entries.firstOrNull { it.apiValue == c.decision }) {
             Decision.REACH_OUTSIDE_ZONE -> "Go now to the place on the screen, out of the flood zone. About $minutes minutes on foot. You have time."
             Decision.ALREADY_OUTSIDE_ZONE -> "You are outside the flood zone. Move further inland, away from the sea and rivers."
-            Decision.GO_UPSTAIRS -> "Go now to the building on the screen, and go up to floor ${target.floorMin ?: 3} or higher. About $minutes minutes on foot."
-            Decision.MAY_NOT_MAKE_IT -> "You may not make it in time. Go up to a high floor of the nearest strong building now."
+            Decision.GO_UPSTAIRS -> "Go now to the building on the screen, and go up to floor ${c.shelter.floorMin ?: 3} or higher. About $minutes minutes on foot."
+            Decision.MAY_NOT_MAKE_IT, null -> "You may not make it in time. Go up to a high floor of the nearest strong building now."
         }
         speak(text)
     }
 
+    /** ルール 4: 声は 1 つずつ。Gemini Live が話している間は、読み上げと保存した音声を止める。 */
     private fun speak(text: String) {
+        if (_state.value.liveActive) return
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "guide")
     }
 
     private fun playAnswer(id: String) {
+        if (_state.value.liveActive) return
         val f = pack?.audioFile(id) ?: return
         if (!f.exists()) return
+        tts?.stop()
         player?.release()
         player = MediaPlayer().apply {
             setDataSource(f.absolutePath)
@@ -293,7 +370,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun describe(p: Pack) = "保存済み ${p.version}・避難先 ${p.shelters.size} 件・${p.sizeBytes / 1_000_000.0}MB"
+    private fun describe(p: Pack) = "Saved ${p.version} · ${p.shelters.size} shelters · ${"%.1f".format(p.sizeBytes / 1_000_000.0)} MB"
 
     override fun onCleared() {
         viewModelScope.launch { live.stop() }

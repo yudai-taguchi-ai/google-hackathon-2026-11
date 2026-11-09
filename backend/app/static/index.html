@@ -1,42 +1,49 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>津波避難ナビ（試作）</title>
+<title>Tsunami Evacuation Navi</title>
 <style>
-  body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; max-width: 640px; margin-inline: auto; background: #fff; color: #111; }
-  h1 { font-size: 20px; }
-  fieldset { border: 1px solid #ccc; margin-bottom: 12px; }
-  button { font-size: 16px; padding: 10px 14px; margin: 4px 4px 4px 0; }
-  .alert { background: #b00020; color: #fff; padding: 12px; font-weight: bold; }
-  .training { font-size: 12px; font-weight: normal; }
-  .message { font-size: 18px; line-height: 1.6; padding: 12px; border: 2px solid #111; margin: 12px 0; white-space: pre-wrap; }
-  .card { border: 1px solid #999; padding: 10px; margin: 8px 0; }
-  .card a { display: inline-block; margin-top: 6px; font-weight: bold; }
-  .note { font-size: 12px; color: #555; }
+  :root { color-scheme: light; }
+  body { font-family: system-ui, "Hiragino Sans", "Noto Sans JP", sans-serif; max-width: 720px; margin: 0 auto; padding: 16px; background: #fff; color: #0f172a; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .ja { color: #64748b; font-size: 13px; }
+  fieldset { border: 1px solid #cbd5e1; border-radius: 10px; margin: 12px 0; padding: 10px 12px; }
+  button { font-size: 15px; margin: 4px 4px 4px 0; padding: 8px 12px; border-radius: 8px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; }
+  button.big { background: #b91c1c; color: #fff; border: none; font-size: 18px; padding: 12px 16px; }
+  .alert { background: #b91c1c; color: #fff; padding: 10px 12px; border-radius: 8px; margin: 10px 0; }
+  .noalert { background: #f59e0b; color: #111; padding: 10px 12px; border-radius: 8px; margin: 10px 0; }
+  .message { font-size: 17px; margin: 10px 0; }
+  .card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 12px; margin: 8px 0; }
+  .note { color: #475569; font-size: 12px; }
 </style>
 </head>
 <body>
-<h1>津波避難ナビ（試作）</h1>
+<h1>Tsunami Evacuation Navi</h1>
+<div class="ja">津波避難ナビ（旅行者向け）Web 版。スマホのアプリは通信が無くても動きます。この Web 版は通信がある時だけ動きます。</div>
 
 <fieldset>
-  <legend>言語</legend>
-  <select id="lang">
-    <option value="ja">日本語</option>
-    <option value="en">English</option>
-    <option value="zh">简体中文</option>
-    <option value="ko">한국어</option>
-  </select>
-  <label><input type="checkbox" id="slow"> 速く歩けない（子ども・高齢者・けが）</label>
+  <legend>1. Warning <span class="ja">警報</span></legend>
+  <button id="replay">Receive warning (training replay) <span class="ja">訓練電文を流し直す</span></button>
+  <div id="alertbox" class="note">No warning received yet. <span class="ja">警報はまだ受け取っていません（その時は「揺れた時刻＋26分」で計算します）</span></div>
 </fieldset>
 
 <fieldset>
-  <legend>いる場所（訓練の警報で試す）</legend>
-  <button data-lat="34.6545" data-lon="135.4290">海遊館</button>
-  <button data-lat="34.6658" data-lon="135.4325">USJ</button>
-  <button data-lat="34.5845" data-lon="135.4640">堺・大浜公園</button>
-  <button id="here">現在地</button>
+  <legend>2. Options <span class="ja">条件</span></legend>
+  <select id="lang">
+    <option value="en">English</option>
+    <option value="ja">日本語</option>
+  </select>
+  <label><input type="checkbox" id="slow"> Cannot walk fast (child, elderly, injury) <span class="ja">速く歩けない</span></label>
+</fieldset>
+
+<fieldset>
+  <legend>3. Where are you? <span class="ja">いる場所</span></legend>
+  <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
+  <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
+  <button data-lat="34.5786" data-lon="135.4610">Ohama Park <span class="ja">大浜公園</span></button>
+  <button id="here" class="big">I felt shaking — use my location <span class="ja">揺れた（現在地）</span></button>
 </fieldset>
 
 <div id="out"></div>
@@ -44,30 +51,44 @@
 <script>
 const out = document.getElementById("out");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let shakeAt = null;
+const SOURCE = {
+  jma_alert: "JMA arrival time (training telegram) / 気象庁の到達予想時刻（訓練電文）",
+  cached_alert: "last received JMA time / 受け取った到達予想時刻",
+  shake_plus_26: "shaking time + 26 min (estimate) / 揺れた時刻＋26分（目安）",
+  default_26: "now + 26 min (estimate) / 今＋26分（目安）",
+};
+
+document.getElementById("replay").addEventListener("click", async () => {
+  const a = await (await fetch("/api/alert/replay", { method: "POST" })).json();
+  document.getElementById("alertbox").innerHTML =
+    `<div class="alert">${esc(a.kind)} — ${esc(a.area_name)} · about ${Math.round(a.minutes_left)} min to arrival <span class="ja">（訓練電文・気象庁のサンプル）</span></div>`;
+});
 
 async function run(lat, lon) {
-  out.innerHTML = "<p>確認中…</p>";
+  shakeAt = shakeAt ?? Date.now();
+  out.innerHTML = "<p>Calculating… <span class='ja'>計算中</span></p>";
   const res = await fetch("/api/plan", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ lat, lon, lang: document.getElementById("lang").value, slow: document.getElementById("slow").checked }),
+    body: JSON.stringify({ lat, lon, lang: document.getElementById("lang").value, slow: document.getElementById("slow").checked, shake_at_ms: shakeAt }),
   });
-  if (!res.ok) { out.innerHTML = `<p>エラー: ${esc(await res.text())}</p>`; return; }
+  if (!res.ok) { out.innerHTML = `<p>Error: ${esc(await res.text())}</p>`; return; }
   const { alert, plan, explanation } = await res.json();
   const card = (o, label) => `
     <div class="card">
-      <div>${label}：<b>${esc(o.name)}</b>（${esc(o.city)}）</div>
-      <div>${esc(o.address)}</div>
-      <div>歩いて約 ${Math.round(o.walk_min)} 分 ／ ${o.type === "go_upstairs" ? `建物の ${o.floor_min ?? "最上"} 階以上（目安）・浸水想定 ${esc(o.inundation_depth)}` : "浸水想定区域の外"}</div>
-      <a href="${esc(o.maps_url)}" target="_blank" rel="noopener">Google マップで案内</a>
+      <div>${label}: <b>${esc(o.name)}</b> (${esc(o.city)})</div>
+      <div class="ja">${esc(o.address)}</div>
+      <div>About ${Math.round(o.walk_min)} min on foot · ${o.type === "go_upstairs" ? `building, floor ${o.floor_min ?? "top"} or higher <span class="ja">建物の ${o.floor_min ?? "最上"} 階以上</span>` : `outside the flood zone <span class="ja">浸水想定区域の外</span>`}</div>
+      <a href="${esc(o.maps_url)}" target="_blank" rel="noopener">Open walking directions in Google Maps</a>
     </div>`;
   out.innerHTML = `
-    <div class="alert">${esc(alert.kind)}（${esc(alert.area_name)}）残り約 ${Math.round(plan.minutes_left)} 分
-      <div class="training">${esc(alert.status)}電文（気象庁のサンプル）</div></div>
-    <div class="message">${esc(explanation.message)}</div>
-    ${card(plan.primary, "避難先")}
-    ${plan.alternatives.map((o) => card(o, "ほかの候補")).join("")}
-    <p class="note">避難先：国土地理院 指定緊急避難場所（津波）／浸水想定：国土数値情報 津波浸水想定（大阪府 2023 年版）／歩く時間：${plan.walking_time_source === "routes_api" ? "Routes API" : "直線距離からの目安"}／説明：${explanation.source === "gemini" ? "Gemini" : "決まった文（Gemini に失敗）"}</p>`;
+    <div class="${alert.active ? "alert" : "noalert"}">${alert.active ? esc(alert.kind) : "No warning received — evacuate now if you felt strong shaking. <span class='ja'>警報を待たずに避難</span>"}
+      · about ${Math.round(plan.minutes_left)} min left <span class="ja">（${esc(SOURCE[plan.time_source])}）</span></div>
+    <div class="message">${esc(explanation?.message)}</div>
+    ${card(plan.primary, "Go to")}
+    ${plan.alternatives.map((o) => card(o, "Other option")).join("")}
+    <p class="note">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波）· Flood depth: MLIT tsunami inundation (Osaka 2023) / 国土数値情報 · Walking: ${plan.walking_time_source === "routes_api" ? "Routes API distance ÷ 0.62 m/s" : "straight line × 1.3 ÷ 0.62 m/s"} · Explanation: ${explanation?.source === "gemini" ? "Gemini (chooses nothing, only explains)" : "fixed text"}</p>`;
 }
 
 document.querySelectorAll("button[data-lat]").forEach((b) =>
