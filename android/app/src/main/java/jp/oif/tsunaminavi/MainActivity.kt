@@ -98,8 +98,9 @@ private const val TAP_MAX_MS = 400L
 /** 押している間だけ聞くボタン（短いタップなら、もう一度タップするまで聞く）。初めての時はマイクの許可を先にもらう。 */
 @Composable
 private fun HoldToTalk(s: UiState, vm: AppViewModel) {
-    val latest by rememberUpdatedState(s.listening)
-    val listeningNow = { latest }
+    var pressed by remember { mutableStateOf(false) }
+    var tapMode by remember { mutableStateOf(false) }
+    val latestTap by rememberUpdatedState(tapMode)
     val context = LocalContext.current
     var granted by remember {
         mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)
@@ -116,40 +117,52 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp)
-            .background(if (s.listening) Color(0xFF15803D) else Color(0xFFE2E8F0))
+            .background(if (pressed || tapMode) Color(0xFF15803D) else Color(0xFFE2E8F0))
             .pointerInput(Unit) {
                 // 押している間の指の動きを全部ここで受け取り、画面のスクロールに渡さない（少し動いても離すまで聞き続ける）
                 // 短いタップ（0.4 秒未満）は「切り替え」: タップで聞き始め、もう一度タップで終わる
                 awaitEachGesture {
                     val down = awaitFirstDown(requireUnconsumed = false)
                     down.consume()
-                    val wasListening = listeningNow()
-                    if (wasListening) vm.stopListening() else vm.startListening()
+                    if (latestTap) {
+                        // タップで聞いている途中: もう一度タップで終える
+                        tapMode = false
+                        vm.stopListening()
+                    } else {
+                        pressed = true
+                        vm.startListening()
+                    }
                     var released = false
                     while (!released) {
                         val event = awaitPointerEvent()
                         event.changes.forEach { it.consume() }
                         released = event.changes.none { it.pressed }
                     }
-                    val heldMs = (currentEvent.changes.firstOrNull()?.uptimeMillis ?: down.uptimeMillis) - down.uptimeMillis
-                    if (!wasListening && heldMs >= TAP_MAX_MS) vm.stopListening()
+                    if (pressed) {
+                        pressed = false
+                        val heldMs = (currentEvent.changes.firstOrNull()?.uptimeMillis ?: down.uptimeMillis) - down.uptimeMillis
+                        if (heldMs >= TAP_MAX_MS) vm.stopListening() else tapMode = true
+                    }
                 }
             },
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                if (s.listening) "Listening… release (or tap) when done" else "Hold (or tap) to speak — works offline",
+                if (pressed) "Listening… release when done" else if (tapMode) "Listening… tap again when done" else "Hold (or tap) to speak — works offline",
                 fontSize = 17.sp,
-                color = if (s.listening) Color.White else Color(0xFF0F172A),
+                color = if (pressed || tapMode) Color.White else Color(0xFF0F172A),
             )
             Text(
-                if (s.listening) "聞いています。話し終えたら離す（タップした時はもう一度タップ）" else "押している間、またはタップしてからもう一度タップするまで聞きます（圏外でも使える）",
+                if (pressed) "聞いています。話し終えたら離す" else if (tapMode) "聞いています。話し終えたらもう一度タップ" else "押している間、またはタップしてからもう一度タップするまで聞きます（圏外でも使える）",
                 fontSize = 12.sp,
-                color = if (s.listening) Color.White else Color(0xFF64748B),
+                color = if (pressed || tapMode) Color.White else Color(0xFF64748B),
             )
         }
     }
     s.heard?.let { Ja("Heard: \"$it\"") }
+    s.speechError?.let { Ja(it) }
+    // 音声認識が直らないエラーで止まった時は、タップの状態も戻す
+    LaunchedEffect(s.listening) { if (!s.listening && tapMode && s.speechError != null) tapMode = false }
 }
 
 /** 案内中は画面を消さない（歩きながら見るため）。 */

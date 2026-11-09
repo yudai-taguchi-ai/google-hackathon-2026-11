@@ -69,6 +69,7 @@ data class UiState(
     /** 気象庁の電文を最後に見た結果（画面に出す）。 */
     val jmaLine: String? = null,
     val listening: Boolean = false,
+    val speechError: String? = null,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
@@ -284,21 +285,21 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** 押している間だけ聞く（指を離したら止めて、聞いた文字を頼みごとに振り分ける）。 */
     fun startListening() {
         tts?.stop()
-        player?.stop()
-        _state.update { it.copy(listening = true, heard = null) }
+        runCatching { player?.stop() }
+        _state.update { it.copy(listening = true, heard = null, speechError = null) }
         speech.start(
             "en-US",
             onPartial = { text -> _state.update { it.copy(heard = text) } },
-            onFinal = { text -> handleHeard(text) },
+            onFinal = { text, error -> handleHeard(text, error) },
         )
     }
 
     fun stopListening() = speech.stop()
 
-    private fun handleHeard(text: String?) {
-        _state.update { it.copy(listening = false, heard = text) }
+    private fun handleHeard(text: String?, error: String?) {
+        _state.update { it.copy(listening = false, heard = text, speechError = error) }
         if (text.isNullOrBlank()) {
-            _state.update { it.copy(answer = "Could not hear. Hold the button while speaking, or use the buttons. / 聞き取れませんでした。押したまま話すか、ボタンで選んでください") }
+            _state.update { it.copy(answer = "Could not hear${error?.let { e -> " ($e)" } ?: ""}. Use the buttons. / 聞き取れませんでした。ボタンで選んでください") }
             return
         }
         val id = classifier.classify(text)
