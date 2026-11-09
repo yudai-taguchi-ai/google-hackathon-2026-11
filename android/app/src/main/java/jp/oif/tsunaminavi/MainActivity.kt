@@ -63,7 +63,9 @@ fun App(vm: AppViewModel = viewModel()) {
     val s by vm.state.collectAsState()
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { vm.onPermissionsGranted() }
     LaunchedEffect(Unit) {
-        launcher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+        val perms = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (android.os.Build.VERSION.SDK_INT >= 33) perms += Manifest.permission.POST_NOTIFICATIONS
+        launcher.launch(perms.toTypedArray())
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         StatusBar(s)
@@ -114,6 +116,8 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     s.alertKind?.let { Text(it, color = Color(0xFFB91C1C), fontWeight = FontWeight.Bold) }
     Text(t.name, fontSize = 26.sp, fontWeight = FontWeight.Bold)
     Text(if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ", fontSize = 20.sp)
+    if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
+    else if (s.online) Text("（デモ地点では Navigation SDK を使わない。実際の GPS で試す）", fontSize = 12.sp)
     s.step?.let { step ->
         Arrow(step.relativeDeg ?: step.bearingDeg)
         Text(
