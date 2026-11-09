@@ -215,6 +215,7 @@ private fun Home(s: UiState, vm: AppViewModel) {
         }
     }
     s.jmaLine?.let { Text(it, fontSize = 13.sp, color = Color(0xFF0F766E)) }
+    Ja("Offline speech (en-US): ${s.offlineSpeech ?: "checking…"} / 圏外用の英語の音声データ")
     Ja("Warnings are also checked every 15 seconds when online. / 通信がある時は 15 秒ごとに警報を確かめ、出ていれば自動で案内を始めます")
     OutlinedButton(onClick = { vm.replayAlert() }) { Text("Demo: replay a training warning / 訓練電文を流し直す") }
     Sources(s)

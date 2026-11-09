@@ -70,6 +70,7 @@ data class UiState(
     val jmaLine: String? = null,
     val listening: Boolean = false,
     val speechError: String? = null,
+    val offlineSpeech: String? = null,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
@@ -142,9 +143,17 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun onPermissionsGranted() {
         locationSource.start()
         headingSource.start()
+        checkOfflineSpeech()
     }
 
     fun setDemoPoint(on: Boolean) = _state.update { it.copy(useDemoPoint = on) }
+
+    /** 圏外用の英語の音声データが端末にあるかを確かめ、無ければ（通信がある時に）ダウンロードを頼む。 */
+    fun checkOfflineSpeech() {
+        runCatching {
+            speech.prepareOffline("en-US") { status -> _state.update { it.copy(offlineSpeech = status) } }
+        }.onFailure { e -> _state.update { it.copy(offlineSpeech = "cannot check (${e.message})") } }
+    }
 
     fun downloadPack() = viewModelScope.launch {
         _state.update { it.copy(busy = "Saving offline data… / データを保存中", error = null) }
@@ -152,6 +161,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             store.download("osaka-bay", "en", null)
             pack = store.load()
             _state.update { it.copy(packInfo = pack?.let(::describe), busy = null) }
+            // 圏外で話しかけられるよう、英語の音声データも一緒に準備する
+            checkOfflineSpeech()
         } catch (e: Exception) {
             _state.update { it.copy(busy = null, error = "Could not save data / 保存できませんでした: ${e.message}") }
         }
@@ -289,6 +300,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(listening = true, heard = null, speechError = null) }
         speech.start(
             "en-US",
+            offline = !_state.value.online,
             onPartial = { text -> _state.update { it.copy(heard = text) } },
             onFinal = { text, error -> handleHeard(text, error) },
         )
