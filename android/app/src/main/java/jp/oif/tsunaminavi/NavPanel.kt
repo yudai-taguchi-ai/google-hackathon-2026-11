@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +39,8 @@ fun NavPanel(target: Shelter, silent: Boolean) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var navigator by remember { mutableStateOf<Navigator?>(null) }
     var status by remember { mutableStateOf("ナビを準備中…") }
+    val latestSilent by rememberUpdatedState(silent)
+    val guidanceMode = { if (latestSilent) Navigator.AudioGuidance.SILENT else Navigator.AudioGuidance.VOICE_ALERTS_AND_GUIDANCE }
 
     LaunchedEffect(Unit) {
         val start = {
@@ -67,7 +70,9 @@ fun NavPanel(target: Shelter, silent: Boolean) {
         val options = RoutingOptions().travelMode(RoutingOptions.TravelMode.WALKING)
         nav.setDestinations(listOf(waypoint), options).setOnResultListener { result ->
             if (result == Navigator.RouteStatus.OK) {
+                nav.setAudioGuidance(guidanceMode())
                 nav.startGuidance()
+                nav.setAudioGuidance(guidanceMode())
                 status = "徒歩の案内中（Navigation SDK）"
             } else {
                 status = "道を出せませんでした（$result）。矢印の案内を使ってください"
@@ -77,9 +82,7 @@ fun NavPanel(target: Shelter, silent: Boolean) {
     }
 
     LaunchedEffect(navigator, silent) {
-        navigator?.setAudioGuidance(
-            if (silent) Navigator.AudioGuidance.SILENT else Navigator.AudioGuidance.VOICE_ALERTS_AND_GUIDANCE,
-        )
+        navigator?.setAudioGuidance(guidanceMode())
     }
 
     Column {

@@ -312,6 +312,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** 押している間だけ聞く（指を離したら止めて、聞いた文字を頼みごとに振り分ける）。 */
     fun startListening() {
+        if (live.active) return
         tts?.stop()
         runCatching { player?.stop() }
         _state.update { it.copy(listening = true, heard = null, speechError = null) }
@@ -360,6 +361,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         try {
             tts?.stop()
             player?.stop()
+            speech.cancel()
+            _state.update { it.copy(listening = false, pendingIntent = null, heard = null, speechError = null) }
             live.start()
             _state.update { it.copy(liveActive = true, error = null) }
         } catch (e: Exception) {

@@ -55,6 +55,15 @@ class Speech(private val context: Context) {
         }
     }
 
+    /** 結果を返さずに、聞くのをすぐやめる（Gemini Live とマイクを取り合わないように）。 */
+    fun cancel() {
+        holding = false
+        finished = true
+        main.removeCallbacksAndMessages(null)
+        recognizer?.destroy()
+        recognizer = null
+    }
+
     fun destroy() {
         holding = false
         main.removeCallbacksAndMessages(null)
