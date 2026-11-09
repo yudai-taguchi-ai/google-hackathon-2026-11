@@ -51,14 +51,17 @@ fun NavPanel(target: Shelter, silent: Boolean) {
                 }
             })
         }
-        if (NavigationApi.areTermsAccepted(activity.application)) start()
-        else NavigationApi.showTermsAndConditionsDialog(activity, "OIF") { accepted ->
-            if (accepted) start() else status = "利用規約に同意していないため、ナビは使えません"
-        }
+        runCatching {
+            if (NavigationApi.areTermsAccepted(activity.application)) start()
+            else NavigationApi.showTermsAndConditionsDialog(activity, "OIF") { accepted ->
+                if (accepted) start() else status = "Navigation terms not accepted. Use the arrow below. / 利用規約に同意していないため、ナビは使えません"
+            }
+        }.onFailure { status = "Navigation is not available (${it.message}). Use the arrow below. / ナビを使えません。矢印の案内を使ってください" }
     }
 
     LaunchedEffect(navigator, target.id) {
         val nav = navigator ?: return@LaunchedEffect
+        runCatching {
         nav.stopGuidance()
         val waypoint = Waypoint.builder().setLatLng(target.lat, target.lon).setTitle(target.name).build()
         val options = RoutingOptions().travelMode(RoutingOptions.TravelMode.WALKING)
@@ -70,6 +73,7 @@ fun NavPanel(target: Shelter, silent: Boolean) {
                 status = "道を出せませんでした（$result）。矢印の案内を使ってください"
             }
         }
+        }.onFailure { status = "Navigation failed (${it.message}). Use the arrow below. / ナビに失敗。矢印の案内を使ってください" }
     }
 
     LaunchedEffect(navigator, silent) {
@@ -82,7 +86,10 @@ fun NavPanel(target: Shelter, silent: Boolean) {
         Text(status, fontSize = 12.sp)
         AndroidView(
             factory = { ctx ->
-                NavigationView(ctx).also { view ->
+                runCatching { NavigationView(ctx) }.getOrElse {
+                    status = "Map could not be shown (${it.message}). Use the arrow below. / 地図を出せません。矢印の案内を使ってください"
+                    return@AndroidView android.view.View(ctx)
+                }.also { view -> if (view is NavigationView) {
                     view.onCreate(null)
                     val observer = LifecycleEventObserver { _, event ->
                         when (event) {
@@ -97,14 +104,16 @@ fun NavPanel(target: Shelter, silent: Boolean) {
                     view.tag = observer
                     if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) view.onStart()
                     if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) view.onResume()
-                }
+                } }
             },
             modifier = Modifier.fillMaxWidth().height(420.dp),
-            onRelease = { view ->
-                (view.tag as? LifecycleEventObserver)?.let { lifecycle.removeObserver(it) }
-                view.onPause()
-                view.onStop()
-                view.onDestroy()
+            onRelease = { v ->
+                (v.tag as? LifecycleEventObserver)?.let { lifecycle.removeObserver(it) }
+                (v as? NavigationView)?.let { view ->
+                    view.onPause()
+                    view.onStop()
+                    view.onDestroy()
+                }
             },
         )
     }
