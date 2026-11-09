@@ -10,6 +10,8 @@ import java.util.Locale
 import jp.oif.tsunaminavi.offline.Decision
 import jp.oif.tsunaminavi.offline.Guidance
 import jp.oif.tsunaminavi.offline.GuidanceStep
+import jp.oif.tsunaminavi.offline.IntentClassifier
+import jp.oif.tsunaminavi.offline.KeywordIntent
 import jp.oif.tsunaminavi.offline.Planner
 import jp.oif.tsunaminavi.offline.Shelter
 import kotlinx.coroutines.Dispatchers
@@ -62,6 +64,8 @@ data class UiState(
     val answer: String? = null,
     val error: String? = null,
     val liveActive: Boolean = false,
+    val heard: String? = null,
+    val listening: Boolean = false,
 ) {
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
@@ -79,6 +83,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
     private val live = LiveAssistant(::handleLiveCall)
+    private val speech = Speech(app)
+
+    /** 圏外で話した言葉を頼みごとに振り分ける。今はキーワード方式。FunctionGemma の学習が済んだら差し替える。 */
+    private val classifier: IntentClassifier = KeywordIntent
     val liveAvailable: Boolean get() = TsunamiApp.firebaseReady
     val debugSecret: String? get() = TsunamiApp.currentDebugSecret(getApplication())
 
@@ -232,6 +240,26 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
     }
 
+    /** 端末の中の音声入力 → 頼みごと。分からなければボタンで選んでもらう。 */
+    fun listen() {
+        tts?.stop()
+        _state.update { it.copy(listening = true, heard = null) }
+        speech.listen("en-US") { text ->
+            _state.update { it.copy(listening = false, heard = text) }
+            if (text == null) {
+                _state.update { it.copy(answer = "Could not hear. Please use the buttons. / 聞き取れませんでした。ボタンで選んでください") }
+                return@listen
+            }
+            val id = classifier.classify(text)
+            if (id == "other") {
+                _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください") }
+                speak("Please choose a button on the screen.")
+            } else {
+                onIntent(id)
+            }
+        }
+    }
+
     fun toggleLive() = viewModelScope.launch {
         if (live.active) {
             stopLive()
@@ -288,8 +316,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private fun computeLocal(loc: Pair<Double, Double>): Choice? {
         val p = pack ?: return null
         val s = _state.value
-        val plan = Planner.plan(loc.first, loc.second, minutesLeftNow(), s.slow, p.shelters.filter { it.id !in s.excluded }, p.inundation)
-        return Choice(plan.primary.shelter, plan.primary.walkMin, plan.decision.apiValue, "device (offline data)", null)
+        val plan = Planner.plan(loc.first, loc.second, minutesLeftNow(), s.slow, p.shelters.filter { it.id !in s.excluded }, p.inundation, p.graph)
+        val how = if (plan.distanceSource == "walk_graph") "walking-road graph" else "straight line × 1.6"
+        return Choice(plan.primary.shelter, plan.primary.walkMin, plan.decision.apiValue, "device (offline data, $how)", null)
     }
 
     private suspend fun askServer(loc: Pair<Double, Double>, explain: Boolean): Choice {
@@ -370,11 +399,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun describe(p: Pack) = "Saved ${p.version} · ${p.shelters.size} shelters · ${"%.1f".format(p.sizeBytes / 1_000_000.0)} MB"
+    private fun describe(p: Pack) = "Saved ${p.version} · ${p.shelters.size} shelters · ${if (p.graph != null) "walking roads ${p.graph.size} points · " else ""}${"%.1f".format(p.sizeBytes / 1_000_000.0)} MB"
 
     override fun onCleared() {
         viewModelScope.launch { live.stop() }
         tts?.shutdown()
         player?.release()
+        speech.destroy()
     }
 }

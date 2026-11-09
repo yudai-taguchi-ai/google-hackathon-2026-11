@@ -96,11 +96,19 @@ def _inundation() -> dict:
     return json.loads((DATA / "inundation_pack.geojson").read_text(encoding="utf-8"))
 
 
+@lru_cache
+def graph_nodes() -> dict[str, int]:
+    f = DATA / "walk_graph_shelters.json"
+    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+
+
 def build_pack(area: str, lang: str, version: str, expires_at: str | None) -> dict:
+    nodes = graph_nodes()
     items = [{
         **s,
         "floor_min": required_floor(s["inundation_depth"]),
         "open_space": is_open_space(s["name"]),
+        "graph_node": nodes.get(s["id"]),
     } for s in shelters()]
     texts = answers(lang)
     return {
@@ -113,8 +121,10 @@ def build_pack(area: str, lang: str, version: str, expires_at: str | None) -> di
         "shelters": items,
         "inundation": _inundation(),
         "answers": [{"id": k, "text": v, "audio_url": f"/api/pack/audio?lang={lang}&id={k}"} for k, v in texts.items()],
+        "graph_url": "/api/pack/graph" if (DATA / "walk_graph.bin").exists() else None,
         "sources": {
             "shelters": "国土地理院 指定緊急避難場所データ（大阪市・堺市・津波）",
             "inundation": "国土数値情報 津波浸水想定（大阪府 2023年版）を簡略化",
+            "walk_graph": "© OpenStreetMap contributors（ODbL）の歩ける道",
         },
     }

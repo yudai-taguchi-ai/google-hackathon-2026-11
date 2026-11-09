@@ -31,6 +31,8 @@ data class Plan(
     val userInundationDepth: String?,
     val minutesLeft: Double,
     val walkSpeedMPerS: Double,
+    /** 歩く距離をどう出したか: "walk_graph"（道に沿った距離）か "straight_x1.6"（目安）。 */
+    val distanceSource: String = "straight_x1.6",
 )
 
 /**
@@ -45,6 +47,7 @@ object Planner {
     const val SAFETY_MARGIN_MIN = 3.0
     const val CANDIDATES = 12
     const val ARRIVAL_DEFAULT_MIN = 26.0
+    const val GRAPH_SNAP_MAX_M = 250.0
 
     fun plan(
         lat: Double,
@@ -53,6 +56,7 @@ object Planner {
         slow: Boolean,
         shelters: List<Shelter>,
         inundation: InundationMap,
+        graph: WalkGraph? = null,
     ): Plan {
         require(shelters.isNotEmpty()) { "避難先が 1 件もありません（パックが空）" }
         val userDepth = inundation.depthAt(lat, lon)
@@ -63,8 +67,10 @@ object Planner {
 
         val speed = if (slow) SLOW_WALK_SPEED_M_PER_S else WALK_SPEED_M_PER_S
         val budget = minutesLeft - SAFETY_MARGIN_MIN
-        val options = (outsidePool + upstairsPool).map { s ->
-            val meters = distanceM(lat, lon, s.lat, s.lon) * DETOUR
+        val pool = outsidePool + upstairsPool
+        val onGraph = graph?.let { graphDistances(lat, lon, pool, it, maxOf(budget, 10.0) * 60 * speed * 2) }
+        val options = pool.map { s ->
+            val meters = onGraph?.get(s.id) ?: (distanceM(lat, lon, s.lat, s.lon) * DETOUR)
             val minutes = meters / speed / 60.0
             Option(
                 shelter = s,
@@ -85,7 +91,20 @@ object Planner {
             else -> options.minBy { it.walkMin } to Decision.MAY_NOT_MAKE_IT
         }
         val alternatives = (outside + upstairs).filter { it !== primary }.take(2)
-        return Plan(decision, primary, alternatives, userDepth, minutesLeft, speed)
+        return Plan(decision, primary, alternatives, userDepth, minutesLeft, speed, if (onGraph?.containsKey(primary.shelter.id) == true) "walk_graph" else "straight_x1.6")
+    }
+
+    /** 道のグラフで、今いる所から各避難先までの道に沿った距離。道から遠い（250m 超）時は使わない。 */
+    private fun graphDistances(lat: Double, lon: Double, pool: List<Shelter>, graph: WalkGraph, limitM: Double): Map<String, Double>? {
+        val (start, snapM) = graph.nearest(lat, lon) ?: return null
+        if (snapM > GRAPH_SNAP_MAX_M) return null
+        val goals = pool.mapNotNull { it.graphNode }.toSet()
+        val dist = graph.distances(start, goals, limitM)
+        return pool.mapNotNull { s ->
+            val node = s.graphNode ?: return@mapNotNull null
+            val d = dist[node] ?: return@mapNotNull null
+            s.id to (snapM + d + distanceM(graph.lat(node), graph.lon(node), s.lat, s.lon))
+        }.toMap()
     }
 
     /**
