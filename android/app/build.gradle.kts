@@ -21,6 +21,7 @@ android {
         versionCode = 1
         versionName = "0.1"
         buildConfigField("String", "API_BASE_URL", "\"https://tsunami-navi-129745156402.asia-northeast1.run.app\"")
+        manifestPlaceholders["MAPS_API_KEY"] = System.getenv("MAPS_API_KEY") ?: ""
         buildConfigField("String", "LIVE_MODEL", "\"gemini-3.1-flash-live-preview\"")
         buildConfigField("String", "APP_CHECK_DEBUG_SECRET", "\"${System.getenv("APP_CHECK_DEBUG_SECRET") ?: ""}\"")
     }
@@ -43,6 +44,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -64,6 +66,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.play.services.location)
+    implementation(libs.navigation.sdk)
+    coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
     implementation(libs.firebase.appcheck.debug)
