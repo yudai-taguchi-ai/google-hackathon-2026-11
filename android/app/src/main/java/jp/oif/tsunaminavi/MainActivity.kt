@@ -1,6 +1,7 @@
 package jp.oif.tsunaminavi
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +37,11 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.core.content.ContextCompat
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,6 +89,50 @@ fun App(vm: AppViewModel = viewModel()) {
         s.busy?.let { Text(it) }
         if (!s.active) Home(s, vm) else Guide(s, vm)
     }
+}
+
+/** 押している間だけ聞くボタン。初めての時はマイクの許可を先にもらう。 */
+@Composable
+private fun HoldToTalk(s: UiState, vm: AppViewModel) {
+    val context = LocalContext.current
+    var granted by remember {
+        mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)
+    }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
+    if (!granted) {
+        OutlinedButton(onClick = { launcher.launch(Manifest.permission.RECORD_AUDIO) }, modifier = Modifier.fillMaxWidth()) {
+            Text("Allow microphone to speak / マイクを許可して話しかける")
+        }
+        return
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .background(if (s.listening) Color(0xFF15803D) else Color(0xFFE2E8F0))
+            .pointerInput(Unit) {
+                detectTapGestures(onPress = {
+                    vm.startListening()
+                    tryAwaitRelease()
+                    vm.stopListening()
+                })
+            },
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                if (s.listening) "Listening… release when done" else "Hold to speak (works offline)",
+                fontSize = 17.sp,
+                color = if (s.listening) Color.White else Color(0xFF0F172A),
+            )
+            Text(
+                if (s.listening) "聞いています。話し終えたら離す" else "押している間だけ聞きます（圏外でも使える）",
+                fontSize = 12.sp,
+                color = if (s.listening) Color.White else Color(0xFF64748B),
+            )
+        }
+    }
+    s.heard?.let { Ja("Heard: \"$it\"") }
 }
 
 /** 案内中は画面を消さない（歩きながら見るため）。 */
@@ -191,13 +243,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             modifier = Modifier.fillMaxWidth(),
         ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 18.sp) }
     }
-    if (!s.liveActive) {
-        val speakLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) vm.listen() }
-        OutlinedButton(onClick = { speakLauncher.launch(Manifest.permission.RECORD_AUDIO) }, modifier = Modifier.fillMaxWidth()) {
-            Text(if (s.listening) "Listening… / 聞いています" else "Speak (works offline) / 話しかける（圏外でも使える）")
-        }
-        s.heard?.let { Ja("Heard: \"$it\"") }
-    }
+    if (!s.liveActive) HoldToTalk(s, vm)
     if (!s.online) Ja("Offline: speech is handled on this device; if not understood, use the buttons. / 圏外: 端末の中で聞き分け、分からなければボタン")
     Text("Need help? / 困ったこと", fontWeight = FontWeight.Bold)
     INTENTS.chunked(2).forEach { row ->

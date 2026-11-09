@@ -258,23 +258,32 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
     }
 
-    /** 端末の中の音声入力 → 頼みごと。分からなければボタンで選んでもらう。 */
-    fun listen() {
+    /** 押している間だけ聞く（指を離したら止めて、聞いた文字を頼みごとに振り分ける）。 */
+    fun startListening() {
         tts?.stop()
+        player?.stop()
         _state.update { it.copy(listening = true, heard = null) }
-        speech.listen("en-US") { text ->
-            _state.update { it.copy(listening = false, heard = text) }
-            if (text == null) {
-                _state.update { it.copy(answer = "Could not hear. Please use the buttons. / 聞き取れませんでした。ボタンで選んでください") }
-                return@listen
-            }
-            val id = classifier.classify(text)
-            if (id == "other") {
-                _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください") }
-                speak("Please choose a button on the screen.")
-            } else {
-                onIntent(id)
-            }
+        speech.start(
+            "en-US",
+            onPartial = { text -> _state.update { it.copy(heard = text) } },
+            onFinal = { text -> handleHeard(text) },
+        )
+    }
+
+    fun stopListening() = speech.stop()
+
+    private fun handleHeard(text: String?) {
+        _state.update { it.copy(listening = false, heard = text) }
+        if (text.isNullOrBlank()) {
+            _state.update { it.copy(answer = "Could not hear. Hold the button while speaking, or use the buttons. / 聞き取れませんでした。押したまま話すか、ボタンで選んでください") }
+            return
+        }
+        val id = classifier.classify(text)
+        if (id == "other") {
+            _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください") }
+            speak("Please choose a button on the screen.")
+        } else {
+            onIntent(id)
         }
     }
 
