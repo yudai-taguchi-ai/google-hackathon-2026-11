@@ -1,0 +1,3975 @@
+[
+ {
+  "point": {
+   "label": "海遊館",
+   "lat": 34.6545,
+   "lon": 135.429,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "ホテルシーガルてんぽーざん大阪",
+   "id": "E2710000164201",
+   "walk_min": 4.9,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "海遊館エントランスビル",
+      "address": "大阪府大阪市港区海岸通1丁目1-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.655826,
+       135.4302641
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "天保山船客上屋",
+      "address": "大阪府大阪市港区築港3丁目11-8",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": "E2710003043201",
+      "official_name": "天保山船客上屋",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6568869,
+       135.4312308
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "ホテルシーガルてんぽーざん大阪",
+      "address": "大阪府大阪市港区海岸通1丁目5-15",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000164201",
+      "official_name": "ホテルシーガルてんぽーざん大阪",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6532336,
+       135.4294177
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 5.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"海遊館エントランスビル\",\n      \"address\": \"大阪府大阪市港区海岸通1丁目1-10\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"天保山船客上屋\",\n      \"address\": \"大阪府大阪市港区築港3丁目11-8\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"ホテルシーガルてんぽーざん大阪\",\n      \"address\": \"大阪府大阪市港区海岸通1丁目5-15\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "海遊館",
+      "address": "大阪府大阪市港区海岸通1丁目1-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6545182,
+       135.4289645
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "天保山マーケットプレース",
+      "address": "大阪府大阪市港区海岸通1丁目1-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6558539,
+       135.430205
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立築港小学校",
+      "address": "大阪府大阪市港区築港1丁目10-38",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2710000214201",
+      "official_name": "築港小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6530352,
+       135.4362806
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     }
+    ],
+    "first_walk_min": 0.1,
+    "raw": "{\"places\": [{\"name\": \"海遊館\", \"address\": \"大阪府大阪市港区海岸通1丁目1-10\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 1}, {\"name\": \"天保山マーケットプレース\", \"address\": \"大阪府大阪市港区海岸通1丁目1-10\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 1}, {\"name\": \"大阪市立築港小学校\", \"address\": \"大阪府大阪市港区築港1丁目10-38\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "ユニバーサル・スタジオ・ジャパン",
+   "lat": 34.6654,
+   "lon": 135.4323,
+   "kind": "観光地・駅"
+  },
+  "user_depth": null,
+  "app": {
+   "name": "市営酉島住宅２２号館",
+   "id": "E2710000402201",
+   "walk_min": 82.1,
+   "reachable": false,
+   "decision": "already_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "桜島北公園",
+      "address": "大阪府大阪市此花区桜島1丁目",
+      "kind": "浸水しない高台・区域の外",
+      "floor": null,
+      "walk_min": 6,
+      "official_id": "E2710000304201",
+      "official_name": "桜島北公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6622467,
+       135.4329621
+      ],
+      "safe_ground_but_inundated": true,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "リバーガーデンECOシティアリスの森",
+      "address": "大阪府大阪市此花区島屋6-2-110",
+      "kind": "建物の上の階",
+      "floor": 4,
+      "walk_min": 7,
+      "official_id": "E2710000382201",
+      "official_name": "リバーガーデン　ＥＣＯ　シティアリスの森",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6703902,
+       135.4406117
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "株式会社アド・ダイセン 関西メールセンター",
+      "address": "大阪府大阪市此花区北港1-1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": "E2710000409201",
+      "official_name": "㈱アド・ダイセン　関西メールセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6718509,
+       135.4303088
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 40.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"桜島北公園\",\n      \"address\": \"大阪府大阪市此花区桜島1丁目\",\n      \"kind\": \"浸水しない高台・区域の外\",\n      \"floor\": null,\n      \"walk_min\": 6\n    },\n    {\n      \"name\": \"リバーガーデンECOシティアリスの森\",\n      \"address\": \"大阪府大阪市此花区島屋6-2-110\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 4,\n      \"walk_min\": 7\n    },\n    {\n      \"name\": \"株式会社アド・ダイセン 関西メールセンター\",\n      \"address\": \"大阪府大阪市此花区北港1-1-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 10\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ホテル近鉄ユニバーサル・シティ",
+      "address": "大阪府大阪市此花区島屋6丁目2-68",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6684528,
+       135.4371326
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "ザ パーク フロント ホテル アット ユニバーサル・スタジオ・ジャパン",
+      "address": "大阪府大阪市此花区島屋6丁目2-52",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6678977,
+       135.4372576
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "ホテル ユニバーサル ポート",
+      "address": "大阪府大阪市此花区桜島1丁目1-111",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6663662,
+       135.4380851
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 19.8,
+    "raw": "{\"places\": [{\"name\": \"ホテル近鉄ユニバーサル・シティ\", \"address\": \"大阪府大阪市此花区島屋6丁目2-68\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 10}, {\"name\": \"ザ パーク フロント ホテル アット ユニバーサル・スタジオ・ジャパン\", \"address\": \"大阪府大阪市此花区島屋6丁目2-52\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 11}, {\"name\": \"ホテル ユニバーサル ポート\", \"address\": \"大阪府大阪市此花区桜島1丁目1-111\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪港駅",
+   "lat": 34.655,
+   "lon": 135.441,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "市営八幡屋宝町第２住宅１号館",
+   "id": "E2710000171201",
+   "walk_min": 5.7,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "Osaka Metro 大阪港駅",
+      "address": "大阪府大阪市港区築港3-5-9",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2710000222201",
+      "official_name": "Ｏｓａｋａ　Ｍｅｔｒｏ　大阪港駅",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6539844,
+       135.4343734
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "辰巳商會ビル",
+      "address": "大阪府大阪市港区築港4-1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000224201",
+      "official_name": "㈱辰巳商會",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6536309,
+       135.4327329
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪港湾合同庁舎",
+      "address": "大阪府大阪市港区築港4-10-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000223201",
+      "official_name": "大阪港湾合同庁舎",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6529408,
+       135.4307485
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 20.0,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"Osaka Metro 大阪港駅\",\n      \"address\": \"大阪府大阪市港区築港3-5-9\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"辰巳商會ビル\",\n      \"address\": \"大阪府大阪市港区築港4-1-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"大阪港湾合同庁舎\",\n      \"address\": \"大阪府大阪市港区築港4-10-3\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立築港中学校",
+      "address": "大阪府大阪市港区築港1丁目2-41",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000207201",
+      "official_name": "港中学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.652738,
+       135.437986
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立築港小学校",
+      "address": "大阪府大阪市港区築港1丁目10-38",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 9,
+      "official_id": "E2710000214201",
+      "official_name": "築港小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6530352,
+       135.4362806
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市港スポーツセンター",
+      "address": "大阪府大阪市港区田中3丁目1-128",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710000231201",
+      "official_name": "港スポーツセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.661918,
+       135.445743
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 13.9,
+    "raw": "{\"places\": [{\"name\": \"大阪市立築港中学校\", \"address\": \"大阪府大阪市港区築港1丁目2-41\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 4}, {\"name\": \"大阪市立築港小学校\", \"address\": \"大阪府大阪市港区築港1丁目10-38\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 9}, {\"name\": \"大阪市港スポーツセンター\", \"address\": \"大阪府大阪市港区田中3丁目1-128\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "ATC（アジア太平洋トレードセンター）",
+   "lat": 34.6386,
+   "lon": 135.417,
+   "kind": "観光地・駅"
+  },
+  "user_depth": null,
+  "app": {
+   "name": "グランドプリンスホテル大阪ベイ",
+   "id": "E2710003033201",
+   "walk_min": 8.6,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "アジア太平洋トレードセンター",
+      "address": "大阪府大阪市住之江区南港北2丁目1-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2710000613201",
+      "official_name": "アジア太平洋トレードセンター",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.63770239999999,
+       135.4107562
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "大阪府咲洲庁舎",
+      "address": "大阪府大阪市住之江区南港北1丁目14-16",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6380343,
+       135.4146667
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "グランドプリンスホテル大阪ベイ",
+      "address": "大阪府大阪市住之江区南港北1丁目13-11",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710003033201",
+      "official_name": "グランドプリンスホテル大阪ベイ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6362593,
+       135.4162765
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 26.0,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"アジア太平洋トレードセンター\",\n      \"address\": \"大阪府大阪市住之江区南港北2丁目1-10\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"大阪府咲洲庁舎\",\n      \"address\": \"大阪府大阪市住之江区南港北1丁目14-16\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"グランドプリンスホテル大阪ベイ\",\n      \"address\": \"大阪府大阪市住之江区南港北1丁目13-11\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ミズノ大阪本社ビル（ミズノクリスタ）",
+      "address": "大阪府大阪市住之江区南港北1丁目12-35",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6385081,
+       135.4166402
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "グランドプリンスホテル大阪ベイ",
+      "address": "大阪府大阪市住之江区南港北1丁目13-11",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710003033201",
+      "official_name": "グランドプリンスホテル大阪ベイ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6362593,
+       135.4162765
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "大阪府咲洲庁舎（さきしまコスモタワー）",
+      "address": "大阪府大阪市住之江区南港北1丁目14-16",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6380343,
+       135.4146667
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 4.9,
+    "raw": "{\"places\": [{\"name\": \"ミズノ大阪本社ビル（ミズノクリスタ）\", \"address\": \"大阪府大阪市住之江区南港北1丁目12-35\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 4}, {\"name\": \"グランドプリンスホテル大阪ベイ\", \"address\": \"大阪府大阪市住之江区南港北1丁目13-11\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"大阪府咲洲庁舎（さきしまコスモタワー）\", \"address\": \"大阪府大阪市住之江区南港北1丁目14-16\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 7}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "弁天町駅",
+   "lat": 34.6694,
+   "lon": 135.4615,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "港区土地区画整理記念・交流会館",
+   "id": "E2710003016201",
+   "walk_min": 6.0,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "大阪ベイタワー",
+      "address": "大阪府大阪市港区弁天1丁目2-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6699326,
+       135.4607029
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "Osaka Metro 弁天町駅",
+      "address": "大阪府大阪市港区波除3丁目11-6",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": "E2710000250201",
+      "official_name": "Ｏｓａｋａ　Ｍｅｔｒｏ　弁天町駅",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6701578,
+       135.4619871
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "ホームセンターコーナン弁天町店",
+      "address": "大阪府大阪市港区弁天1丁目2-24",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000273201",
+      "official_name": "ホームセンターコーナン弁天町店",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6694028,
+       135.4600847
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 4.2,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"大阪ベイタワー\",\n      \"address\": \"大阪府大阪市港区弁天1丁目2-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"Osaka Metro 弁天町駅\",\n      \"address\": \"大阪府大阪市港区波除3丁目11-6\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"ホームセンターコーナン弁天町店\",\n      \"address\": \"大阪府大阪市港区弁天1丁目2-24\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "弁天町ベイタワー",
+      "address": "大阪府大阪市港区弁天1丁目2-1",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 2,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6699718,
+       135.4608022
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立波除小学校",
+      "address": "大阪府大阪市港区波除3丁目6-8",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 5,
+      "official_id": "E2710000251201",
+      "official_name": "波除小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6715093,
+       135.462291
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立市岡東中学校",
+      "address": "大阪府大阪市港区市岡元町3丁目2-18",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 9,
+      "official_id": "E2710000205201",
+      "official_name": "市岡東中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6672466,
+       135.4649336
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 3.0,
+    "raw": "{\"places\": [{\"name\": \"弁天町ベイタワー\", \"address\": \"大阪府大阪市港区弁天1丁目2-1\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 2}, {\"name\": \"大阪市立波除小学校\", \"address\": \"大阪府大阪市港区波除3丁目6-8\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 5}, {\"name\": \"大阪市立市岡東中学校\", \"address\": \"大阪府大阪市港区市岡元町3丁目2-18\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 9}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大正駅",
+   "lat": 34.6648,
+   "lon": 135.4789,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "ホテルソビアル大阪ドーム前",
+   "id": "E2710001303201",
+   "walk_min": 2.5,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "ホテルソビアル大阪ドーム前",
+      "address": "大阪府大阪市大正区三軒家東1-17-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2710001303201",
+      "official_name": "ホテルソビアル大阪ドーム前",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6654729,
+       135.4795329
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "ほくとクリニック病院",
+      "address": "大阪府大阪市大正区三軒家西1-18-7",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710001298201",
+      "official_name": "ほくとクリニック病院",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6648907,
+       135.4778979
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立三軒家西小学校",
+      "address": "大阪府大阪市大正区三軒家西1-20-26",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710001299201",
+      "official_name": "三軒家西小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6650499,
+       135.4768478
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 5.2,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"ホテルソビアル大阪ドーム前\",\n      \"address\": \"大阪府大阪市大正区三軒家東1-17-29\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"ほくとクリニック病院\",\n      \"address\": \"大阪府大阪市大正区三軒家西1-18-7\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"大阪市立三軒家西小学校\",\n      \"address\": \"大阪府大阪市大正区三軒家西1-20-26\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立三軒家西小学校",
+      "address": "大阪府大阪市大正区三軒家西1丁目20-26",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710001299201",
+      "official_name": "三軒家西小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6650499,
+       135.4768478
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立大正東中学校",
+      "address": "大阪府大阪市大正区三軒家東4丁目4-30",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710001306201",
+      "official_name": "大正東中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6624017,
+       135.4773723
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立三軒家東小学校",
+      "address": "大阪府大阪市大正区三軒家東2丁目12-59",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2710001305201",
+      "official_name": "三軒家東小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6605764,
+       135.4788332
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 7.3,
+    "raw": "{\"places\": [{\"name\": \"大阪市立三軒家西小学校\", \"address\": \"大阪府大阪市大正区三軒家西1丁目20-26\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 3}, {\"name\": \"大阪市立大正東中学校\", \"address\": \"大阪府大阪市大正区三軒家東4丁目4-30\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"大阪市立三軒家東小学校\", \"address\": \"大阪府大阪市大正区三軒家東2丁目12-59\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "京セラドーム大阪",
+   "lat": 34.6694,
+   "lon": 135.4762,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "大阪ガスｈｕ＋ｇ　ＭＵＳＥＵＭ",
+   "id": "E2710000974201",
+   "walk_min": 5.4,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "京セラドーム大阪・周辺デッキ",
+      "address": "大阪府大阪市西区千代崎3丁目中2番1号外",
+      "kind": "建物の上の階",
+      "floor": 2,
+      "walk_min": 2,
+      "official_id": "E2710000973201",
+      "official_name": "京セラドーム大阪・周辺デッキ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6691749,
+       135.4752859
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立西中学校",
+      "address": "大阪府大阪市西区千代崎3丁目1番43号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000971201",
+      "official_name": "西中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.67154490000001,
+       135.4786272
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "エクセランス九条公園",
+      "address": "大阪府大阪市西区千代崎3丁目1番48号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000972201",
+      "official_name": "エクセランス九条公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6716341,
+       135.4792604
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 6.5,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"京セラドーム大阪・周辺デッキ\",\n      \"address\": \"大阪府大阪市西区千代崎3丁目中2番1号外\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 2,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"大阪市立西中学校\",\n      \"address\": \"大阪府大阪市西区千代崎3丁目1番43号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"エクセランス九条公園\",\n      \"address\": \"大阪府大阪市西区千代崎3丁目1番48号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "京セラドーム大阪",
+      "address": "大阪府大阪市西区千代崎3丁目中2-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2710000973201",
+      "official_name": "京セラドーム大阪・周辺デッキ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6691749,
+       135.4752859
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "イオンモール大阪ドームシティ",
+      "address": "大阪府大阪市西区千代崎3丁目13-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000970201",
+      "official_name": "イオンモール大阪ドームシティ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6702691,
+       135.477917
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立九条南小学校",
+      "address": "大阪府大阪市西区九条南2丁目13-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 9,
+      "official_id": "E2710000950201",
+      "official_name": "九条南小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6727708,
+       135.4729315
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 6.5,
+    "raw": "{\"places\": [{\"name\": \"京セラドーム大阪\", \"address\": \"大阪府大阪市西区千代崎3丁目中2-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 1}, {\"name\": \"イオンモール大阪ドームシティ\", \"address\": \"大阪府大阪市西区千代崎3丁目13-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 3}, {\"name\": \"大阪市立九条南小学校\", \"address\": \"大阪府大阪市西区九条南2丁目13-17\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 9}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "南海 堺駅",
+   "lat": 34.5813,
+   "lon": 135.4673,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "スーパーホテル堺マリティマ",
+   "id": "E2714000079201",
+   "walk_min": 13.1,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "プラットプラット",
+      "address": "大阪府堺市堺区戎島町3-22-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2714000047201",
+      "official_name": "プラットプラット",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5821479,
+       135.4697501
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "ホテル・アゴーラリージェンシー大阪堺",
+      "address": "大阪府堺市堺区戎島町4-45-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": "E2714000049201",
+      "official_name": "ホテル・アゴーラリージェンシー大阪堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5826787,
+       135.4676128
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺駅前アーバンコンフォート",
+      "address": "大阪府堺市堺区戎島町3-22-4",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": "E2714000048201",
+      "official_name": "堺駅前アーバンコンフォート",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5838896,
+       135.4715979
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 8.2,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"プラットプラット\",\n      \"address\": \"大阪府堺市堺区戎島町3-22-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"ホテル・アゴーラリージェンシー大阪堺\",\n      \"address\": \"大阪府堺市堺区戎島町4-45-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"堺駅前アーバンコンフォート\",\n      \"address\": \"大阪府堺市堺区戎島町3-22-4\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ホテル アゴーラ リージェンシー 大阪堺",
+      "address": "大阪府堺市堺区戎島町4丁45-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2714000049201",
+      "official_name": "ホテル・アゴーラリージェンシー大阪堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5826787,
+       135.4676128
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市立市小学校",
+      "address": "大阪府堺市堺区市之町西3丁1-14",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2714000037201",
+      "official_name": "市小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.579955,
+       135.470674
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "くれたけイン南海堺駅前",
+      "address": "大阪府堺市堺区栄橋町1丁3-12",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2714000328201",
+      "official_name": "くれたけイン南海堺駅前",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.580508,
+       135.4688906
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 9.0,
+    "raw": "{\"places\": [{\"name\": \"ホテル アゴーラ リージェンシー 大阪堺\", \"address\": \"大阪府堺市堺区戎島町4丁45-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 4}, {\"name\": \"堺市立市小学校\", \"address\": \"大阪府堺市堺区市之町西3丁1-14\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"くれたけイン南海堺駅前\", \"address\": \"大阪府堺市堺区栄橋町1丁3-12\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 3}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺旧港",
+   "lat": 34.5833,
+   "lon": 135.458,
+   "kind": "観光地・駅"
+  },
+  "user_depth": null,
+  "app": {
+   "name": "大浜体育館・武道館",
+   "id": "E2714000086202",
+   "walk_min": 13.2,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "大浜体育館・大浜武道館（大浜だいしんアリーナ）",
+      "address": "大阪府堺市堺区大浜北町5丁7番1号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.58030919999999,
+       135.4590423
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "府公社OPH大浜",
+      "address": "大阪府堺市堺区大浜北町2丁6-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": "E2714000084201",
+      "official_name": "府公社ＯＰＨ大浜",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5775,
+       135.4626676
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "ホテル・アゴーラリージェンシー大阪堺",
+      "address": "大阪府堺市堺区戎島町4丁45-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": "E2714000049201",
+      "official_name": "ホテル・アゴーラリージェンシー大阪堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5826787,
+       135.4676128
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 17.5,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"大浜体育館・大浜武道館（大浜だいしんアリーナ）\",\n      \"address\": \"大阪府堺市堺区大浜北町5丁7番1号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"府公社OPH大浜\",\n      \"address\": \"大阪府堺市堺区大浜北町2丁6-10\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 10\n    },\n    {\n      \"name\": \"ホテル・アゴーラリージェンシー大阪堺\",\n      \"address\": \"大阪府堺市堺区戎島町4丁45-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 12\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "堺市立大浜体育館（大浜だいしんアリーナ）",
+      "address": "大阪府堺市堺区大浜北町5丁7-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.58030919999999,
+       135.4590423
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "ホテル アゴーラ リージェンシー 大阪堺",
+      "address": "大阪府堺市堺区戎島町4丁45-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2714000049201",
+      "official_name": "ホテル・アゴーラリージェンシー大阪堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5826787,
+       135.4676128
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "プラットプラット（南海堺駅ビル）",
+      "address": "大阪府堺市堺区戎島町3丁22-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2714000047201",
+      "official_name": "プラットプラット",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5814473,
+       135.4689956
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 17.5,
+    "raw": "{\"places\": [{\"name\": \"堺市立大浜体育館（大浜だいしんアリーナ）\", \"address\": \"大阪府堺市堺区大浜北町5丁7-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 11}, {\"name\": \"ホテル アゴーラ リージェンシー 大阪堺\", \"address\": \"大阪府堺市堺区戎島町4丁45-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}, {\"name\": \"プラットプラット（南海堺駅ビル）\", \"address\": \"大阪府堺市堺区戎島町3丁22-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大浜公園",
+   "lat": 34.5786,
+   "lon": 135.461,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "パーク大浜",
+   "id": "E2714000080201",
+   "walk_min": 7.4,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "パーク大浜",
+      "address": "大阪府堺市堺区大浜中町3丁13-27",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2714000080201",
+      "official_name": "パーク大浜",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5780237,
+       135.4594184
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "府公社OPH大浜",
+      "address": "大阪府堺市堺区大浜北町2丁6-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2714000084201",
+      "official_name": "府公社ＯＰＨ大浜",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5775,
+       135.4626676
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "大浜体育館・大浜武道館",
+      "address": "大阪府堺市堺区大浜北町5丁7-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2714000086202",
+      "official_name": "大浜体育館・武道館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.58030919999999,
+       135.4590423
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 7.3,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"パーク大浜\",\n      \"address\": \"大阪府堺市堺区大浜中町3丁13-27\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"府公社OPH大浜\",\n      \"address\": \"大阪府堺市堺区大浜北町2丁6-10\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"大浜体育館・大浜武道館\",\n      \"address\": \"大阪府堺市堺区大浜北町5丁7-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大浜体育館（大浜だいしんアリーナ）",
+      "address": "大阪府堺市堺区大浜北町5丁7-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.58030919999999,
+       135.4590423
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "堺市立大浜中学校",
+      "address": "大阪府堺市堺区大浜南町2丁3-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": "E2714000083201",
+      "official_name": "大浜中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.57473540000001,
+       135.4611203
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "堺市立英彰小学校",
+      "address": "大阪府堺市堺区大浜中町2丁2-8",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 8,
+      "official_id": "E2714000039201",
+      "official_name": "英彰小学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5772189,
+       135.4622408
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 13.9,
+    "raw": "{\"places\": [{\"name\": \"大浜体育館（大浜だいしんアリーナ）\", \"address\": \"大阪府堺市堺区大浜北町5丁7-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"堺市立大浜中学校\", \"address\": \"大阪府堺市堺区大浜南町2丁3-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 7}, {\"name\": \"堺市立英彰小学校\", \"address\": \"大阪府堺市堺区大浜中町2丁2-8\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 8}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "浜寺公園",
+   "lat": 34.5385,
+   "lon": 135.44,
+   "kind": "観光地・駅"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "エスワイビル浜寺荘",
+   "id": "E2714000364201",
+   "walk_min": 23.1,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "ガーデンウェルズ浜寺公園",
+      "address": "大阪府高石市羽衣2丁目2-21",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.537583,
+       135.4407493
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "デュオヒルズ浜寺公園",
+      "address": "大阪府堺市西区浜寺公園町3丁262-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2714000132201",
+      "official_name": "デュオヒルズ浜寺公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5391818,
+       135.4422493
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "マーレ羽衣",
+      "address": "大阪府高石市羽衣1丁目12-25",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5354894,
+       135.4400389
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 4.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"ガーデンウェルズ浜寺公園\",\n      \"address\": \"大阪府高石市羽衣2丁目2-21\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"デュオヒルズ浜寺公園\",\n      \"address\": \"大阪府堺市西区浜寺公園町3丁262-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"マーレ羽衣\",\n      \"address\": \"大阪府高石市羽衣1丁目12-25\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪府立羽衣青少年センター",
+      "address": "大阪府高石市羽衣公園丁1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5329546,
+       135.433032
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "堺市立浜寺昭和小学校",
+      "address": "大阪府堺市西区浜寺昭和町2丁282",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 17,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.542651,
+       135.448422
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 33.3,
+    "raw": "{\"places\": [{\"name\": \"大阪府立羽衣青少年センター\", \"address\": \"大阪府高石市羽衣公園丁1-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 12}, {\"name\": \"堺市立浜寺昭和小学校\", \"address\": \"大阪府堺市西区浜寺昭和町2丁282\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 17}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺浜",
+   "lat": 34.6095,
+   "lon": 135.45,
+   "kind": "観光地・駅"
+  },
+  "user_depth": null,
+  "app": {
+   "name": "大阪府立港南造形高等学校",
+   "id": "E2710000685201",
+   "walk_min": 29.7,
+   "reachable": false,
+   "decision": "already_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "株式会社日新 堺ロジスティクスセンター",
+      "address": "大阪府堺市堺区築港八幡町138-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": "E2714000089201",
+      "official_name": "株式会社日新堺ロジスティクスセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6018889,
+       135.45046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "グッドマン堺",
+      "address": "大阪府堺市堺区築港八幡町1-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 19,
+      "official_id": "E2714000087201",
+      "official_name": "グッドマン堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5953176,
+       135.4451438
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "三井不動産ロジスティクスパーク堺（MFLP堺）",
+      "address": "大阪府堺市堺区築港八幡町1-171",
+      "kind": "建物の上の階",
+      "floor": 5,
+      "walk_min": 21,
+      "official_id": "E2714000088201",
+      "official_name": "三井不動産ロジスティクスパーク堺（ＭＦＬＰ堺）５階中央車路部",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5959948,
+       135.4607303
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 125.6,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"株式会社日新 堺ロジスティクスセンター\",\n      \"address\": \"大阪府堺市堺区築港八幡町138-3\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 11\n    },\n    {\n      \"name\": \"グッドマン堺\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-17\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 19\n    },\n    {\n      \"name\": \"三井不動産ロジスティクスパーク堺（MFLP堺）\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-171\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 5,\n      \"walk_min\": 21\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "(株)日新 堺ロジスティクスセンター",
+      "address": "大阪府堺市堺区築港八幡町138-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": "E2714000089201",
+      "official_name": "株式会社日新堺ロジスティクスセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6018889,
+       135.45046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "J-GREEN SAKAI クラブハウス",
+      "address": "大阪府堺市堺区築港八幡町145",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 11,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6034091,
+       135.4437706
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "大幸工業株式会社 津波避難ビル兼車両センター",
+      "address": "大阪府大阪市住之江区平林南1丁目3-27",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 25,
+      "official_id": "E2710000709201",
+      "official_name": "大幸工業株式会社　津波避難ビル兼車輌センター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6123587,
+       135.4560439
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 125.6,
+    "raw": "{\"places\": [{\"name\": \"(株)日新 堺ロジスティクスセンター\", \"address\": \"大阪府堺市堺区築港八幡町138-3\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 10}, {\"name\": \"J-GREEN SAKAI クラブハウス\", \"address\": \"大阪府堺市堺区築港八幡町145\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 11}, {\"name\": \"大幸工業株式会社 津波避難ビル兼車両センター\", \"address\": \"大阪府大阪市住之江区平林南1丁目3-27\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 25}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い1",
+   "lat": 34.67892,
+   "lon": 135.4609,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "春日出中学校",
+   "id": "E2710000319201",
+   "walk_min": 13.3,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "大阪府立咲くやこの花中学校・高等学校",
+      "address": "大阪府大阪市此花区西九条6丁目1番44号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000346201",
+      "official_name": "咲くやこの花中学校・高等学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.68040149999999,
+       135.4626639
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立春日出中学校",
+      "address": "大阪府大阪市此花区春日出南1丁目2番8号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000319201",
+      "official_name": "春日出中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6788591,
+       135.4574445
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "クレオ大阪西（大阪市立男女共同参画センター西部館）",
+      "address": "大阪府大阪市此花区西九条6丁目1番20号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6818326,
+       135.4633217
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 21.0,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"大阪府立咲くやこの花中学校・高等学校\",\n      \"address\": \"大阪府大阪市此花区西九条6丁目1番44号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"大阪市立春日出中学校\",\n      \"address\": \"大阪府大阪市此花区春日出南1丁目2番8号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"クレオ大阪西（大阪市立男女共同参画センター西部館）\",\n      \"address\": \"大阪府大阪市此花区西九条6丁目1番20号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 6\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立こども文化センター",
+      "address": "大阪府大阪市此花区西九条6丁目1-20",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6818326,
+       135.4633217
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立梅香小学校",
+      "address": "大阪府大阪市此花区梅香3丁目17-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710000406201",
+      "official_name": "梅香小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6817684,
+       135.4551094
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市立春日出小学校",
+      "address": "大阪府大阪市此花区春日出中1丁目13-23",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710000313201",
+      "official_name": "春日出小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6808768,
+       135.4527296
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "4.0～5.0m"
+     }
+    ],
+    "first_walk_min": 25.6,
+    "raw": "{\"places\": [{\"name\": \"大阪市立こども文化センター\", \"address\": \"大阪府大阪市此花区西九条6丁目1-20\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}, {\"name\": \"大阪市立梅香小学校\", \"address\": \"大阪府大阪市此花区梅香3丁目17-29\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}, {\"name\": \"大阪市立春日出小学校\", \"address\": \"大阪府大阪市此花区春日出中1丁目13-23\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い2",
+   "lat": 34.63764,
+   "lon": 135.45303,
+   "kind": "無作為"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "市営鶴町第９住宅１号館",
+   "id": "E2710001336201",
+   "walk_min": 9.7,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "市営鶴町第9住宅1号館",
+      "address": "大阪府大阪市大正区鶴町2-20-34",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2710001336201",
+      "official_name": "市営鶴町第９住宅１号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6369651,
+       135.4528649
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "イケア鶴浜",
+      "address": "大阪府大阪市大正区鶴町2-24-55",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6367691,
+       135.4495123
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "大阪市立鶴町小学校",
+      "address": "大阪府大阪市大正区鶴町2-6-24",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710001337201",
+      "official_name": "鶴町小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6394577,
+       135.4564439
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 9.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"市営鶴町第9住宅1号館\",\n      \"address\": \"大阪府大阪市大正区鶴町2-20-34\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"イケア鶴浜\",\n      \"address\": \"大阪府大阪市大正区鶴町2-24-55\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"大阪市立鶴町小学校\",\n      \"address\": \"大阪府大阪市大正区鶴町2-6-24\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "鶴町第七住宅",
+      "address": "大阪府大阪市大正区鶴町2丁目12",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 3,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6366593,
+       135.4547957
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市営 鶴町第9住宅 1号館",
+      "address": "大阪府大阪市大正区鶴町2丁目20-34",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 5,
+      "official_id": "E2710001336201",
+      "official_name": "市営鶴町第９住宅１号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6369651,
+       135.4528649
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立鶴町小学校",
+      "address": "大阪府大阪市大正区鶴町2丁目6-24",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 5,
+      "official_id": "E2710001337201",
+      "official_name": "鶴町小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6394577,
+       135.4564439
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 6.0,
+    "raw": "{\"places\": [{\"name\": \"鶴町第七住宅\", \"address\": \"大阪府大阪市大正区鶴町2丁目12\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 3}, {\"name\": \"大阪市営 鶴町第9住宅 1号館\", \"address\": \"大阪府大阪市大正区鶴町2丁目20-34\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 5}, {\"name\": \"大阪市立鶴町小学校\", \"address\": \"大阪府大阪市大正区鶴町2丁目6-24\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 5}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い3",
+   "lat": 34.69658,
+   "lon": 135.43029,
+   "kind": "無作為"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "大阪府立出来島支援学校",
+   "id": "E2710001187203",
+   "walk_min": 25.6,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "クオレ西淀川",
+      "address": "大阪府大阪市西淀川区中島1丁目19-43",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 8,
+      "official_id": "E2710001222201",
+      "official_name": "クオレ西淀川",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.7010916,
+       135.4273974
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立川北小学校",
+      "address": "大阪府大阪市西淀川区中島1丁目11-20",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": "E2710001221201",
+      "official_name": "川北小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.7044164,
+       135.4295588
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大和物流センター",
+      "address": "大阪府大阪市西淀川区中島2丁目5-24",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": "E2710003045201",
+      "official_name": "大和物流センター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.699923,
+       135.4165667
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 26.0,
+    "raw": "{\n  \"places\": [\n    {\n      \"name\": \"クオレ西淀川\",\n      \"address\": \"大阪府大阪市西淀川区中島1丁目19-43\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 8\n    },\n    {\n      \"name\": \"大阪市立川北小学校\",\n      \"address\": \"大阪府大阪市西淀川区中島1丁目11-20\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 11\n    },\n    {\n      \"name\": \"大和物流センター\",\n      \"address\": \"大阪府大阪市西淀川区中島2丁目5-24\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 12\n    }\n  ]\n}"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市建設局 大野下水処理場",
+      "address": "大阪府大阪市西淀川区百島2丁目1-28",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.7010035,
+       135.4374712
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "特別養護老人ホーム ラガール",
+      "address": "大阪府大阪市西淀川区大野3丁目7-52",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6978958,
+       135.4368608
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立福小学校",
+      "address": "大阪府大阪市西淀川区福町3丁目1-39",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 23,
+      "official_id": "E2710001288201",
+      "official_name": "福小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.698038,
+       135.441804
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 35.1,
+    "raw": "{\"places\": [{\"name\": \"大阪市建設局 大野下水処理場\", \"address\": \"大阪府大阪市西淀川区百島2丁目1-28\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 15}, {\"name\": \"特別養護老人ホーム ラガール\", \"address\": \"大阪府大阪市西淀川区大野3丁目7-52\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}, {\"name\": \"大阪市立福小学校\", \"address\": \"大阪府大阪市西淀川区福町3丁目1-39\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 23}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い4",
+   "lat": 34.6878,
+   "lon": 135.45434,
+   "kind": "無作為"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "一般国道４３号　正蓮寺川橋（歩道部分）",
+   "id": "E2710002915201",
+   "walk_min": 13.8,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "大阪市立此花中学校",
+      "address": "大阪府大阪市此花区高見2丁目14-31",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000302201",
+      "official_name": "此花中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6900747,
+       135.455253
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市立伝法小学校",
+      "address": "大阪府大阪市此花区伝法3丁目13-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000355201",
+      "official_name": "伝法小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.689867,
+       135.451414
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "市営千鳥橋住宅1号館",
+      "address": "大阪府大阪市此花区伝法2丁目2-2",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000354201",
+      "official_name": "市営千鳥橋住宅１号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6873769,
+       135.4579844
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 8.4,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"大阪市立此花中学校\",\n      \"address\": \"大阪府大阪市此花区高見2丁目14-31\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"大阪市立伝法小学校\",\n      \"address\": \"大阪府大阪市此花区伝法3丁目13-10\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"市営千鳥橋住宅1号館\",\n      \"address\": \"大阪府大阪市此花区伝法2丁目2-2\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立此花中学校",
+      "address": "大阪府大阪市此花区高見2丁目14-43",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000302201",
+      "official_name": "此花中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6900747,
+       135.455253
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "市営伝法住宅",
+      "address": "大阪府大阪市此花区伝法3丁目7",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710000351201",
+      "official_name": "市営伝法住宅２号館",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6910739,
+       135.4536595
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立伝法小学校",
+      "address": "大阪府大阪市此花区伝法3丁目13-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": "E2710000355201",
+      "official_name": "伝法小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.689867,
+       135.451414
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 8.4,
+    "raw": "{\"places\": [{\"name\": \"大阪市立此花中学校\", \"address\": \"大阪府大阪市此花区高見2丁目14-43\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 4}, {\"name\": \"市営伝法住宅\", \"address\": \"大阪府大阪市此花区伝法3丁目7\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"大阪市立伝法小学校\", \"address\": \"大阪府大阪市此花区伝法3丁目13-17\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 7}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い5",
+   "lat": 34.68457,
+   "lon": 135.46568,
+   "kind": "無作為"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "此花屋内プール",
+   "id": "E2710000341201",
+   "walk_min": 6.0,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "此花会館／梅香殿",
+      "address": "大阪府大阪市此花区西九条5丁目4番24号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": "E2710000342201",
+      "official_name": "此花会館／梅香殿",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.683671,
+       135.464396
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立西九条小学校",
+      "address": "大阪府大阪市此花区西九条4丁目3番41号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000338201",
+      "official_name": "西九条小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.682549,
+       135.464602
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "ケアハウス大阪安立",
+      "address": "大阪府大阪市此花区西九条3丁目4番61号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000336201",
+      "official_name": "ケアハウス大阪安立",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.68577399999999,
+       135.468046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 6.4,
+    "raw": "{\n  \"places\": [\n    {\n      \"name\": \"此花会館／梅香殿\",\n      \"address\": \"大阪府大阪市此花区西九条5丁目4番24号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"大阪市立西九条小学校\",\n      \"address\": \"大阪府大阪市此花区西九条4丁目3番41号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"ケアハウス大阪安立\",\n      \"address\": \"大阪府大阪市此花区西九条3丁目4番61号\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    }\n  ]\n}"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立西九条小学校",
+      "address": "大阪府大阪市此花区西九条4丁目3-41",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000338201",
+      "official_name": "西九条小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.682549,
+       135.464602
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立四貫島小学校",
+      "address": "大阪府大阪市此花区四貫島2丁目17-27",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710000310201",
+      "official_name": "四貫島小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.684972,
+       135.4545518
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市立梅香小学校",
+      "address": "大阪府大阪市此花区梅香2丁目9-27",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 17,
+      "official_id": "E2710000406201",
+      "official_name": "梅香小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6817684,
+       135.4551094
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     }
+    ],
+    "first_walk_min": 7.3,
+    "raw": "{\"places\": [{\"name\": \"大阪市立西九条小学校\", \"address\": \"大阪府大阪市此花区西九条4丁目3-41\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"大阪市立四貫島小学校\", \"address\": \"大阪府大阪市此花区四貫島2丁目17-27\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}, {\"name\": \"大阪市立梅香小学校\", \"address\": \"大阪府大阪市此花区梅香2丁目9-27\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 17}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い6",
+   "lat": 34.6629,
+   "lon": 135.48758,
+   "kind": "無作為"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "市営新浪速第２住宅３号館",
+   "id": "E2710002776201",
+   "walk_min": 12.0,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "もと立葉小学校",
+      "address": "大阪府大阪市浪速区立葉2丁目1-15",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710002769201",
+      "official_name": "もと立葉小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6650184,
+       135.4856099
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立塩草立葉小学校",
+      "address": "大阪府大阪市浪速区塩草1丁目4-31",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710002688201",
+      "official_name": "塩草立葉小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6609725,
+       135.4904479
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立難波中学校",
+      "address": "大阪府大阪市浪速区塩草1丁目1-59",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710002687201",
+      "official_name": "難波中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6622309,
+       135.4913241
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 11.5,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"もと立葉小学校\",\n      \"address\": \"大阪府大阪市浪速区立葉2丁目1-15\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"大阪市立塩草立葉小学校\",\n      \"address\": \"大阪府大阪市浪速区塩草1丁目4-31\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"大阪市立難波中学校\",\n      \"address\": \"大阪府大阪市浪速区塩草1丁目1-59\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立塩草立葉小学校",
+      "address": "大阪府大阪市浪速区塩草1丁目1-43",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710002688201",
+      "official_name": "塩草立葉小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6609725,
+       135.4904479
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立難波中学校",
+      "address": "大阪府大阪市浪速区塩草1丁目1-42",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710002687201",
+      "official_name": "難波中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6622309,
+       135.4913241
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立難波元町小学校",
+      "address": "大阪府大阪市浪速区元町1丁目14-14",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": "E2710002706201",
+      "official_name": "難波元町小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6649849,
+       135.4968076
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 12.4,
+    "raw": "{\"places\": [{\"name\": \"大阪市立塩草立葉小学校\", \"address\": \"大阪府大阪市浪速区塩草1丁目1-43\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"大阪市立難波中学校\", \"address\": \"大阪府大阪市浪速区塩草1丁目1-42\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"大阪市立難波元町小学校\", \"address\": \"大阪府大阪市浪速区元町1丁目14-14\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 15}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い7",
+   "lat": 34.65028,
+   "lon": 135.44968,
+   "kind": "無作為"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "市営池島住宅１号館",
+   "id": "E2710000211201",
+   "walk_min": 21.0,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "特別養護老人ホーム愛港園",
+      "address": "大阪府大阪市港区八幡屋4丁目8-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000267201",
+      "official_name": "特別養護老人ホーム愛港園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.65166110000001,
+       135.4467266
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市営八幡屋第2住宅4号館",
+      "address": "大阪府大阪市港区八幡屋3丁目10-4",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": "E2710000263201",
+      "official_name": "八幡屋第２住宅４号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6538116,
+       135.4456064
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立八幡屋小学校",
+      "address": "大阪府大阪市港区八幡屋3丁目3-5",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 8,
+      "official_id": "E2710000264201",
+      "official_name": "八幡屋小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6548256,
+       135.4462023
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 40.7,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"特別養護老人ホーム愛港園\",\n      \"address\": \"大阪府大阪市港区八幡屋4丁目8-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"大阪市営八幡屋第2住宅4号館\",\n      \"address\": \"大阪府大阪市港区八幡屋3丁目10-4\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 7\n    },\n    {\n      \"name\": \"大阪市立八幡屋小学校\",\n      \"address\": \"大阪府大阪市港区八幡屋3丁目3-5\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 8\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立池島小学校",
+      "address": "大阪府大阪市港区池島3丁目9-12",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": "E2710000209201",
+      "official_name": "池島小学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6532409,
+       135.4483769
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市営池島住宅",
+      "address": "大阪府大阪市港区池島2丁目2",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710002918201",
+      "official_name": "市営池島住宅５号棟",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6563971,
+       135.4497606
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立港中学校",
+      "address": "大阪府大阪市港区池島3丁目11-34",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2710000207201",
+      "official_name": "港中学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6531886,
+       135.4499966
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 28.9,
+    "raw": "{\"places\": [{\"name\": \"大阪市立池島小学校\", \"address\": \"大阪府大阪市港区池島3丁目9-12\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 12}, {\"name\": \"大阪市営池島住宅\", \"address\": \"大阪府大阪市港区池島2丁目2\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}, {\"name\": \"大阪市立港中学校\", \"address\": \"大阪府大阪市港区池島3丁目11-34\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い8",
+   "lat": 34.68635,
+   "lon": 135.45567,
+   "kind": "無作為"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "一般国道４３号　正蓮寺川橋（歩道部分）",
+   "id": "E2710002915201",
+   "walk_min": 11.0,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "大阪市立四貫島小学校",
+      "address": "大阪府大阪市此花区四貫島2丁目16-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000310201",
+      "official_name": "四貫島小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6849176,
+       135.4541988
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "ハイマート千鳥橋",
+      "address": "大阪府大阪市此花区四貫島1丁目7-6",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6847811,
+       135.4562558
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市立梅香小学校",
+      "address": "大阪府大阪市此花区梅香3丁目17-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710000406201",
+      "official_name": "梅香小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6817684,
+       135.4551094
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     }
+    ],
+    "first_walk_min": 8.3,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"大阪市立四貫島小学校\",\n      \"address\": \"大阪府大阪市此花区四貫島2丁目16-29\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"ハイマート千鳥橋\",\n      \"address\": \"大阪府大阪市此花区四貫島1丁目7-6\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"大阪市立梅香小学校\",\n      \"address\": \"大阪府大阪市此花区梅香3丁目17-29\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 6\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立四貫島小学校",
+      "address": "大阪府大阪市此花区四貫島2丁目16-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000310201",
+      "official_name": "四貫島小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6849176,
+       135.4541988
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "大阪市立伝法小学校",
+      "address": "大阪府大阪市此花区伝法3丁目13-11",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 9,
+      "official_id": "E2710000355201",
+      "official_name": "伝法小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.689867,
+       135.451414
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "大阪市立梅香中学校",
+      "address": "大阪府大阪市此花区梅香3丁目17-29",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": "E2710000326201",
+      "official_name": "梅香中学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6822109,
+       135.454802
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     }
+    ],
+    "first_walk_min": 8.3,
+    "raw": "{\"places\": [{\"name\": \"大阪市立四貫島小学校\", \"address\": \"大阪府大阪市此花区四貫島2丁目16-29\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 4}, {\"name\": \"大阪市立伝法小学校\", \"address\": \"大阪府大阪市此花区伝法3丁目13-11\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 9}, {\"name\": \"大阪市立梅香中学校\", \"address\": \"大阪府大阪市此花区梅香3丁目17-29\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 10}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "大阪市の海沿い9",
+   "lat": 34.67085,
+   "lon": 135.43283,
+   "kind": "無作為"
+  },
+  "user_depth": "3.0～4.0m",
+  "app": {
+   "name": "㈱アド・ダイセン　関西メールセンター",
+   "id": "E2710000409201",
+   "walk_min": 7.2,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "リバーガーデンECOシティアリスの森",
+      "address": "大阪府大阪市此花区島屋6丁目2-110",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": "E2710000382201",
+      "official_name": "リバーガーデン　ＥＣＯ　シティアリスの森",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6703902,
+       135.4406117
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "桜島北公園",
+      "address": "大阪府大阪市此花区桜島1丁目",
+      "kind": "浸水しない高台・区域の外",
+      "floor": null,
+      "walk_min": 11,
+      "official_id": "E2710000304201",
+      "official_name": "桜島北公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6622467,
+       135.4329621
+      ],
+      "safe_ground_but_inundated": true,
+      "depth_at_place": "2.0～3.0m"
+     },
+     {
+      "name": "市営島屋住宅1号館",
+      "address": "大阪府大阪市此花区島屋2丁目8-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2710000370201",
+      "official_name": "市営島屋住宅１号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6782756,
+       135.4388098
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "4.0～5.0m"
+     }
+    ],
+    "first_walk_min": 26.4,
+    "raw": "{\"places\": [{\"name\": \"リバーガーデンECOシティアリスの森\", \"address\": \"大阪府大阪市此花区島屋6丁目2-110\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 7}, {\"name\": \"桜島北公園\", \"address\": \"大阪府大阪市此花区桜島1丁目\", \"kind\": \"浸水しない高台・区域の外\", \"floor\": null, \"walk_min\": 11}, {\"name\": \"市営島屋住宅1号館\", \"address\": \"大阪府大阪市此花区島屋2丁目8-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}]}"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ユニバーサル・シティウォーク大阪",
+      "address": "大阪府大阪市此花区島屋6丁目2-61",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6685808,
+       135.4377782
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "ザ パーク フロント ホテル アット ユニバーサル・スタジオ・ジャパン",
+      "address": "大阪府大阪市此花区島屋6丁目2-52",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 7,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6678977,
+       135.4372576
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "3.0～4.0m"
+     },
+     {
+      "name": "ホテル ユニバーサル ポート ヴィータ",
+      "address": "大阪府大阪市此花区島屋6丁目1-16",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6668345,
+       135.4384601
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "2.0～3.0m"
+     }
+    ],
+    "first_walk_min": 19.4,
+    "raw": "{\"places\": [{\"name\": \"ユニバーサル・シティウォーク大阪\", \"address\": \"大阪府大阪市此花区島屋6丁目2-61\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"ザ パーク フロント ホテル アット ユニバーサル・スタジオ・ジャパン\", \"address\": \"大阪府大阪市此花区島屋6丁目2-52\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 7}, {\"name\": \"ホテル ユニバーサル ポート ヴィータ\", \"address\": \"大阪府大阪市此花区島屋6丁目1-16\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 10}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い1",
+   "lat": 34.55307,
+   "lon": 135.44897,
+   "kind": "無作為"
+  },
+  "user_depth": "2.0～3.0m",
+  "app": {
+   "name": "トヨタカローラ南海株式会社本社駐車場",
+   "id": "E2714000362201",
+   "walk_min": 6.5,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "堺サンホテル石津川",
+      "address": "大阪府堺市西区浜寺石津町西3-4-25",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 9,
+      "official_id": "E2714000357201",
+      "official_name": "堺サンホテル石津川",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559066,
+       135.4522752
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "浜寺石津小学校",
+      "address": "大阪府堺市西区浜寺石津町中2-3-28",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 10,
+      "official_id": "E2714000142201",
+      "official_name": "浜寺石津小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559502,
+       135.455106
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "住宅型有料老人ホーム 宝の看護サカイ",
+      "address": "大阪府堺市西区浜寺石津町西2-6-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": "E2714000356201",
+      "official_name": "住宅型有料老人ホーム　宝の看護サカイ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5614725,
+       135.4531973
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 24.3,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"堺サンホテル石津川\",\n      \"address\": \"大阪府堺市西区浜寺石津町西3-4-25\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 9\n    },\n    {\n      \"name\": \"浜寺石津小学校\",\n      \"address\": \"大阪府堺市西区浜寺石津町中2-3-28\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 10\n    },\n    {\n      \"name\": \"住宅型有料老人ホーム 宝の看護サカイ\",\n      \"address\": \"大阪府堺市西区浜寺石津町西2-6-17\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 11\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "堺サンホテル石津川",
+      "address": "大阪府堺市西区浜寺石津町西3-4-25",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": "E2714000357201",
+      "official_name": "堺サンホテル石津川",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559066,
+       135.4522752
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "住宅型有料老人ホーム 宝の看護サカイ",
+      "address": "大阪府堺市西区浜寺石津町西2-6-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": "E2714000356201",
+      "official_name": "住宅型有料老人ホーム　宝の看護サカイ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5614725,
+       135.4531973
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "堺市立浜寺石津小学校",
+      "address": "大阪府堺市西区浜寺石津町中2-3-28",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2714000142201",
+      "official_name": "浜寺石津小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559502,
+       135.455106
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 24.3,
+    "raw": "{\"places\": [{\"name\": \"堺サンホテル石津川\", \"address\": \"大阪府堺市西区浜寺石津町西3-4-25\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 12}, {\"name\": \"住宅型有料老人ホーム 宝の看護サカイ\", \"address\": \"大阪府堺市西区浜寺石津町西2-6-17\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 15}, {\"name\": \"堺市立浜寺石津小学校\", \"address\": \"大阪府堺市西区浜寺石津町中2-3-28\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 16}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い2",
+   "lat": 34.60743,
+   "lon": 135.4688,
+   "kind": "無作為"
+  },
+  "user_depth": "1.0～2.0m",
+  "app": {
+   "name": "市営新北島住宅２号館",
+   "id": "E2710000617201",
+   "walk_min": 12.4,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "市営新北島住宅2号館",
+      "address": "大阪府大阪市住之江区新北島4-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": "E2710000617201",
+      "official_name": "市営新北島住宅２号館",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.605222,
+       135.4669321
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "ニュートラム 住之江公園駅",
+      "address": "大阪府大阪市住之江区泉1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000643201",
+      "official_name": "ニュートラム　住之江公園駅",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6090074,
+       135.4731418
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "ボートレース住之江",
+      "address": "大阪府大阪市住之江区泉1-1-71",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6105914,
+       135.4713268
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 10.6,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"市営新北島住宅2号館\",\n      \"address\": \"大阪府大阪市住之江区新北島4-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    },\n    {\n      \"name\": \"ニュートラム 住之江公園駅\",\n      \"address\": \"大阪府大阪市住之江区泉1-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"ボートレース住之江\",\n      \"address\": \"大阪府大阪市住之江区泉1-1-71\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 6\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "イオンモール堺鉄砲町",
+      "address": "大阪府堺市堺区鉄砲町1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 35,
+      "official_id": "E2714000332201",
+      "official_name": "イオンモール堺鉄砲町",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5946073,
+       135.4816946
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "三井不動産ロジスティクスパーク堺",
+      "address": "大阪府堺市堺区築港八幡町1-171",
+      "kind": "建物の上の階",
+      "floor": null,
+      "walk_min": 35,
+      "official_id": "E2714000088201",
+      "official_name": "三井不動産ロジスティクスパーク堺（ＭＦＬＰ堺）５階中央車路部",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5959948,
+       135.4607303
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "(株)日新 堺ロジスティクスセンター",
+      "address": "大阪府堺市堺区築港八幡町138-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 46,
+      "official_id": "E2714000089201",
+      "official_name": "株式会社日新堺ロジスティクスセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6018889,
+       135.45046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 81.3,
+    "raw": "{\"places\": [{\"name\": \"イオンモール堺鉄砲町\", \"address\": \"大阪府堺市堺区鉄砲町1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 35}, {\"name\": \"三井不動産ロジスティクスパーク堺\", \"address\": \"大阪府堺市堺区築港八幡町1-171\", \"kind\": \"建物の上の階\", \"floor\": null, \"walk_min\": 35}, {\"name\": \"(株)日新 堺ロジスティクスセンター\", \"address\": \"大阪府堺市堺区築港八幡町138-3\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 46}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い3",
+   "lat": 34.56524,
+   "lon": 135.44339,
+   "kind": "無作為"
+  },
+  "user_depth": "0.01～0.3m",
+  "app": {
+   "name": "堺サンホテル石津川",
+   "id": "E2714000357201",
+   "walk_min": 40.2,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "堺港湾合同庁舎",
+      "address": "大阪府堺市西区石津西町20",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5666053,
+       135.4454003
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "堺サンホテル石津川",
+      "address": "大阪府堺市西区浜寺石津町西3丁4-25",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2714000357201",
+      "official_name": "堺サンホテル石津川",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559066,
+       135.4522752
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "ケアライフ・メディカルサプライ株式会社 本社ビル",
+      "address": "大阪府堺市西区浜寺石津町西2丁1-6",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 14,
+      "official_id": "E2714000355201",
+      "official_name": "ケアライフ・メディカルサプライ株式会社本社ビル",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5614543,
+       135.4541612
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 23.6,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"堺港湾合同庁舎\",\n      \"address\": \"大阪府堺市西区石津西町20\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"堺サンホテル石津川\",\n      \"address\": \"大阪府堺市西区浜寺石津町西3丁4-25\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 13\n    },\n    {\n      \"name\": \"ケアライフ・メディカルサプライ株式会社 本社ビル\",\n      \"address\": \"大阪府堺市西区浜寺石津町西2丁1-6\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 14\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "丸一鋼管株式会社 堺工場",
+      "address": "大阪府堺市西区石津西町14-2",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.55951659999999,
+       135.4426345
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "石津水再生センター",
+      "address": "大阪府堺市西区浜寺石津町西1丁1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 19,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.563644,
+       135.4552507
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市立浜寺石津小学校",
+      "address": "大阪府堺市西区浜寺石津町中2丁3-28",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 26,
+      "official_id": "E2714000142201",
+      "official_name": "浜寺石津小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.559502,
+       135.455106
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 18.4,
+    "raw": "{\"places\": [{\"name\": \"丸一鋼管株式会社 堺工場\", \"address\": \"大阪府堺市西区石津西町14-2\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}, {\"name\": \"石津水再生センター\", \"address\": \"大阪府堺市西区浜寺石津町西1丁1-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 19}, {\"name\": \"堺市立浜寺石津小学校\", \"address\": \"大阪府堺市西区浜寺石津町中2丁3-28\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 26}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い4",
+   "lat": 34.59244,
+   "lon": 135.44978,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "グッドマン堺",
+   "id": "E2714000087201",
+   "walk_min": 19.0,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "グッドマン堺",
+      "address": "大阪府堺市堺区築港八幡町1-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 8,
+      "official_id": "E2714000087201",
+      "official_name": "グッドマン堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5953176,
+       135.4451438
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "クリーンセンター臨海工場",
+      "address": "大阪府堺市堺区築港八幡町1-70",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 11,
+      "official_id": "E2714000090201",
+      "official_name": "クリーンセンター臨海工場",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5920716,
+       135.4417439
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "株式会社日新堺ロジスティクスセンター",
+      "address": "大阪府堺市堺区築港八幡町138-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2714000089201",
+      "official_name": "株式会社日新堺ロジスティクスセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6018889,
+       135.45046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 13.8,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"グッドマン堺\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-17\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 8\n    },\n    {\n      \"name\": \"クリーンセンター臨海工場\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-70\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 11\n    },\n    {\n      \"name\": \"株式会社日新堺ロジスティクスセンター\",\n      \"address\": \"大阪府堺市堺区築港八幡町138-3\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 13\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "LF堺",
+      "address": "大阪府堺市堺区築港八幡町138番地7",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6041023,
+       135.4515851
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺浜えんため館",
+      "address": "大阪府堺市堺区築港八幡町1番1号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 12,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5982652,
+       135.447596
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市クリーンセンター臨海工場",
+      "address": "大阪府堺市堺区築港八幡町1番70号",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": "E2714000090201",
+      "official_name": "クリーンセンター臨海工場",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5926245,
+       135.4415083
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 42.2,
+    "raw": "{\"places\": [{\"name\": \"LF堺\", \"address\": \"大阪府堺市堺区築港八幡町138番地7\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 1}, {\"name\": \"堺浜えんため館\", \"address\": \"大阪府堺市堺区築港八幡町1番1号\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 12}, {\"name\": \"堺市クリーンセンター臨海工場\", \"address\": \"大阪府堺市堺区築港八幡町1番70号\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 15}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い5",
+   "lat": 34.56119,
+   "lon": 135.44233,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "堺サンホテル石津川",
+   "id": "E2714000357201",
+   "walk_min": 38.3,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "住宅型有料老人ホーム 宝の看護サカイ",
+      "address": "大阪府堺市西区浜寺石津町西2丁6-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 14,
+      "official_id": "E2714000356201",
+      "official_name": "住宅型有料老人ホーム　宝の看護サカイ",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5614725,
+       135.4531973
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "ケアライフ・メディカルサプライ株式会社本社ビル",
+      "address": "大阪府堺市西区浜寺石津町西2丁1-6",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": "E2714000355201",
+      "official_name": "ケアライフ・メディカルサプライ株式会社本社ビル",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5614543,
+       135.4541612
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "特別養護老人ホーム アリオン",
+      "address": "大阪府堺市西区浜寺石津町西1丁2-7",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 16,
+      "official_id": "E2714000138201",
+      "official_name": "特別養護老人ホーム　アリオン",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.562405,
+       135.4548163
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 39.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"住宅型有料老人ホーム 宝の看護サカイ\",\n      \"address\": \"大阪府堺市西区浜寺石津町西2丁6-17\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 14\n    },\n    {\n      \"name\": \"ケアライフ・メディカルサプライ株式会社本社ビル\",\n      \"address\": \"大阪府堺市西区浜寺石津町西2丁1-6\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 15\n    },\n    {\n      \"name\": \"特別養護老人ホーム アリオン\",\n      \"address\": \"大阪府堺市西区浜寺石津町西1丁2-7\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 16\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "朝日プラザ浜寺",
+      "address": "大阪府堺市西区浜寺石津町東4丁6-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 32,
+      "official_id": "E2714000361201",
+      "official_name": "朝日プラザ浜寺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.55517,
+       135.4583163
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "浜寺石津西公園",
+      "address": "大阪府堺市西区浜寺石津町西4丁22",
+      "kind": "その他",
+      "floor": null,
+      "walk_min": 19,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.55881,
+       135.4490257
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "堺鋼板株式会社 泉北センター",
+      "address": "大阪府堺市西区築港新町2丁6-52",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 21,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.562487,
+       135.429505
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 60.5,
+    "raw": "{\"places\": [{\"name\": \"朝日プラザ浜寺\", \"address\": \"大阪府堺市西区浜寺石津町東4丁6-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 32}, {\"name\": \"浜寺石津西公園\", \"address\": \"大阪府堺市西区浜寺石津町西4丁22\", \"kind\": \"その他\", \"floor\": null, \"walk_min\": 19}, {\"name\": \"堺鋼板株式会社 泉北センター\", \"address\": \"大阪府堺市西区築港新町2丁6-52\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 21}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い6",
+   "lat": 34.58677,
+   "lon": 135.47489,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "錦西小学校",
+   "id": "E2714000069201",
+   "walk_min": 13.5,
+   "reachable": true,
+   "decision": "reach_outside_zone",
+   "type": "outside_zone"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "アーバンビュー堺プレミアムコート",
+      "address": "大阪府堺市堺区山本町1丁20-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": "E2714000336201",
+      "official_name": "アーバンビュー堺プレミアムコート",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5872974,
+       135.4753169
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市立月州中学校",
+      "address": "大阪府堺市堺区神南辺町1丁1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2714000067201",
+      "official_name": "月州中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.584402,
+       135.474879
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市立錦西小学校",
+      "address": "大阪府堺市堺区神明町西2丁1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2714000069201",
+      "official_name": "錦西小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5852295,
+       135.4786205
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 2.7,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"アーバンビュー堺プレミアムコート\",\n      \"address\": \"大阪府堺市堺区山本町1丁20-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"堺市立月州中学校\",\n      \"address\": \"大阪府堺市堺区神南辺町1丁1-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"堺市立錦西小学校\",\n      \"address\": \"大阪府堺市堺区神明町西2丁1-1\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ポルト堺1",
+      "address": "大阪府堺市堺区宿屋町西3-1-2",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2714000339201",
+      "official_name": "ポルト堺１",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5849997,
+       135.4769377
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "メゾンドール堺ザビエル公園",
+      "address": "大阪府堺市堺区材木町西2-2-10",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2714000029201",
+      "official_name": "メゾンドール堺ザビエル公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5838001,
+       135.4764817
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "堺市立錦西小学校",
+      "address": "大阪府堺市堺区神明町西2-1-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 9,
+      "official_id": "E2714000069201",
+      "official_name": "錦西小学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5852295,
+       135.4786205
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 12.0,
+    "raw": "{\"places\": [{\"name\": \"ポルト堺1\", \"address\": \"大阪府堺市堺区宿屋町西3-1-2\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"メゾンドール堺ザビエル公園\", \"address\": \"大阪府堺市堺区材木町西2-2-10\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 6}, {\"name\": \"堺市立錦西小学校\", \"address\": \"大阪府堺市堺区神明町西2-1-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 9}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い7",
+   "lat": 34.54727,
+   "lon": 135.43236,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "岬工業株式会社",
+   "id": "E2714000136201",
+   "walk_min": 64.3,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "株式会社リンカイ 本社工場",
+      "address": "大阪府堺市西区築港浜寺西町7番地",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.546511,
+       135.4115018
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "東和工業株式会社 本社・工場",
+      "address": "大阪府堺市西区築港浜寺西町7番地の20",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 2,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5490745,
+       135.4113475
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "コーケン・テクノ株式会社 本社・工場",
+      "address": "大阪府堺市西区築港浜寺西町5-2",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 4,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5456948,
+       135.4109408
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     }
+    ],
+    "first_walk_min": 152.9,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"株式会社リンカイ 本社工場\",\n      \"address\": \"大阪府堺市西区築港浜寺西町7番地\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 1\n    },\n    {\n      \"name\": \"東和工業株式会社 本社・工場\",\n      \"address\": \"大阪府堺市西区築港浜寺西町7番地の20\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 2\n    },\n    {\n      \"name\": \"コーケン・テクノ株式会社 本社・工場\",\n      \"address\": \"大阪府堺市西区築港浜寺西町5-2\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 4\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "ＥＮＥＯＳ株式会社 堺製油所（周辺の鉄骨・鉄筋コンクリート造建築物）",
+      "address": "大阪府堺市西区築港浜寺町1番",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 17,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5516269,
+       135.4398528
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪府立漕艇センター",
+      "address": "大阪府高石市高砂1丁目",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 26,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.535081,
+       135.4309827
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪府営浜寺公園",
+      "address": "大阪府堺市西区浜寺公園町",
+      "kind": "浸水しない高台・区域の外",
+      "floor": null,
+      "walk_min": 36,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.5420623,
+       135.4407418
+      ],
+      "safe_ground_but_inundated": true,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 59.9,
+    "raw": "{\"places\": [{\"name\": \"ＥＮＥＯＳ株式会社 堺製油所（周辺の鉄骨・鉄筋コンクリート造建築物）\", \"address\": \"大阪府堺市西区築港浜寺町1番\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 17}, {\"name\": \"大阪府立漕艇センター\", \"address\": \"大阪府高石市高砂1丁目\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 26}, {\"name\": \"大阪府営浜寺公園\", \"address\": \"大阪府堺市西区浜寺公園町\", \"kind\": \"浸水しない高台・区域の外\", \"floor\": null, \"walk_min\": 36}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い8",
+   "lat": 34.60337,
+   "lon": 135.45111,
+   "kind": "無作為"
+  },
+  "user_depth": "0.01～0.3m",
+  "app": {
+   "name": "株式会社日新堺ロジスティクスセンター",
+   "id": "E2714000089201",
+   "walk_min": 16.3,
+   "reachable": false,
+   "decision": "may_not_make_it",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "株式会社日新堺ロジスティクスセンター",
+      "address": "大阪府堺市堺区築港八幡町138-3",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2714000089201",
+      "official_name": "株式会社日新堺ロジスティクスセンター",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6018889,
+       135.45046
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "グッドマン堺",
+      "address": "大阪府堺市堺区築港八幡町1-17",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 14,
+      "official_id": "E2714000087201",
+      "official_name": "グッドマン堺",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5953176,
+       135.4451438
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     },
+     {
+      "name": "三井不動産ロジスティクスパーク堺（MFLP堺）5階中央車路部",
+      "address": "大阪府堺市堺区築港八幡町1-171",
+      "kind": "建物の上の階",
+      "floor": 5,
+      "walk_min": 16,
+      "official_id": "E2714000088201",
+      "official_name": "三井不動産ロジスティクスパーク堺（ＭＦＬＰ堺）５階中央車路部",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5959948,
+       135.4607303
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.01～0.3m"
+     }
+    ],
+    "first_walk_min": 8.4,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"株式会社日新堺ロジスティクスセンター\",\n      \"address\": \"大阪府堺市堺区築港八幡町138-3\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"グッドマン堺\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-17\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 14\n    },\n    {\n      \"name\": \"三井不動産ロジスティクスパーク堺（MFLP堺）5階中央車路部\",\n      \"address\": \"大阪府堺市堺区築港八幡町1-171\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 5,\n      \"walk_min\": 16\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "アマゾン堺フルフィルメントセンター",
+      "address": "大阪府堺市堺区築港八幡町138-7",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 1,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6041535,
+       135.451425
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "J-GREEN堺 クラブハウス",
+      "address": "大阪府堺市堺区築港八幡町145",
+      "kind": "建物の上の階",
+      "floor": 2,
+      "walk_min": 18,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6034091,
+       135.4437706
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     },
+     {
+      "name": "堺市クリーンセンター臨海工場",
+      "address": "大阪府堺市堺区築港八幡町1-70",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 27,
+      "official_id": "E2714000090201",
+      "official_name": "クリーンセンター臨海工場",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.5926245,
+       135.4415083
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 3.7,
+    "raw": "{\"places\": [{\"name\": \"アマゾン堺フルフィルメントセンター\", \"address\": \"大阪府堺市堺区築港八幡町138-7\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 1}, {\"name\": \"J-GREEN堺 クラブハウス\", \"address\": \"大阪府堺市堺区築港八幡町145\", \"kind\": \"建物の上の階\", \"floor\": 2, \"walk_min\": 18}, {\"name\": \"堺市クリーンセンター臨海工場\", \"address\": \"大阪府堺市堺区築港八幡町1-70\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 27}]}"
+   }
+  }
+ },
+ {
+  "point": {
+   "label": "堺市の海沿い9",
+   "lat": 34.61769,
+   "lon": 135.47304,
+   "kind": "無作為"
+  },
+  "user_depth": "0.3～1.0m",
+  "app": {
+   "name": "市営緑木住宅１号棟",
+   "id": "E2710002927201",
+   "walk_min": 3.6,
+   "reachable": true,
+   "decision": "go_upstairs",
+   "type": "go_upstairs"
+  },
+  "gemini": {
+   "gemini-3.8-flash": {
+    "places": [
+     {
+      "name": "ハイネス住之江公園",
+      "address": "大阪府大阪市住之江区西加賀屋3-19-4",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 3,
+      "official_id": "E2710000628201",
+      "official_name": "ハイネス住之江公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6164263,
+       135.4743249
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "大阪市立加賀屋中学校",
+      "address": "大阪府大阪市住之江区西加賀屋2-9-20",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000627201",
+      "official_name": "加賀屋中学校",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6188528,
+       135.476893
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "朝日プラザ住之江公園",
+      "address": "大阪府大阪市住之江区西加賀屋4-3-5",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 6,
+      "official_id": "E2710000632201",
+      "official_name": "朝日プラザ住之江公園",
+      "is_official": true,
+      "name_and_place_ok": true,
+      "geocoded": [
+       34.6151245,
+       135.4761097
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     }
+    ],
+    "first_walk_min": 8.2,
+    "raw": "```json\n{\n  \"places\": [\n    {\n      \"name\": \"ハイネス住之江公園\",\n      \"address\": \"大阪府大阪市住之江区西加賀屋3-19-4\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 3\n    },\n    {\n      \"name\": \"大阪市立加賀屋中学校\",\n      \"address\": \"大阪府大阪市住之江区西加賀屋2-9-20\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 5\n    },\n    {\n      \"name\": \"朝日プラザ住之江公園\",\n      \"address\": \"大阪府大阪市住之江区西加賀屋4-3-5\",\n      \"kind\": \"建物の上の階\",\n      \"floor\": 3,\n      \"walk_min\": 6\n    }\n  ]\n}\n```"
+   },
+   "gemini-4-argon": {
+    "places": [
+     {
+      "name": "大阪市立加賀屋中学校",
+      "address": "大阪府大阪市住之江区南加賀屋2丁目14-27",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 5,
+      "official_id": "E2710000627201",
+      "official_name": "加賀屋中学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.60681,
+       135.475488
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "0.3～1.0m"
+     },
+     {
+      "name": "大阪市立加賀屋小学校",
+      "address": "大阪府大阪市住之江区中加賀屋1丁目17-27",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 13,
+      "official_id": "E2710000722201",
+      "official_name": "加賀屋小学校",
+      "is_official": true,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6209579,
+       135.4810087
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": "1.0～2.0m"
+     },
+     {
+      "name": "オスカードリーム",
+      "address": "大阪府大阪市住之江区新北島1丁目2-1",
+      "kind": "建物の上の階",
+      "floor": 3,
+      "walk_min": 15,
+      "official_id": null,
+      "official_name": null,
+      "is_official": false,
+      "name_and_place_ok": false,
+      "geocoded": [
+       34.6084795,
+       135.4717142
+      ],
+      "safe_ground_but_inundated": false,
+      "depth_at_place": null
+     }
+    ],
+    "first_walk_min": 38.4,
+    "raw": "{\"places\": [{\"name\": \"大阪市立加賀屋中学校\", \"address\": \"大阪府大阪市住之江区南加賀屋2丁目14-27\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 5}, {\"name\": \"大阪市立加賀屋小学校\", \"address\": \"大阪府大阪市住之江区中加賀屋1丁目17-27\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 13}, {\"name\": \"オスカードリーム\", \"address\": \"大阪府大阪市住之江区新北島1丁目2-1\", \"kind\": \"建物の上の階\", \"floor\": 3, \"walk_min\": 15}]}"
+   }
+  }
+ }
+]
