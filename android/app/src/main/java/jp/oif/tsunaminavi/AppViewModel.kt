@@ -389,13 +389,42 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             speech.cancel()
             _state.update { it.copy(listening = false, pendingIntent = null, heard = null, speechError = null) }
             _state.update { it.copy(liveHeard = null, liveSaid = null) }
-            live.start()
+            live.start(liveSituation())
             _state.update { it.copy(liveActive = true, error = null) }
         } catch (e: Exception) {
             val detail = generateSequence(e as Throwable?) { it.cause }.take(4).joinToString(" ← ") { "${it::class.simpleName}: ${it.message}" }
             android.util.Log.e("TsunamiNavi", "Gemini Live failed", e)
             _state.update { it.copy(liveActive = false, error = "Gemini Live could not start / 始められませんでした: $detail") }
         }
+    }
+
+    /** Gemini Live に最初から渡す、今の状況（関数を呼ばなくても正しい前提で話せるように）。 */
+    private fun liveSituation(): String {
+        val s = _state.value
+        val warning = when (s.alertKind) {
+            "大津波警報" -> "Major Tsunami Warning (JMA)"
+            "津波警報" -> "Tsunami Warning (JMA)"
+            "津波注意報" -> "Tsunami Advisory (JMA)"
+            null -> "No tsunami warning received. The user felt strong shaking, so they should evacuate now without waiting for a warning."
+            else -> "${s.alertKind} (JMA)"
+        }
+        val t = s.target
+        return buildList {
+            add("- Warning: $warning")
+            if (s.isTraining) add("- This is a training telegram (drill), not a real warning.")
+            if (t != null) {
+                add("- Evacuation place: ${t.name}${if (t.address.isNotBlank()) " (${t.address})" else ""}")
+                add(if (s.targetIsUpstairs) "- Go up to floor ${t.floorMin ?: 3} or higher of that building." else "- That place is outside the expected flood zone.")
+                s.remainingWalkMin?.let { add("- Walking time at evacuation pace (${if (s.slow) "0.5" else "0.62"} m/s): about ${it.toInt()} min") }
+            } else add("- Evacuation place: not decided yet. Call get_guidance.")
+            s.minutesLeft?.let { add("- Time until the tsunami may arrive: about ${it.toInt()} min (basis: ${s.timeBasis})") }
+            add("- Walking pace: ${if (s.slow) "slow (cannot walk fast)" else "normal"}")
+            pack?.answers?.takeIf { it.isNotEmpty() }?.let { answers ->
+                add("- Official answers you may read out (call the matching function first when the user asks):")
+                answers.forEach { (id, text) -> add("  - $id: $text") }
+            }
+        }.joinToString("
+")
     }
 
     private fun stopLive() = viewModelScope.launch {
