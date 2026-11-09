@@ -37,3 +37,14 @@ def call(fn, retries: int = 3):
             if i == retries - 1:
                 raise
             time.sleep(5 if "401" in str(e) else 15)
+
+
+def retry(fn, retries: int = 4):
+    """通信の失敗（接続が切れた など）の時に、少し待ってやり直す。"""
+    for i in range(retries):
+        try:
+            return fn()
+        except Exception:
+            if i == retries - 1:
+                raise
+            time.sleep(10 * (i + 1))
