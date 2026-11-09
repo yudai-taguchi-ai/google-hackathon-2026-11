@@ -13,6 +13,7 @@ DATA = Path(__file__).resolve().parent.parent / "data"
 SAFETY_MARGIN_MIN = 3.0
 CANDIDATES = 12
 FLOOR_HEIGHT_M = 3.0
+MIN_EVAC_FLOOR = 3
 OPEN_SPACE = re.compile(r"公園|広場|グラウンド|運動場|緑地|高台|河川敷")
 
 
@@ -39,13 +40,13 @@ def inundation_at(lat: float, lon: float) -> str | None:
 
 
 def required_floor(depth: str | None) -> int | None:
-    """浸水の深さの区分から、上がるべき階の目安を出す。5m 以上は区分の上限が無いので None（最上階・屋上）。"""
+    """上がるべき階の目安。津波避難ビルの指定基準（3階以上）を下限にし、深い所は浸水の深さから上げる。5m 以上は None（最上階・屋上）。"""
     if depth is None:
         return None
     nums = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", depth)]
     if len(nums) < 2:
         return None
-    return int(nums[1] // FLOOR_HEIGHT_M) + 2
+    return max(MIN_EVAC_FLOOR, int(nums[1] // FLOOR_HEIGHT_M) + 2)
 
 
 def is_open_space(name: str) -> bool:
