@@ -291,13 +291,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
 
-    /** ルール 3: 選び直しは、通信があればサーバー（Routes の道のり）、無ければ端末。 */
+    /** ルール 3: 選び直しも、まず端末ですぐ選ぶ（サーバーは 10 秒ほどかかり、Gemini Live が待ちきれない）。通信があれば後からサーバーで確かめる。 */
     private suspend fun reselect(speakResult: Boolean) {
         val loc = _state.value.location ?: return
-        val choice = (if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() else null)
-            ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
-        choice ?: return
+        val choice = withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
+            ?: (if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() else null)
+            ?: return
         setChoice(choice)
+        if (_state.value.online) askServerAndMaybeAdopt(loc)
         if (speakResult) speakPlan(choice)
     }
 
