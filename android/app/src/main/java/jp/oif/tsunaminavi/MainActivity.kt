@@ -298,6 +298,11 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             modifier = Modifier.fillMaxWidth(),
         ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 18.sp) }
     }
+    if (s.liveActive) {
+        Text("You: ${s.liveHeard ?: "…"}", fontSize = 15.sp)
+        Ja("Gemini が聞き取った言葉")
+        s.liveSaid?.takeIf { it.isNotBlank() }?.let { Text("Gemini: $it", fontSize = 15.sp, color = Color(0xFF1D4ED8)) }
+    }
     if (!s.liveActive) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("Speak in:", fontSize = 13.sp)

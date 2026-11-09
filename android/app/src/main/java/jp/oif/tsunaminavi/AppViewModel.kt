@@ -67,6 +67,9 @@ data class UiState(
     val answer: String? = null,
     val error: String? = null,
     val liveActive: Boolean = false,
+    /** Gemini Live が聞き取った言葉と、Gemini が話した言葉（画面に出して、聞き違いを見えるようにする）。 */
+    val liveHeard: String? = null,
+    val liveSaid: String? = null,
     val heard: String? = null,
     /** 気象庁の電文を最後に見た結果（画面に出す）。 */
     val jmaLine: String? = null,
@@ -101,7 +104,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var pack: Pack? = null
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
-    private val live = LiveAssistant(::handleLiveCall)
+    private val live = LiveAssistant(::handleLiveCall, ::onLiveTranscript)
+
+    private fun onLiveTranscript(user: String?, model: String?) = _state.update {
+        it.copy(
+            liveHeard = user?.takeIf { t -> t.isNotBlank() }?.let { t -> ((it.liveHeard ?: "") + t).takeLast(160) } ?: it.liveHeard,
+            liveSaid = if (user != null && user.isNotBlank()) "" else model?.let { t -> ((it.liveSaid ?: "") + t).takeLast(240) } ?: it.liveSaid,
+        )
+    }
     @Volatile private var planning = false
     /** この案内で、最初の計算をもう始めたか（座標が更新されるたびにやり直さないため）。 */
     @Volatile private var guidanceStarted = false
@@ -293,20 +303,33 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun onIntent(id: String) = viewModelScope.launch { handleIntent(id, fromLive = false) }
 
+    /** 選び直した結果を、変わったか・同じままかが分かる文にする。 */
+    private fun reselectNote(beforeId: String?): String? {
+        val s = _state.value
+        val t = s.target ?: return null
+        val min = s.targetWalkMin?.toInt() ?: 0
+        val pace = if (s.slow) "0.5" else "0.62"
+        return if (t.id == beforeId) "Checked again at $pace m/s: ${t.name} is still the best place (about $min min). / 選び直しました。${t.name} のままが最善です（約 $min 分）"
+        else "New place: ${t.name} (about $min min at $pace m/s). / 新しい避難先: ${t.name}（約 $min 分）"
+    }
+
     private suspend fun handleIntent(id: String, fromLive: Boolean) {
         val target = _state.value.target
+        var note: String? = null
         when (id) {
             "reselect_slow", "reselect_wheelchair" -> {
                 _state.update { it.copy(slow = true) }
                 reselect(speakResult = !fromLive)
+                note = reselectNote(target?.id)
             }
             "reselect", "road_blocked" -> {
                 _state.update { st -> st.copy(excluded = st.excluded + listOfNotNull(st.target?.id)) }
                 reselect(speakResult = !fromLive)
+                note = reselectNote(target?.id)
             }
             "ask_floor" -> if (!fromLive && target != null) speak("Go up to floor ${target.floorMin ?: 3} or higher.")
         }
-        _state.update { it.copy(answer = pack?.answers?.get(id)) }
+        _state.update { it.copy(answer = note ?: pack?.answers?.get(id)) }
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
     }
 
@@ -333,6 +356,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         val id = classifier.classify(text)
+        android.util.Log.i("TsunamiNavi", "heard '$text' -> $id")
         if (id == "other") {
             _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください", pendingIntent = null) }
             speak("Please choose a button on the screen.")
@@ -363,6 +387,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             player?.stop()
             speech.cancel()
             _state.update { it.copy(listening = false, pendingIntent = null, heard = null, speechError = null) }
+            _state.update { it.copy(liveHeard = null, liveSaid = null) }
             live.start()
             _state.update { it.copy(liveActive = true, error = null) }
         } catch (e: Exception) {
@@ -379,6 +404,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Gemini Live が呼ぶ関数。選び直しはアプリが公式データで行い、その結果だけを返す（ルール 3）。 */
     private fun handleLiveCall(name: String, mobility: String?): Map<String, String> {
+        val beforeId = _state.value.target?.id
         val id = when (name) {
             "reselect" -> if (mobility == "slow" || mobility == "wheelchair") "reselect_slow" else "reselect"
             else -> name
@@ -396,6 +422,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             "minutes_left" to (s.minutesLeft?.toInt() ?: 0).toString(),
             "time_basis" to s.timeBasis,
             "walking_speed" to if (s.slow) "slow" else "normal",
+            "changed" to (t.id != beforeId).toString(),
         )
         s.answer?.takeIf { id !in setOf("get_guidance", "reselect", "reselect_slow", "road_blocked") }?.let { out["answer"] = it }
         return out

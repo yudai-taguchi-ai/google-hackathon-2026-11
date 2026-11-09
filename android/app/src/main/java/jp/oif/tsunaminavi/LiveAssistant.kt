@@ -2,6 +2,7 @@ package jp.oif.tsunaminavi
 
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.AudioTranscriptionConfig
 import com.google.firebase.ai.type.FunctionCallPart
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.FunctionResponsePart
@@ -25,7 +26,10 @@ import kotlinx.serialization.json.jsonPrimitive
  * 頼みごとの一覧は、圏外の小さいモデル・ボタンと同じ（docs/decisions.md）。
  */
 @OptIn(PublicPreviewAPI::class)
-class LiveAssistant(private val handle: (name: String, mobility: String?) -> Map<String, String>) {
+class LiveAssistant(
+    private val handle: (name: String, mobility: String?) -> Map<String, String>,
+    private val onTranscript: (user: String?, model: String?) -> Unit,
+) {
     private var session: LiveSession? = null
 
     val active: Boolean get() = session != null
@@ -37,11 +41,13 @@ class LiveAssistant(private val handle: (name: String, mobility: String?) -> Map
             generationConfig = liveGenerationConfig {
                 responseModality = ResponseModality.AUDIO
                 speechConfig = SpeechConfig(voice = Voice("Puck"))
+                inputAudioTranscription = AudioTranscriptionConfig()
+                outputAudioTranscription = AudioTranscriptionConfig()
             },
             systemInstruction = content { text(INSTRUCTION) },
             tools = listOf(Tool.functionDeclarations(FUNCTIONS)),
         )
-        session = model.connect().also { it.startAudioConversation(::onCall) }
+        session = model.connect().also { it.startAudioConversation(::onCall, { user, model -> onTranscript(user?.text, model?.text) }) }
     }
 
     suspend fun stop() {
@@ -55,6 +61,7 @@ class LiveAssistant(private val handle: (name: String, mobility: String?) -> Map
         val mobility = call.args["mobility"]?.jsonPrimitive?.content
         val result = runCatching { handle(call.name, mobility) }
             .getOrElse { mapOf("error" to (it.message ?: "failed")) }
+        android.util.Log.i("TsunamiNavi", "Live call ${call.name}(mobility=$mobility) -> $result")
         return FunctionResponsePart(call.name, JsonObject(result.mapValues { JsonPrimitive(it.value) }))
     }
 
@@ -64,7 +71,8 @@ Rules:
 - Speak in the user's language. Keep every reply under 3 short sentences, in the imperative.
 - Never name or invent an evacuation place, floor, distance or time yourself. Use only values returned by the functions.
 - At the start, call get_guidance and tell the user where to go now.
-- When the user says they cannot walk fast, use a wheelchair, the road is blocked, or asks for another place, call the matching function, then read the new guidance.
+- When the user says they cannot walk fast, use a wheelchair, the road is blocked, or asks for another place, ALWAYS call the matching function before you answer, then read the new guidance.
+- If the function returns changed=false, say the same place is still the best choice and give the new walking minutes.
 - For lost family, injury, when to return, or floors, call the function and say its "answer".
 - Always remind: do not use a car, stay away from rivers, do not go back until the warning is lifted."""
 
