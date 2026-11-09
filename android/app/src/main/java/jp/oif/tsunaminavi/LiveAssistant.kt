@@ -45,8 +45,7 @@ class LiveAssistant(
                 inputAudioTranscription = AudioTranscriptionConfig()
                 outputAudioTranscription = AudioTranscriptionConfig()
             },
-            systemInstruction = content { text(INSTRUCTION + "\n\nCurrent situation (from the app, official data):
-" + situation) },
+            systemInstruction = content { text(INSTRUCTION + "\n\nCurrent situation (from the app, official data):\n" + situation) },
             tools = listOf(Tool.functionDeclarations(FUNCTIONS)),
         )
         session = model.connect().also { it.startAudioConversation(::onCall, { user, model -> onTranscript(user?.text, model?.text) }) }
