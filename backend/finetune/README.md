@@ -42,7 +42,17 @@ python -X utf8 -m finetune.score finetune/data/test.jsonl finetune/output/predic
 
 ## 保存済みモデルを端末用に変換
 
-変換は WSL Ubuntu の `litert-torch==0.10.0` と `litert-lm-builder==0.18.0` で完了した。モデルは Google Drive の `tsunami-functiongemma-output/litertlm/tsunami-functiongemma-270m-dynamic-wi8.litertlm` に保存している。`dynamic_wi8_afp32` 量子化後の大きさは273 MB（元の1.00 GiBから3.8倍圧縮）、`litert-lm-peek` で `function_gemma` のメタデータと1,024トークンのKVキャッシュを確認済み。端末上の関数呼び出しと速度は実機で確認する。
+変換は WSL Ubuntu の `litert-torch==0.10.0` と `litert-lm-builder==0.18.0` で完了した。モデルは Google Drive の `tsunami-functiongemma-output/litertlm/tsunami-functiongemma-270m-dynamic-wi8.litertlm` に保存している。`dynamic_wi8_afp32` 量子化後の大きさは285,560,384 bytes（285.56 MB、272.33 MiB）。`litert-lm-peek` で `function_gemma` のメタデータと1,024トークンのKVキャッシュを確認済み。端末上の関数呼び出しと速度は実機で確認する。
+
+### アプリ担当への受け渡し情報（2026-11-10）
+
+- 保存先は [Drive の litertlm フォルダ](https://drive.google.com/drive/folders/1Fs5IC6ZM0fkrJJNx8-iag-pr3VckWAIA)。田口さんへの閲覧権限付与は共有先メールアドレスの確認待ち。
+- 学習レポート `tsunami-functiongemma-output/report.json` の `best_checkpoint` は `finetune/output/checkpoints/checkpoint-270`。変換には保存済みの `tsunami-functiongemma-output/model/` を WSL の `/opt/functiongemma-model` にコピーして使用した。
+- アプリで使う指示文と関数定義は、このフォルダの `train_functiongemma.py` の `SYSTEM` と `TOOLS` を使用する。変換時にこれらを変更する処理は行っていない。システム指示文は `You are a model that can do function calling with the following functions. Choose exactly one function for the user's message.`。
+- 関数は `reselect(mobility=normal|slow|wheelchair)`、`ask_floor`、`road_blocked`、`lost_family`、`injured`、`when_to_return`、`repeat`、`other`。`reselect` 以外の引数は空オブジェクト。関数の説明文も `TOOLS` からそのまま使用する。
+- 変換設定は `prefill_lengths=[512]`、`cache_length=1024`、`quantization_recipe="dynamic_wi8_afp32"`、`task="text_generation"`、`bundle_litert_lm=True`、`litert_lm_model_type_override="function_gemma"`。変換 API は `litert_torch.generative.export_hf.export.export`。環境は上記2パッケージに加えて `tensorflow==2.21.0`。
+- SHA-256 は `c90233ffdb2e9fdea4a2ec703591922d6557a0447de418a53d3ad2587b04de4b`。WSL の変換出力と G ドライブ保存済みファイルの一致を確認した。
+- 93.5% は変換前のモデルの400件評価。変換後の精度評価と実機の読み込み・応答時間測定は未実施。
 
 ## 現在の状態
 
