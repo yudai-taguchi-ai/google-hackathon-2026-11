@@ -56,6 +56,8 @@ def training_alert() -> TsunamiAlert:
 
 
 _replay_started_at: datetime | None = None
+# 流し直しは 30 分で自動で終わる（いつまでも「警報中」にならないように）
+REPLAY_LASTS = __import__("datetime").timedelta(minutes=30)
 
 
 def start_replay(now: datetime) -> None:
@@ -67,7 +69,7 @@ def start_replay(now: datetime) -> None:
 def current_alert(now: datetime) -> tuple[TsunamiAlert, bool]:
     """今の警報と、流し直し中かどうか。流し直していない時は電文の発表時刻のまま返す。"""
     a = training_alert()
-    if _replay_started_at is None or a.arrival_at is None:
+    if _replay_started_at is None or a.arrival_at is None or now - _replay_started_at > REPLAY_LASTS:
         return a, False
     tz = a.reported_at.tzinfo
     started = _replay_started_at.astimezone(tz)

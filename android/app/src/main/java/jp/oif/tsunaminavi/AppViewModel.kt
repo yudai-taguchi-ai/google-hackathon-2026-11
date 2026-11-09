@@ -87,6 +87,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var player: MediaPlayer? = null
     private val live = LiveAssistant(::handleLiveCall)
     @Volatile private var planning = false
+    private var dismissedArrival: Long? = null
     private val speech = Speech(app)
 
     /** 圏外で話した言葉を頼みごとに振り分ける。今はキーワード方式。FunctionGemma の学習が済んだら差し替える。 */
@@ -189,6 +190,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         if (a["active"]?.jsonPrimitive?.content != "true") return
         val arrival = a["arrival_time"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content
             ?.let { OffsetDateTime.parse(it).toInstant().toEpochMilli() } ?: return
+        if (arrival == dismissedArrival) return
         val wasActive = _state.value.active
         _state.update {
             it.copy(
@@ -353,6 +355,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun reset() = _state.update {
+        dismissedArrival = it.alertArrivalMillis
         UiState(online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo)
     }
 
