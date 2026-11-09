@@ -12,7 +12,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.core.content.ContextCompat
@@ -91,9 +93,13 @@ fun App(vm: AppViewModel = viewModel()) {
     }
 }
 
-/** 押している間だけ聞くボタン。初めての時はマイクの許可を先にもらう。 */
+private const val TAP_MAX_MS = 400L
+
+/** 押している間だけ聞くボタン（短いタップなら、もう一度タップするまで聞く）。初めての時はマイクの許可を先にもらう。 */
 @Composable
 private fun HoldToTalk(s: UiState, vm: AppViewModel) {
+    val latest by rememberUpdatedState(s.listening)
+    val listeningNow = { latest }
     val context = LocalContext.current
     var granted by remember {
         mutableStateOf(ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)
@@ -112,21 +118,32 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
             .height(72.dp)
             .background(if (s.listening) Color(0xFF15803D) else Color(0xFFE2E8F0))
             .pointerInput(Unit) {
-                detectTapGestures(onPress = {
-                    vm.startListening()
-                    tryAwaitRelease()
-                    vm.stopListening()
-                })
+                // 押している間の指の動きを全部ここで受け取り、画面のスクロールに渡さない（少し動いても離すまで聞き続ける）
+                // 短いタップ（0.4 秒未満）は「切り替え」: タップで聞き始め、もう一度タップで終わる
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    down.consume()
+                    val wasListening = listeningNow()
+                    if (wasListening) vm.stopListening() else vm.startListening()
+                    var released = false
+                    while (!released) {
+                        val event = awaitPointerEvent()
+                        event.changes.forEach { it.consume() }
+                        released = event.changes.none { it.pressed }
+                    }
+                    val heldMs = (currentEvent.changes.firstOrNull()?.uptimeMillis ?: down.uptimeMillis) - down.uptimeMillis
+                    if (!wasListening && heldMs >= TAP_MAX_MS) vm.stopListening()
+                }
             },
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                if (s.listening) "Listening… release when done" else "Hold to speak (works offline)",
+                if (s.listening) "Listening… release (or tap) when done" else "Hold (or tap) to speak — works offline",
                 fontSize = 17.sp,
                 color = if (s.listening) Color.White else Color(0xFF0F172A),
             )
             Text(
-                if (s.listening) "聞いています。話し終えたら離す" else "押している間だけ聞きます（圏外でも使える）",
+                if (s.listening) "聞いています。話し終えたら離す（タップした時はもう一度タップ）" else "押している間、またはタップしてからもう一度タップするまで聞きます（圏外でも使える）",
                 fontSize = 12.sp,
                 color = if (s.listening) Color.White else Color(0xFF64748B),
             )
