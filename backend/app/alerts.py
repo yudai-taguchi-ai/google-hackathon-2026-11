@@ -53,3 +53,31 @@ def parse(xml_text: str, area_code: str = "510") -> TsunamiAlert | None:
 
 def training_alert() -> TsunamiAlert:
     return parse(SAMPLE.read_text(encoding="utf-8"))
+
+
+_replay_started_at: datetime | None = None
+
+
+def start_replay(now: datetime) -> None:
+    """訓練電文を「今」発表されたものとして流し直す。到達までの残り時間は電文と同じにする。"""
+    global _replay_started_at
+    _replay_started_at = now
+
+
+def current_alert(now: datetime) -> tuple[TsunamiAlert, bool]:
+    """今の警報と、流し直し中かどうか。流し直していない時は電文の発表時刻のまま返す。"""
+    a = training_alert()
+    if _replay_started_at is None or a.arrival_at is None:
+        return a, False
+    tz = a.reported_at.tzinfo
+    started = _replay_started_at.astimezone(tz)
+    lead = a.arrival_at - a.reported_at
+    return TsunamiAlert(
+        status=a.status,
+        area_name=a.area_name,
+        kind=a.kind,
+        reported_at=started,
+        arrival_at=started + lead,
+        arrival_condition=a.arrival_condition,
+        max_height=a.max_height,
+    ), True
