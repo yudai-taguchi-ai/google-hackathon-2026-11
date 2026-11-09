@@ -39,8 +39,15 @@ def _client() -> genai.Client:
     )
 
 
+ANSWERS_DIR = DATA / "answers"
+
+
 @lru_cache
 def answers(lang: str) -> dict[str, str]:
+    """答えの文。scripts/prepare_answers.py で先に作ったファイルがあればそれを使う（起動のたびに Gemini を呼ばない）。"""
+    baked = ANSWERS_DIR / f"{lang}.json"
+    if baked.exists():
+        return json.loads(baked.read_text(encoding="utf-8"))
     if lang == "ja":
         return dict(ANSWERS_JA)
     schema = types.Schema(
@@ -62,7 +69,13 @@ def answers(lang: str) -> dict[str, str]:
 
 @lru_cache(maxsize=64)
 def audio_wav(lang: str, answer_id: str) -> bytes:
-    text = answers(lang)[answer_id]
+    baked = ANSWERS_DIR / "audio" / lang / f"{answer_id}.wav"
+    if baked.exists():
+        return baked.read_bytes()
+    return synthesize(answers(lang)[answer_id])
+
+
+def synthesize(text: str) -> bytes:
     res = _client().models.generate_content(
         model=TTS_MODEL,
         contents=text,

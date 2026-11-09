@@ -1,7 +1,10 @@
 package jp.oif.tsunaminavi
 
 import android.Manifest
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -27,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,14 +53,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/** 困ったことのボタン。id は Gemini Live・FunctionGemma と同じ頼みごとの一覧（docs/decisions.md）。 */
 private val INTENTS = listOf(
-    "reselect_slow" to "走れない（子ども・高齢者）",
-    "reselect_wheelchair" to "車いす・ベビーカー",
-    "road_blocked" to "道がふさがっている",
-    "ask_floor" to "何階まで上がる？",
-    "lost_family" to "家族とはぐれた",
-    "injured" to "けがをした",
-    "when_to_return" to "いつ戻っていい？",
+    Triple("reselect_slow", "Can't walk fast", "走れない（子ども・高齢者）"),
+    Triple("reselect_wheelchair", "Wheelchair / stroller", "車いす・ベビーカー"),
+    Triple("road_blocked", "Road is blocked", "道がふさがっている"),
+    Triple("ask_floor", "How high should I go?", "何階まで上がる？"),
+    Triple("lost_family", "Lost my family", "家族とはぐれた"),
+    Triple("injured", "I'm injured", "けがをした"),
+    Triple("when_to_return", "When can I go back?", "いつ戻っていい？"),
 )
 
 @Composable
@@ -64,92 +70,129 @@ fun App(vm: AppViewModel = viewModel()) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { vm.onPermissionsGranted() }
     LaunchedEffect(Unit) {
         val perms = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (android.os.Build.VERSION.SDK_INT >= 33) perms += Manifest.permission.POST_NOTIFICATIONS
+        if (Build.VERSION.SDK_INT >= 33) perms += Manifest.permission.POST_NOTIFICATIONS
         launcher.launch(perms.toTypedArray())
     }
+    KeepScreenOn(s.active)
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         StatusBar(s)
-        if (s.switchedToOfflineAt != null) Banner("オフラインに切り替えました（保存したデータで案内を続けます）", Color(0xFFB45309))
-        s.error?.let { Banner(it, Color(0xFFB91C1C)) }
+        if (s.switchedToOfflineAt != null) Banner("Switched to offline mode — guidance continues with saved data", "オフラインに切り替えました（保存したデータで案内を続けます）", Color(0xFFB45309))
+        s.error?.let { Banner(it, null, Color(0xFFB91C1C)) }
         s.busy?.let { Text(it) }
         if (!s.active) Home(s, vm) else Guide(s, vm)
+    }
+}
+
+/** 案内中は画面を消さない（歩きながら見るため）。 */
+@Composable
+private fun KeepScreenOn(on: Boolean) {
+    val activity = LocalContext.current as Activity
+    DisposableEffect(on) {
+        if (on) activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        onDispose { activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
     }
 }
 
 @Composable
 private fun StatusBar(s: UiState) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-        Chip(if (s.online) "オンライン" else "オフライン", if (s.online) Color(0xFF15803D) else Color(0xFF6B7280))
-        if (s.isTraining) Chip("訓練", Color(0xFF1D4ED8))
-        if (s.useDemoPoint) Chip("デモ地点（固定）", Color(0xFF7C3AED))
-        Text(s.location?.let { "%.5f, %.5f".format(it.first, it.second) } ?: "現在地を取得中…", fontSize = 12.sp)
+        Chip(if (s.online) "Online" else "Offline", if (s.online) Color(0xFF15803D) else Color(0xFF6B7280))
+        if (s.isTraining) Chip("Training / 訓練", Color(0xFF1D4ED8))
+        if (s.useDemoPoint) Chip("Demo location / デモ地点", Color(0xFF7C3AED))
+        Text(s.location?.let { "%.5f, %.5f".format(it.first, it.second) } ?: "Getting GPS…", fontSize = 12.sp)
     }
 }
 
 @Composable
 private fun Home(s: UiState, vm: AppViewModel) {
-    Text("旅行の前に（Wi-Fi のある所で）", fontWeight = FontWeight.Bold)
-    Text(s.packInfo ?: "まだ保存していません")
-    OutlinedButton(onClick = { vm.downloadPack() }) { Text("大阪湾岸のデータを保存") }
-    if (vm.liveAvailable) Text("Gemini Live: 使える（App Check デバッグ用: ${vm.debugSecret?.take(8) ?: "未設定"}…）", fontSize = 12.sp)
-    else Text("Gemini Live: このビルドには Firebase の設定が入っていません", fontSize = 12.sp)
+    Text("Tsunami Evacuation Navi", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+    Ja("津波避難ナビ（旅行者向け）")
+    Spacer(Modifier.height(8.dp))
+    Text("Before your trip (on Wi-Fi)", fontWeight = FontWeight.Bold)
+    Ja("旅行の前に（Wi-Fi のある所で）")
+    Text(s.packInfo ?: "Not saved yet / まだ保存していません")
+    OutlinedButton(onClick = { vm.downloadPack() }) { Text("Save Osaka Bay offline data / 大阪湾岸のデータを保存") }
+    Text(
+        if (vm.liveAvailable) "Gemini Live: ready (App Check debug ${vm.debugSecret?.take(8) ?: "not set"}…)"
+        else "Gemini Live: this build has no Firebase config",
+        fontSize = 12.sp,
+    )
     Row(verticalAlignment = Alignment.CenterVertically) {
         Switch(checked = s.useDemoPoint, onCheckedChange = vm::setDemoPoint)
-        Text("  デモ地点を使う（屋内の試験用）")
+        Text("  Use demo location (indoor test) / デモ地点を使う", fontSize = 13.sp)
     }
-    Spacer(Modifier.height(24.dp))
+    Spacer(Modifier.height(20.dp))
     Button(
         onClick = { vm.onShake() },
-        modifier = Modifier.fillMaxWidth().height(120.dp),
+        modifier = Modifier.fillMaxWidth().height(130.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB91C1C)),
-    ) { Text("揺れた／警報を見た", fontSize = 28.sp) }
-    OutlinedButton(onClick = { vm.receiveAlert(replay = true) }) { Text("警報を受け取る（訓練電文を流し直す）") }
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text("I felt shaking / I saw a warning", fontSize = 24.sp)
+            Text("揺れた／警報を見た", fontSize = 16.sp)
+        }
+    }
+    Ja("Warnings are also checked every 15 seconds when online. / 通信がある時は 15 秒ごとに警報を確かめ、出ていれば自動で案内を始めます")
+    OutlinedButton(onClick = { vm.replayAlert() }) { Text("Demo: replay a training warning / 訓練電文を流し直す") }
 }
 
 @Composable
 private fun Guide(s: UiState, vm: AppViewModel) {
     val t = s.target
     if (t == null) {
-        Text("避難先を計算しています…")
+        Text("Finding a shelter… / 避難先を計算中")
         return
     }
     s.alertKind?.let { Text(it, color = Color(0xFFB91C1C), fontWeight = FontWeight.Bold) }
+    Text("Go to", fontSize = 14.sp)
     Text(t.name, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-    Text(if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ", fontSize = 20.sp)
+    Text(
+        if (s.targetIsUpstairs) "Building — go up to floor ${t.floorMin ?: 3} or higher" else "Outside the flood zone",
+        fontSize = 20.sp,
+    )
+    Ja(if (s.targetIsUpstairs) "建物の ${t.floorMin ?: 3} 階以上へ" else "浸水想定区域の外へ")
+    s.notice?.let { Banner(it, null, Color(0xFF0E7490)) }
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
-    else if (s.online) Text("（デモ地点では Navigation SDK を使わない。実際の GPS で試す）", fontSize = 12.sp)
+    else if (s.online) Ja("（Navigation SDK is off at the demo location. Try with real GPS. / デモ地点ではナビを使いません）")
     s.step?.let { step ->
         Arrow(step.relativeDeg ?: step.bearingDeg)
         Text(
-            if (step.arrived) "着きました。${t.floorMin ?: 3} 階以上へ上がってください"
-            else "${step.compass.ja}へ 約 ${step.distanceM.roundToInt()}m（歩いて約 ${step.remainingMin.roundToInt()} 分）",
+            if (step.arrived) "You have arrived. Go up to floor ${t.floorMin ?: 3} or higher."
+            else "${step.compass.en.replaceFirstChar { it.uppercase() }}, about ${step.distanceM.roundToInt()} m (≈ ${step.remainingMin.roundToInt()} min on foot)",
             fontSize = 20.sp,
         )
-        if (step.relativeDeg == null) Text("（端末の向きが分からないため、北が上の矢印です）", fontSize = 12.sp)
+        if (step.relativeDeg == null) Ja("(Arrow points north-up: device direction unknown / 端末の向きが分からないため北が上)")
     }
     s.minutesLeft?.let {
-        val basis = if (s.alertArrivalMillis != null) "気象庁の到達予想時刻" else "揺れた時刻＋26分（目安）"
-        Text("到達予想まで あと約 ${it.roundToInt()} 分（$basis。想定より早く来ることがあります）")
+        Text("About ${it.roundToInt()} min until the tsunami may arrive", fontSize = 16.sp)
+        Ja("基準: ${s.timeBasis}。想定より早く来ることがあります")
     }
-    Text("計算: ${s.planSource}${if (s.slow) "・遅い歩き（0.5m/秒）" else "・0.62m/秒"}", fontSize = 12.sp)
+    Ja("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s")
     s.explanation?.let { Text(it, fontSize = 14.sp) }
-    s.answer?.let { Banner(it, Color(0xFF1D4ED8)) }
+    s.answer?.let { Banner(it, null, Color(0xFF1D4ED8)) }
     if (vm.liveAvailable && s.online) {
         val micLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) vm.toggleLive() }
         Button(
             onClick = { if (s.liveActive) vm.toggleLive() else micLauncher.launch(Manifest.permission.RECORD_AUDIO) },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1D4ED8)),
             modifier = Modifier.fillMaxWidth(),
-        ) { Text(if (s.liveActive) "会話を止める（Gemini Live）" else "Gemini と話す（Gemini Live）", fontSize = 18.sp) }
+        ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 18.sp) }
     }
-    if (!s.online) Text("圏外: 会話は下のボタン（端末の中）で受けます", fontSize = 12.sp)
-    Text("困ったこと（押すと選び直し・案内します）", fontWeight = FontWeight.Bold)
+    if (!s.online) Ja("Offline: use the buttons below (handled on this device). / 圏外: 下のボタンで受けます")
+    Text("Need help? / 困ったこと", fontWeight = FontWeight.Bold)
     INTENTS.chunked(2).forEach { row ->
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            row.forEach { (id, label) -> OutlinedButton(onClick = { vm.onIntent(id) }) { Text(label, fontSize = 13.sp) } }
+            row.forEach { (id, en, ja) ->
+                OutlinedButton(onClick = { vm.onIntent(id) }) {
+                    Column {
+                        Text(en, fontSize = 13.sp)
+                        Text(ja, fontSize = 10.sp, color = Color(0xFF64748B))
+                    }
+                }
+            }
         }
     }
-    OutlinedButton(onClick = { vm.reset() }) { Text("最初の画面に戻る") }
+    OutlinedButton(onClick = { vm.reset() }) { Text("Back to start / 最初の画面に戻る") }
 }
 
 @Composable
@@ -171,8 +214,16 @@ private fun Arrow(deg: Double) {
 }
 
 @Composable
-private fun Banner(text: String, color: Color) {
-    Text(text, color = Color.White, modifier = Modifier.fillMaxWidth().background(color).padding(10.dp))
+private fun Ja(text: String) {
+    Text(text, fontSize = 12.sp, color = Color(0xFF64748B))
+}
+
+@Composable
+private fun Banner(text: String, ja: String?, color: Color) {
+    Column(Modifier.fillMaxWidth().background(color).padding(10.dp)) {
+        Text(text, color = Color.White)
+        ja?.let { Text(it, color = Color.White, fontSize = 12.sp) }
+    }
 }
 
 @Composable

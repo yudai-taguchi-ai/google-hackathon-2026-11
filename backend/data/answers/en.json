@@ -1,0 +1,11 @@
+{
+ "reselect_slow": "Reselecting a reachable evacuation site assuming a slow walk. Follow the screen and voice guidance.",
+ "reselect_wheelchair": "Reselecting a nearby evacuation site assuming wheelchair use. Ask nearby people for help to reach upper floors.",
+ "ask_floor": "Go up to the 3rd floor or higher, preferably higher. The floor is a guideline.",
+ "road_blocked": "Do not use that road. Reselecting another evacuation site.",
+ "lost_family": "Do not go back to search now; evacuate yourself first. Search at an evacuation shelter after the warning is lifted.",
+ "injured": "Continue evacuating if you can move. If you cannot move, ask nearby people for help.",
+ "when_to_return": "Tsunamis strike multiple times. Do not return until the warning is lifted.",
+ "repeat": "Repeating the guidance.",
+ "other": "Sorry, I did not understand. Select from the buttons on the screen."
+}

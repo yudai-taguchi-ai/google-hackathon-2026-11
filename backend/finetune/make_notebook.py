@@ -95,7 +95,7 @@ def evaluate(model, tok, ds, label):
         t0 = time.time()
         out = pipe(x["prompt"], max_new_tokens=48, do_sample=False, skip_special_tokens=False)[0]["generated_text"][len(x["prompt"]):]
         name, args = parse_call(out)
-        rows.append({"lang": x["lang"], "ok": name == x["name"] and json.dumps(args, sort_keys=True) == x["args"],
+        rows.append({"lang": x["lang"], "name": name, "args": args, "ok": name == x["name"] and json.dumps(args, sort_keys=True) == x["args"],
                      "expected": f'{x["name"]} {x["args"]}', "got": f"{name} {args}", "sec": time.time() - t0})
     df = pd.DataFrame(rows)
     print(label, "全体の正答率:", round(df.ok.mean() * 100, 1), "%")
@@ -148,6 +148,11 @@ print("1 件あたりの時間（Colab の GPU）:", round(trained_df.sec.mean()
 print("\\n間違えた例（学習後）")
 print(trained_df[~trained_df.ok].head(20).to_string())
 table.to_csv("accuracy_by_lang.csv")
+# backend/finetune/score.py で採点するための予測（test.jsonl と同じ順）
+with open("predictions.jsonl", "w", encoding="utf-8") as f:
+    for r in trained_df.itertuples():
+        f.write(json.dumps({"name": r.name, "args": r.args}, ensure_ascii=False) + "
+")
 trained_df.to_json("trained_eval.json", force_ascii=False)"""),
     ("md", "## 7. スマホで動く形（.litertlm）に変換して Google ドライブに保存"),
     ("code", """!pip uninstall -y tensorflow
@@ -200,7 +205,7 @@ print(os.listdir(out_dir))"""),
 drive.mount('/content/drive')
 !mkdir -p /content/drive/MyDrive/tsunami-navi/
 !cp /content/litertlm/*.litertlm /content/drive/MyDrive/tsunami-navi/
-!cp accuracy_by_lang.csv trained_eval.json /content/drive/MyDrive/tsunami-navi/
+!cp accuracy_by_lang.csv trained_eval.json predictions.jsonl /content/drive/MyDrive/tsunami-navi/
 !ls -la /content/drive/MyDrive/tsunami-navi/"""),
     ("md", "終わったら、Google ドライブの `tsunami-navi` フォルダ（`.litertlm`・正答率の表）を Claude Code に知らせる。"),
 ]

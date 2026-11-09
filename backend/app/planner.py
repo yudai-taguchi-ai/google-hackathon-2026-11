@@ -54,9 +54,10 @@ def is_open_space(name: str) -> bool:
     return bool(OPEN_SPACE.search(name))
 
 
-def plan(lat: float, lon: float, minutes_left: float, slow: bool = False) -> dict:
+def plan(lat: float, lon: float, minutes_left: float, slow: bool = False, exclude: set[str] | None = None) -> dict:
     user_depth = inundation_at(lat, lon)
-    by_distance = sorted(shelters(), key=lambda s: distance_m(lat, lon, s["lat"], s["lon"]))
+    candidates = [s for s in shelters() if s["id"] not in (exclude or set())]
+    by_distance = sorted(candidates, key=lambda s: distance_m(lat, lon, s["lat"], s["lon"]))
     outside_pool = [s for s in by_distance if s["inundation_depth"] is None][:CANDIDATES]
     upstairs_pool = [] if user_depth is None else [
         s for s in by_distance if s["inundation_depth"] is not None and not is_open_space(s["name"])
