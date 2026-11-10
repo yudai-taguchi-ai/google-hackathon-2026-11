@@ -56,12 +56,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
@@ -77,6 +77,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -132,9 +134,11 @@ fun App(vm: AppViewModel = viewModel()) {
     }
     KeepScreenOn(s.active)
     val guiding = s.active && s.target != null
+    CompositionLocalProvider(LocalJa provides (s.speechLang == "ja-JP")) {
+    Box(Modifier.fillMaxSize()) {
     Scaffold(
         topBar = { AppBar(s, vm) },
-        bottomBar = { if (guiding) TalkBar(s, vm) },
+        bottomBar = { if (guiding && !s.arrived) TalkBar(s, vm) },
         containerColor = MaterialTheme.colorScheme.background,
     ) { inner ->
         Box(Modifier.fillMaxSize().padding(inner), contentAlignment = Alignment.TopCenter) {
@@ -142,12 +146,19 @@ fun App(vm: AppViewModel = viewModel()) {
                 Modifier.widthIn(max = 640.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(PaddingValues(16.dp)),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                if (s.switchedToOfflineAt != null) Banner("Switched to offline mode — guidance continues with saved data", "オフラインに切り替えました（保存したデータで案内を続けます）", Brand.Warn)
+                if (!s.online && s.active) OfflineStrip()
                 s.error?.let { Banner(it, null, Brand.Danger) }
                 s.busy?.let { Busy(it) }
-                if (!s.active) Home(s, vm) else Guide(s, vm)
+                when {
+                    !s.active -> Home(s, vm)
+                    s.arrived -> ArrivedScreen(s, vm)
+                    else -> Guide(s, vm)
+                }
             }
         }
+    }
+    if (s.takeover) AlertTakeover(s, vm)
+    }
     }
 }
 
@@ -163,8 +174,9 @@ private fun AppBar(s: UiState, vm: AppViewModel) {
                 Text("Tsunami Navi", fontWeight = FontWeight.Black, fontSize = 20.sp)
                 Text(
                     when {
-                        alert -> "${s.alertKind}" + if (s.isTraining) " · training / 訓練" else " · JMA"
-                        else -> "No warning received · 警報なし"
+                        alert -> tr(alertEn(s.alertKind!!), s.alertKind!!) + (if (s.isTraining) tr(" · training", " · 訓練") else tr(" · JMA", " · 気象庁")) +
+                            (if (s.alertFromCache || !s.online) s.alertReceivedAt?.let { tr(" · received ${clock(it)}", " · ${clock(it)} 受信") } ?: "" else "")
+                        else -> tr("No warning received", "警報は出ていません")
                     },
                     fontSize = 12.sp,
                     color = fg.copy(alpha = .85f),
@@ -172,12 +184,13 @@ private fun AppBar(s: UiState, vm: AppViewModel) {
             }
         },
         navigationIcon = {
-            if (s.active) IconButton(onClick = { vm.reset() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back to start / 最初の画面に戻る") }
+            if (s.active) IconButton(onClick = { vm.reset() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, tr("Back to start", "最初の画面に戻る")) }
             else Box(Modifier.padding(start = 12.dp, end = 4.dp)) { Icon(Icons.Filled.Warning, null, tint = if (alert) Color.White else Brand.Danger) }
         },
         actions = {
-            Pill(if (s.online) "Online" else "Offline", if (s.online) Brand.Safe else Color(0xFF6B7280))
-            if (s.useDemoPoint) Pill("Demo", Brand.Demo)
+            LangSwitch(s.speechLang == "ja-JP") { ja -> vm.setSpeechLang(if (ja) "ja-JP" else "en-US") }
+            Pill(if (s.online) tr("Online", "オンライン") else tr("Offline", "圏外"), if (s.online) Brand.Safe else Color(0xFF6B7280))
+            if (s.useDemoPoint) Pill(tr("Demo", "デモ"), Brand.Demo)
             Spacer(Modifier.width(8.dp))
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -196,41 +209,76 @@ private fun Home(s: UiState, vm: AppViewModel) {
     Spacer(Modifier.height(8.dp))
     ShakeButton { vm.onShake() }
     Text(
-        "Felt strong shaking near the sea, or saw a warning? Tap now.",
+        tr(
+            "Felt strong shaking near the sea, or saw a warning? Tap now. You get where to go and whether you will make it.",
+            "海の近くで強い揺れ・警報を見たら、すぐ押してください。逃げる先と、間に合うかを出します。",
+        ),
         fontSize = 15.sp,
         fontWeight = FontWeight.SemiBold,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth(),
     )
-    Text(
-        "海の近くで強い揺れ・警報を見たら、すぐ押してください。逃げる先と、間に合うかを出します",
-        fontSize = 12.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth(),
-    )
     s.jmaLine?.let { Banner(it, null, Brand.Teal) }
+    s.nearby?.let { NearbyCard(it, stay = false) }
 
     Group("Before your trip", "旅行の前に（Wi-Fi のある所で）") {
         ListItem(
-            headlineContent = { Text("Osaka Bay offline data", fontWeight = FontWeight.SemiBold) },
-            supportingContent = { Text(s.packInfo ?: "Not saved yet / まだ保存していません") },
-            trailingContent = { FilledTonalButton(onClick = { vm.downloadPack() }) { Text(if (s.packInfo == null) "Save" else "Update") } },
+            headlineContent = { Text(tr("Osaka Bay offline data", "大阪湾のオフラインデータ"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = { Text(s.packInfo ?: tr("Not saved yet", "まだ保存していません")) },
+            trailingContent = { FilledTonalButton(onClick = { vm.downloadPack() }) { Text(if (s.packInfo == null) tr("Save", "保存") else tr("Update", "更新")) } },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
         HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         ListItem(
-            headlineContent = { Text("Offline speech (English)", fontWeight = FontWeight.SemiBold) },
-            supportingContent = { Text("${s.offlineSpeech ?: "checking…"} / 圏外用の英語の音声データ") },
+            headlineContent = { Text(tr("Ready for no signal", "圏外への備え"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = {
+                Text(
+                    when {
+                        s.preparing -> tr("Getting the latest warning and routes in the background…", "最新の警報と避難先を裏で用意しています…")
+                        s.preparedAt != null -> tr(
+                            "Latest warning and routes from here prepared at ${clock(s.preparedAt)}. Kept up to date while online.",
+                            "最新の警報と、ここからの避難先を ${clock(s.preparedAt)} に用意しました。通信がある間は自動で更新します",
+                        )
+                        !s.online -> tr("Will prepare as soon as there is signal", "通信が戻ったら用意します")
+                        else -> tr("Preparing soon (in the background)", "まもなく裏で用意します")
+                    },
+                )
+            },
+            trailingContent = { if (s.preparing) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp) },
+            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        )
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        ListItem(
+            headlineContent = { Text(tr("Offline speech (English)", "圏外用の音声データ（英語）"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = { Text(s.offlineSpeech ?: tr("checking…", "確認中…")) },
+            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        )
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        ListItem(
+            headlineContent = { Text(tr("Where you're staying", "泊まる所"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = {
+                Text(
+                    when {
+                        s.stay == null -> tr("At your hotel, tap \"Use this spot\" to plan your way out in advance", "宿で「ここにする」を押すと、そこからの避難先を前もって決めておけます")
+                        s.packInfo == null -> tr("Saved. Save the offline data to see where to go.", "保存しました。避難先はデータを保存すると出ます")
+                        else -> tr("Saved. Your way out is shown below.", "保存しました。避難先は下に出ています")
+                    },
+                )
+            },
+            trailingContent = {
+                if (s.stay == null) FilledTonalButton(onClick = { vm.setStayHere() }, enabled = s.location != null) { Text(tr("Use this spot", "ここにする")) }
+                else OutlinedButton(onClick = { vm.clearStay() }) { Text(tr("Clear", "消す")) }
+            },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
     }
+    s.stayPlace?.let { NearbyCard(it, stay = true) }
 
     var demoOpen by rememberSaveable { mutableStateOf(false) }
     Group("Demo & test", "デモ・試験用") {
         ListItem(
-            headlineContent = { Text("Demo tools", fontWeight = FontWeight.SemiBold) },
-            supportingContent = { Text("Demo location · training warning · Gemini Live status") },
+            headlineContent = { Text(tr("Demo tools", "デモ用の設定"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = { Text(tr("Demo location · training warning · Gemini Live status", "デモ地点・訓練の警報・Gemini Live の状態")) },
             leadingContent = { Icon(Icons.Filled.Settings, null) },
             trailingContent = { Text(if (demoOpen) "▲" else "▼") },
             modifier = Modifier.clickable { demoOpen = !demoOpen },
@@ -239,15 +287,15 @@ private fun Home(s: UiState, vm: AppViewModel) {
         if (demoOpen) {
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             ListItem(
-                headlineContent = { Text("Use demo location") },
-                supportingContent = { Text("Indoor test at Nankai Sakai Sta. / デモ地点を使う") },
+                headlineContent = { Text(tr("Use demo location", "デモ地点を使う")) },
+                supportingContent = { Text(tr("Indoor test at Nankai Sakai Sta.", "南海堺駅として屋内で試す")) },
                 trailingContent = { Switch(checked = s.useDemoPoint, onCheckedChange = vm::setDemoPoint) },
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             ListItem(
-                headlineContent = { Text("Replay a training warning") },
-                supportingContent = { Text("訓練電文を流し直す（自動で案内が始まります）") },
+                headlineContent = { Text(tr("Replay a training warning", "訓練の警報を流し直す")) },
+                supportingContent = { Text(tr("Guidance starts automatically", "自動で案内が始まります")) },
                 leadingContent = { Icon(Icons.Filled.Refresh, null) },
                 modifier = Modifier.clickable { vm.replayAlert() },
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
@@ -261,6 +309,13 @@ private fun Home(s: UiState, vm: AppViewModel) {
                         else "This build has no Firebase config",
                     )
                 },
+                leadingContent = { Icon(Icons.Filled.Info, null) },
+                colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+            ListItem(
+                headlineContent = { Text(tr("On-device intent model (FunctionGemma)", "端末の中の聞き分けモデル（FunctionGemma）")) },
+                supportingContent = { Text(s.intentModel ?: "…") },
                 leadingContent = { Icon(Icons.Filled.Info, null) },
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             )
@@ -288,10 +343,16 @@ private fun ShakeButton(onClick: () -> Unit) {
             contentAlignment = Alignment.Center,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("I felt", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text("shaking", color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Black, lineHeight = 36.sp)
-                Spacer(Modifier.height(6.dp))
-                Text("揺れた・警報を見た", color = Color.White.copy(alpha = .9f), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                if (LocalJa.current) {
+                    Text("揺れた", color = Color.White, fontSize = 44.sp, fontWeight = FontWeight.Black, lineHeight = 48.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Text("警報を見た時も", color = Color.White.copy(alpha = .9f), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                } else {
+                    Text("I felt", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text("shaking", color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.Black, lineHeight = 36.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Text("or saw a warning", color = Color.White.copy(alpha = .9f), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
@@ -301,8 +362,8 @@ private fun ShakeButton(onClick: () -> Unit) {
 @Composable
 private fun Sources(s: UiState) {
     Ja("Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください")
-    Ja("Shelters: GSI designated emergency evacuation sites (tsunami) · Flood depth: MLIT tsunami inundation (Osaka, 2023) · Walking roads: © OpenStreetMap contributors (ODbL) · Warning: JMA (demo uses a training telegram)")
-    Ja("出典: 国土地理院 指定緊急避難場所・国土数値情報 津波浸水想定（大阪府 2023）・気象庁 防災情報 XML。データ: ${s.packInfo ?: "未保存"}")
+    if (LocalJa.current) Ja("出典: 国土地理院 指定緊急避難場所・国土数値情報 津波浸水想定（大阪府 2023）・道: © OpenStreetMap contributors (ODbL)・気象庁 防災情報 XML（デモは訓練電文）。データ: ${s.packInfo ?: "未保存"}")
+    else Ja("Shelters: GSI designated emergency evacuation sites (tsunami) · Flood depth: MLIT tsunami inundation (Osaka, 2023) · Walking roads: © OpenStreetMap contributors (ODbL) · Warning: JMA (demo uses a training telegram)")
 }
 
 // ───────────── 案内の画面 ─────────────
@@ -326,20 +387,20 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             Column(Modifier.weight(1f)) {
                 Text(
                     when {
-                        step == null -> "Go to"
-                        step.arrived -> "You have arrived"
-                        else -> "${step.compass.en.replaceFirstChar { it.uppercase() }} · ${step.distanceM.roundToInt()} m"
+                        step == null -> tr("Go to", "避難先")
+                        step.arrived -> tr("You have arrived", "着きました")
+                        else -> tr("${step.compass.en.replaceFirstChar { it.uppercase() }} · ${step.distanceM.roundToInt()} m", "${step.compass.ja}へ ${step.distanceM.roundToInt()} m")
                     },
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Black,
                 )
                 Text(t.name, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, lineHeight = 22.sp)
                 Text(
-                    if (s.targetIsUpstairs) "Go up to floor ${t.floorMin ?: 3}+ · ${t.floorMin ?: 3}階以上へ" else "Outside the flood zone · 浸水想定区域の外へ",
+                    if (s.targetIsUpstairs) tr("Go up to floor ${t.floorMin ?: 3}+", "${t.floorMin ?: 3}階以上へ") else tr("Outside the flood zone", "浸水想定区域の外へ"),
                     fontSize = 14.sp,
                     color = Color.White.copy(alpha = .9f),
                 )
-                if (step?.relativeDeg == null && step != null) Text("North-up (device direction unknown) / 北が上", fontSize = 11.sp, color = Color.White.copy(alpha = .8f))
+                if (step?.relativeDeg == null && step != null) Text(pick("North-up (device direction unknown) / 北が上"), fontSize = 11.sp, color = Color.White.copy(alpha = .8f))
             }
         }
     }
@@ -347,12 +408,14 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     // 2. 間に合うか
     if (walk != null || left != null) TimeLine(s, walk, left, late)
 
+    s.previous?.let { ReselectDiff(it, s, vm) }
     s.notice?.let { Banner(it, null, Brand.Teal) }
-    s.answer?.let { Banner(it, null, Brand.Info) }
+    s.answer?.takeIf { s.previous == null }?.let { Banner(it, null, Brand.Info) }
 
-    // 3. 地図（通信がある時）
+    // 3. 地図（通信があって本物の GPS の時は Navigation SDK、それ以外は保存した道と浸水域から描く）
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
-    else if (s.online) Ja("Map navigation is off at the demo location. Try with real GPS. / デモ地点では地図のナビを使いません")
+    else s.map?.let { MiniMap(it, s) }
+    if (!s.online) Ja(if (s.alertArrivalMillis != null) "Time basis: last JMA warning received${s.alertReceivedAt?.let { " (${clock(it)})" } ?: ""} / 時間の基準: 最後に受け取った気象庁の警報${s.alertReceivedAt?.let { "（${clock(it)}）" } ?: ""}" else "Time basis: shaking + 26 min (estimate) / 時間の基準: 揺れてから 26 分（目安）")
 
     // 4. やること
     Group("What to do", "やること") {
@@ -368,8 +431,11 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             Ja("Residents: follow your local evacuation plan. / 地元の方は、市や自治会が決めた避難先に従ってください")
         }
     }
+    OutlinedButton(onClick = { vm.markArrived() }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+        Text(tr("I've arrived", "着いた"), fontWeight = FontWeight.Bold)
+    }
 
-    Ja("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s")
+    Ja(tr("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s", "計算: ${s.planSource}・歩く速さ ${if (s.slow) "0.5" else "0.62"} m/秒"))
     if (s.planSource?.contains("× 1.6") == true) Ja("Offline estimate: real walking can take longer (rivers, canals). / 圏外の目安。川や運河で実際はもっとかかることがあります")
     Sources(s)
 }
@@ -385,8 +451,8 @@ private fun TimeLine(s: UiState, walk: Double?, left: Double?, late: Boolean) {
     Surface(color = MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                walk?.let { Big("Walk · 歩いて", it, ink, Alignment.Start) }
-                left?.let { Big("Tsunami · 津波まで", it, Brand.Danger, Alignment.End) }
+                walk?.let { Big(tr("Walk", "歩いて"), it, ink, Alignment.Start) }
+                left?.let { Big(tr("Tsunami in", "津波まで"), it, Brand.Danger, Alignment.End) }
             }
             Canvas(Modifier.fillMaxWidth().height(28.dp).padding(vertical = 8.dp)) {
                 val h = size.height
@@ -396,21 +462,25 @@ private fun TimeLine(s: UiState, walk: Double?, left: Double?, late: Boolean) {
                 drawLine(Brand.Danger, Offset(x - 2f, -10f), Offset(x - 2f, h + 10f), strokeWidth = 6f)
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("Now", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text("Tsunami", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Brand.Danger)
+                Text(tr("Now", "今"), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Tsunami", "津波"), fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Brand.Danger)
             }
             if (walk != null && left != null) {
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    if (late) "May not make it — go up the nearest tall building now."
-                    else "About ${(left - walk).roundToInt()} min to spare — keep going.",
+                    if (late) tr("May not make it — go up the nearest tall building now.", "間に合わない恐れ。近くのできるだけ高い建物へ")
+                    else tr("About ${(left - walk).roundToInt()} min to spare — keep going.", "約${(left - walk).roundToInt()}分の余裕。このまま進む"),
                     fontWeight = FontWeight.Bold,
                     fontSize = 17.sp,
                     color = if (late) Brand.Danger else ink,
                 )
-                Ja(if (late) "間に合わない恐れ。近くのできるだけ高い建物へ" else "約${(left - walk).roundToInt()}分の余裕。このまま進む")
             }
-            Ja("基準: ${s.timeBasis}。想定より早く来ることがあります。歩く時間は避難の速さ（${if (s.slow) "0.5" else "0.62"} m/秒）で計算")
+            Ja(
+                tr(
+                    "Basis: ${s.timeBasis}. It may come earlier. Walking time uses evacuation pace (${if (s.slow) "0.5" else "0.62"} m/s).",
+                    "基準: ${if (s.timeBasis.startsWith("JMA")) "気象庁の到達予想時刻" else "揺れから26分（目安）"}。想定より早く来ることがあります。歩く時間は避難の速さ（${if (s.slow) "0.5" else "0.62"} m/秒）で計算",
+                ),
+            )
         }
     }
 }
@@ -421,7 +491,7 @@ private fun Big(label: String, minutes: Double, color: Color, align: Alignment.H
         Text(label, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(verticalAlignment = Alignment.Bottom) {
             Text("${minutes.roundToInt()}", fontSize = 44.sp, fontWeight = FontWeight.Black, color = color, lineHeight = 46.sp)
-            Text(" min", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = color, modifier = Modifier.padding(bottom = 7.dp))
+            Text(tr(" min", " 分"), fontSize = 15.sp, fontWeight = FontWeight.Bold, color = color, modifier = Modifier.padding(bottom = 7.dp))
         }
     }
 }
@@ -437,13 +507,8 @@ private fun TalkBar(s: UiState, vm: AppViewModel) {
         ) {
             s.pendingIntent?.let { id -> ConfirmIntent(id, vm) }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (!s.liveActive) {
-                    listOf("en-US" to "EN", "ja-JP" to "日本語").forEach { (code, label) ->
-                        FilterChip(selected = s.speechLang == code, onClick = { vm.setSpeechLang(code) }, label = { Text(label) })
-                    }
-                }
                 Spacer(Modifier.weight(1f))
-                OutlinedButton(onClick = { helpOpen = true }) { Text("Need help? / 困ったこと") }
+                OutlinedButton(onClick = { helpOpen = true }) { Text(tr("Need help?", "困ったこと")) }
             }
             if (vm.liveAvailable && s.online) {
                 val micLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok -> if (ok) vm.toggleLive() }
@@ -451,7 +516,15 @@ private fun TalkBar(s: UiState, vm: AppViewModel) {
                     onClick = { if (s.liveActive) vm.toggleLive() else micLauncher.launch(Manifest.permission.RECORD_AUDIO) },
                     colors = ButtonDefaults.buttonColors(containerColor = Brand.Info, contentColor = Color.White),
                     modifier = Modifier.fillMaxWidth().height(52.dp),
-                ) { Text(if (s.liveActive) "Stop talking (Gemini Live)" else "Talk to Gemini (Gemini Live)", fontSize = 17.sp) }
+                ) { Text(if (s.liveActive) tr("Stop talking (Gemini Live)", "会話を終える（Gemini Live）") else tr("Talk to Gemini (Gemini Live)", "Gemini と話す（Gemini Live）"), fontSize = 17.sp) }
+            }
+            if (s.liveActive) {
+                Surface(color = Brand.Info.copy(alpha = .10f), shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(tr("You: ", "あなた: ") + (s.liveHeard ?: "…"), fontSize = 15.sp)
+                        s.liveSaid?.takeIf { it.isNotBlank() }?.let { Text("Gemini: $it", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Brand.Info) }
+                    }
+                }
             }
             if (!s.liveActive) HoldToTalk(s, vm)
             if (!s.online) Ja("Offline: speech is handled on this device; if not understood, use “Need help?”. / 圏外: 端末の中で聞き分けます")
@@ -465,8 +538,8 @@ private fun TalkBar(s: UiState, vm: AppViewModel) {
 private fun HelpSheet(vm: AppViewModel, close: () -> Unit) {
     ModalBottomSheet(onDismissRequest = close, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = 16.dp).padding(bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("What happened?", fontSize = 22.sp, fontWeight = FontWeight.Black)
-            Ja("困ったことを選ぶと、避難先を選び直したり、答えを読み上げます")
+            Text(tr("What happened?", "何に困っていますか？"), fontSize = 22.sp, fontWeight = FontWeight.Black)
+            Ja(tr("Pick one: the app chooses a new shelter or reads the official answer.", "選ぶと、避難先を選び直したり、公式の答えを読み上げます"))
             Spacer(Modifier.height(4.dp))
             INTENTS.chunked(2).forEach { row ->
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -480,8 +553,7 @@ private fun HelpSheet(vm: AppViewModel, close: () -> Unit) {
                             },
                         ) {
                             Column(Modifier.padding(14.dp)) {
-                                Text(en, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Text(ja, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(tr(en, ja), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -507,7 +579,7 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
     if (!granted) {
         OutlinedButton(onClick = { launcher.launch(Manifest.permission.RECORD_AUDIO) }, modifier = Modifier.fillMaxWidth()) {
-            Text("Allow microphone to speak / マイクを許可して話しかける")
+            Text(tr("Allow microphone to speak", "マイクを許可して話しかける"))
         }
         return
     }
@@ -551,20 +623,18 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
             Mic(if (on) Color.White else MaterialTheme.colorScheme.onSurface)
             Column {
                 Text(
-                    if (pressed) "Listening… release when done" else if (tapMode) "Listening… tap again when done" else "Hold to speak",
+                    if (pressed) tr("Listening… release when done", "聞いています。話し終えたら離す")
+                    else if (tapMode) tr("Listening… tap again when done", "聞いています。もう一度タップで終わる")
+                    else tr("Hold to speak", "押している間に話す"),
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (on) Color.White else MaterialTheme.colorScheme.onSurface,
                 )
-                Text(
-                    if (pressed) "聞いています。話し終えたら離す" else if (tapMode) "聞いています。もう一度タップで終わる" else "押している間に話す（タップでも可・圏外でも使える）",
-                    fontSize = 11.sp,
-                    color = if (on) Color.White else MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                if (!on) Text(tr("Tap also works · works offline", "タップでも可・圏外でも使える"), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
-    s.heard?.let { Ja("Heard: \"$it\"") }
+    s.heard?.let { Ja(tr("Heard: ", "聞き取った言葉: ") + "“$it”" + (s.heardBy?.let { by -> tr(" · understood by $by", " · 聞き分け: $by") } ?: "")) }
     s.speechError?.let { Ja(it) }
     // 音声認識が直らないエラーで止まった時は、タップの状態も戻す
     LaunchedEffect(s.listening) { if (!s.listening && tapMode && s.speechError != null) tapMode = false }
@@ -582,11 +652,10 @@ private fun ConfirmIntent(id: String, vm: AppViewModel) {
     Surface(color = Color(0xFFFEF3C7), contentColor = Color(0xFF1F1300), shape = MaterialTheme.shapes.medium, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f)) {
-                Text("Did you mean: $en?", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                Text("「$ja」でよいですか？", fontSize = 13.sp)
+                Text(tr("Did you mean: $en?", "「$ja」でよいですか？"), fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
-            Button(onClick = { vm.confirmIntent(true) }) { Text("Yes / はい") }
-            OutlinedButton(onClick = { vm.confirmIntent(false) }) { Text("No") }
+            Button(onClick = { vm.confirmIntent(true) }) { Text(tr("Yes", "はい")) }
+            OutlinedButton(onClick = { vm.confirmIntent(false) }) { Text(tr("No", "いいえ")) }
         }
     }
 }
@@ -607,8 +676,7 @@ private fun KeepScreenOn(on: Boolean) {
 private fun Group(title: String, ja: String, content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(start = 4.dp)) {
-            Text(title.uppercase(), fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(ja, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(tr(title.uppercase(), ja), fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Surface(color = MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
             Column { content() }
@@ -622,10 +690,7 @@ private fun Todo(n: Int, en: String, ja: String) {
         Box(Modifier.size(28.dp).clip(RoundedCornerShape(6.dp)).background(MaterialTheme.colorScheme.onSurface), contentAlignment = Alignment.Center) {
             Text("$n", color = MaterialTheme.colorScheme.surface, fontSize = 14.sp, fontWeight = FontWeight.Black)
         }
-        Column {
-            Text(en, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Ja(ja)
-        }
+        Text(tr(en, ja), fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -633,7 +698,7 @@ private fun Todo(n: Int, en: String, ja: String) {
 private fun Busy(text: String) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(vertical = 8.dp)) {
         CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
-        Text(text)
+        Text(pick(text))
     }
 }
 
@@ -667,16 +732,57 @@ private fun Mic(color: Color) {
     }
 }
 
+/** 画面の言語。true なら日本語だけ、false なら英語だけを出す（聞き取る言語と同じ）。 */
+internal val LocalJa = compositionLocalOf { false }
+
 @Composable
-private fun Ja(text: String) {
-    Text(text, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+internal fun tr(en: String, ja: String) = if (LocalJa.current) ja else en
+
+/** アプリが作る「英語 / 日本語」の文から、選んだ言語の側だけを取り出す。 */
+@Composable
+internal fun pick(text: String): String {
+    val i = text.indexOf(" / ")
+    if (i < 0) return text
+    return if (LocalJa.current) text.substring(i + 3) else text.substring(0, i)
+}
+
+/** 時刻を「14:46」の形にする。 */
+internal fun clock(millis: Long): String =
+    java.time.Instant.ofEpochMilli(millis).atZone(java.time.ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0).toString()
+
+internal fun alertEn(kind: String) = when (kind) {
+    "大津波警報" -> "Major Tsunami Warning"
+    "津波警報" -> "Tsunami Warning"
+    "津波注意報" -> "Tsunami Advisory"
+    else -> kind
+}
+
+/** 右上の言語の切り替え（EN ⇄ 日本語）。 */
+@Composable
+private fun LangSwitch(ja: Boolean, onChange: (Boolean) -> Unit) {
+    Row(Modifier.clip(CircleShape).background(Color.Black.copy(alpha = .08f)).padding(2.dp)) {
+        listOf(false to "EN", true to "日本語").forEach { (value, label) ->
+            Text(
+                label,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = if (ja == value) Color.White else LocalContentColor.current,
+                modifier = Modifier.clip(CircleShape).background(if (ja == value) Brand.Info else Color.Transparent)
+                    .clickable { onChange(value) }.padding(horizontal = 10.dp, vertical = 4.dp),
+            )
+        }
+    }
 }
 
 @Composable
-private fun Banner(text: String, ja: String?, color: Color) {
+private fun Ja(text: String) {
+    Text(pick(text), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+}
+
+@Composable
+internal fun Banner(text: String, ja: String?, color: Color) {
     Column(Modifier.fillMaxWidth().clip(MaterialTheme.shapes.medium).background(color).padding(horizontal = 14.dp, vertical = 12.dp)) {
-        Text(text, color = Color.White, fontWeight = FontWeight.SemiBold)
-        ja?.let { Text(it, color = Color.White, fontSize = 12.sp) }
+        Text(if (ja != null) tr(text, ja) else pick(text), color = Color.White, fontWeight = FontWeight.SemiBold)
     }
 }
 

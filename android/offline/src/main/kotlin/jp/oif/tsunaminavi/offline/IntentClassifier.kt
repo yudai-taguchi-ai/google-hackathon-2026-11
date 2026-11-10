@@ -23,7 +23,8 @@ object KeywordIntent : IntentClassifier {
     ).map { (id, pattern) -> id to Regex(pattern) }
 
     override fun classify(text: String): String {
-        val low = text.lowercase()
+        // 音声認識は丸いアポストロフィ（U+2019）を返すことがあるので、ふつうの ' にそろえる
+        val low = text.lowercase().replace("’", "'").replace("‘", "'").replace("can not", "cannot")
         return RULES.firstOrNull { (_, re) -> re.containsMatchIn(low) }?.first ?: "other"
     }
 }

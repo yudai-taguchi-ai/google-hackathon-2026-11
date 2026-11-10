@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +39,8 @@ fun NavPanel(target: Shelter, silent: Boolean) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var navigator by remember { mutableStateOf<Navigator?>(null) }
     var status by remember { mutableStateOf("ナビを準備中…") }
+    val latestSilent by rememberUpdatedState(silent)
+    val guidanceMode = { if (latestSilent) Navigator.AudioGuidance.SILENT else Navigator.AudioGuidance.VOICE_ALERTS_AND_GUIDANCE }
 
     LaunchedEffect(Unit) {
         val start = {
@@ -67,7 +70,9 @@ fun NavPanel(target: Shelter, silent: Boolean) {
         val options = RoutingOptions().travelMode(RoutingOptions.TravelMode.WALKING)
         nav.setDestinations(listOf(waypoint), options).setOnResultListener { result ->
             if (result == Navigator.RouteStatus.OK) {
+                nav.setAudioGuidance(guidanceMode())
                 nav.startGuidance()
+                nav.setAudioGuidance(guidanceMode())
                 status = "徒歩の案内中（Navigation SDK）"
             } else {
                 status = "道を出せませんでした（$result）。矢印の案内を使ってください"
@@ -77,9 +82,7 @@ fun NavPanel(target: Shelter, silent: Boolean) {
     }
 
     LaunchedEffect(navigator, silent) {
-        navigator?.setAudioGuidance(
-            if (silent) Navigator.AudioGuidance.SILENT else Navigator.AudioGuidance.VOICE_ALERTS_AND_GUIDANCE,
-        )
+        navigator?.setAudioGuidance(guidanceMode())
     }
 
     Column {
@@ -91,28 +94,30 @@ fun NavPanel(target: Shelter, silent: Boolean) {
                     return@AndroidView android.view.View(ctx)
                 }.also { view -> if (view is NavigationView) {
                     view.onCreate(null)
+                    // 合図は Android の自動の合図だけにする。addObserver の時点で、今の状態（開始・再開）までの合図が自動で届く。
+                    // 手でも送ると「再開の後に開始」になり、Navigation SDK が例外を出して落ちる（2026-11-10 実機で確認）
                     val observer = LifecycleEventObserver { _, event ->
-                        when (event) {
-                            Lifecycle.Event.ON_START -> view.onStart()
-                            Lifecycle.Event.ON_RESUME -> view.onResume()
-                            Lifecycle.Event.ON_PAUSE -> view.onPause()
-                            Lifecycle.Event.ON_STOP -> view.onStop()
-                            else -> Unit
-                        }
+                        runCatching {
+                            when (event) {
+                                Lifecycle.Event.ON_START -> view.onStart()
+                                Lifecycle.Event.ON_RESUME -> view.onResume()
+                                Lifecycle.Event.ON_PAUSE -> view.onPause()
+                                Lifecycle.Event.ON_STOP -> view.onStop()
+                                else -> Unit
+                            }
+                        }.onFailure { status = "Map error (${it.message}). Use the arrow below. / 地図の不具合。矢印の案内を使ってください" }
                     }
                     lifecycle.addObserver(observer)
                     view.tag = observer
-                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) view.onStart()
-                    if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) view.onResume()
                 } }
             },
             modifier = Modifier.fillMaxWidth().height(420.dp),
             onRelease = { v ->
                 (v.tag as? LifecycleEventObserver)?.let { lifecycle.removeObserver(it) }
                 (v as? NavigationView)?.let { view ->
-                    view.onPause()
-                    view.onStop()
-                    view.onDestroy()
+                    runCatching { view.onPause() }
+                    runCatching { view.onStop() }
+                    runCatching { view.onDestroy() }
                 }
             },
         )

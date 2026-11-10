@@ -62,6 +62,7 @@ curl -s -X POST https://tsunami-navi-129745156402.asia-northeast1.run.app/api/pl
 | `POST /api/alert/replay` | 訓練電文を「今」発表されたものとして流し直す（残り時間は電文と同じ 17 分から減っていく）。Cloud Run は 1 台で動かしている（状態を共有するため） |
 | `POST /api/plan` | `{lat, lon, lang, slow}` → 避難先・`route`（浸水想定の浅い道・`encoded_polyline`）・`waypoints`（Navigation SDK に渡す経由地・最大8点）・Gemini の説明（`explain:false` なら省いて約 0.4 秒で返す）・`plan_id` |
 | `GET /api/explain?plan_id=…` | 先に返した避難先の Gemini の説明（Web は避難先を先に出し、説明を後から出す。約 5 秒） |
+| `GET /api/flood?south=…&west=…&north=…&east=…` | 地図に塗る浸水想定区域（パック用の簡略版を範囲で切り出す。最大 0.04 度四方・gzip で約 30KB） |
 | `GET /api/pack?area=osaka-bay&lang=en&expires_at=YYYY-MM-DD` | オフライン用のパック（避難先 2,335 件・簡略化した浸水想定・答えの文・到達時刻の既定値 26 分・歩く速さ）。gzip で約 1MB |
 | `GET /api/pack/audio?lang=en&id=reselect_slow` | 答えの音声（WAV）。Gemini の音声生成で作る |
 

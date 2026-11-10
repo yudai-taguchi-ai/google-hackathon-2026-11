@@ -22,7 +22,7 @@ android {
         versionName = "0.1"
         buildConfigField("String", "API_BASE_URL", "\"https://tsunami-navi-129745156402.asia-northeast1.run.app\"")
         manifestPlaceholders["MAPS_API_KEY"] = System.getenv("MAPS_API_KEY") ?: ""
-        buildConfigField("String", "LIVE_MODEL", "\"gemini-3.1-flash-live-preview\"")
+        buildConfigField("String", "LIVE_MODEL", "\"gemini-live-2.5-flash-native-audio\"")
         buildConfigField("String", "APP_CHECK_DEBUG_SECRET", "\"${System.getenv("APP_CHECK_DEBUG_SECRET") ?: ""}\"")
     }
 
@@ -50,6 +50,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        // LiteRT-LM は新しい Kotlin で作られているため、版の印の確認だけを外す
+        freeCompilerArgs += "-Xskip-metadata-version-check"
     }
 }
 
@@ -73,5 +75,6 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
+    implementation("com.google.ai.edge.litertlm:litertlm-android:0.16.1")
     implementation(libs.firebase.appcheck.debug)
 }
