@@ -38,6 +38,12 @@ private val DEMO_POINT = 34.5813 to 135.4673
 private const val ADOPT_IF_SHORTER_MIN = 2.0
 private const val ALERT_POLL_MS = 15_000L
 private const val LIVE_SERVER_TIMEOUT_MS = 8_000L
+/** 前もって用意した避難先を数え直す間隔と、使ってよい古さ・近さ。 */
+private const val PREPARE_REFRESH_MS = 15 * 60_000L
+private const val PREPARED_MAX_AGE_MS = 6 * 60 * 60_000L
+private const val PREPARED_NEAR_M = 150.0
+/** 受け取った警報を覚えておくのは、到達予想時刻から 1 時間後まで。 */
+private const val ALERT_KEEP_AFTER_ARRIVAL_MS = 60 * 60_000L
 
 data class UiState(
     val online: Boolean = true,
@@ -97,6 +103,12 @@ data class UiState(
     /** 泊まる所と、そこからの避難先。 */
     val stay: Pair<Double, Double>? = null,
     val stayPlace: NearbyPlace? = null,
+    /** 警報を受け取った時刻と、それが保存しておいたもの（開き直し・圏外）かどうか。 */
+    val alertReceivedAt: Long? = null,
+    val alertFromCache: Boolean = false,
+    /** 圏外に備えて、裏で用意した時刻と、用意している最中か。 */
+    val preparedAt: Long? = null,
+    val preparing: Boolean = false,
 ) {
     val arrived: Boolean get() = arrivedManually || step?.arrived == true
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
@@ -165,6 +177,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     val state: StateFlow<UiState> = _state
 
     private val prefs = app.getSharedPreferences("tsunami", android.content.Context.MODE_PRIVATE)
+    private val preparedStore = PreparedStore(app)
+    @Volatile private var cachedAlert: CachedAlert? = null
+    @Volatile private var preparedPlans: List<PreparedPlan> = emptyList()
+    private val prepareLock = kotlinx.coroutines.sync.Mutex()
     private var lastNearbyAt: Pair<Double, Double>? = null
 
     init {
@@ -175,6 +191,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch {
             pack = store.load()
+            loadPrepared()
             val stay = prefs.getString("stay", null)?.split(",")?.let { it[0].toDouble() to it[1].toDouble() }
             _state.update { it.copy(packInfo = pack?.let(::describe), stay = stay) }
             refreshStay()
@@ -188,7 +205,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     it.copy(online = online, switchedToOfflineAt = if (online) null else switched)
                 }
                 if (!online && live.active) stopLive()
-                if (online && !wasOnline) pollAlertOnce()
+                if (online && !wasOnline) {
+                    pollAlertOnce()
+                    viewModelScope.launch { prepareInBackground(force = false) }
+                }
             }
         }
         viewModelScope.launch {
@@ -211,6 +231,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             while (true) {
                 if (_state.value.online) pollAlertOnce()
                 delay(ALERT_POLL_MS)
+            }
+        }
+        // 通信がある間は、圏外に備える材料（データ・最新の警報・ここからの避難先）を裏でそろえておく
+        viewModelScope.launch {
+            delay(5_000)
+            while (true) {
+                prepareInBackground(force = false)
+                delay(60_000)
             }
         }
     }
@@ -243,6 +271,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         prefs.edit().putString("stay", "${loc.first},${loc.second}").apply()
         _state.update { it.copy(stay = loc) }
         refreshStay()
+        viewModelScope.launch { prepareInBackground(force = false) }
     }
 
     fun clearStay() {
@@ -355,6 +384,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         runCatching {
             val a = Api.getJson("/api/alert")
             _state.update { it.copy(jmaLine = jmaLine(a)) }
+            if (a["active"]?.jsonPrimitive?.content == "false" && a["jma_error"].let { it == null || it is JsonNull }) forgetAlert()
             applyAlert(a)
         }
     }
@@ -386,6 +416,19 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 active = true,
             )
         }
+        val isNew = cachedAlert?.arrivalMillis != arrival
+        if (isNew) {
+            val received = System.currentTimeMillis()
+            cachedAlert = CachedAlert(a["kind"]?.jsonPrimitive?.content ?: "津波警報", arrival, _state.value.isTraining, received)
+            _state.update { it.copy(alertReceivedAt = received, alertFromCache = false) }
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) { runCatching { preparedStore.save(cachedAlert, preparedPlans) } }
+                // 警報が変わったら、残り時間が変わるので、避難先を用意し直す
+                prepareInBackground(force = true)
+            }
+        } else if (_state.value.alertFromCache) {
+            _state.update { it.copy(alertFromCache = false) }
+        }
         if (!wasActive) {
             _state.update { it.copy(takeover = true) }
             speak("Tsunami warning. Evacuate now.")
@@ -413,7 +456,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         guidanceStarted = true
         _state.update { it.copy(error = null, busy = "Finding a shelter… / 避難先を計算中") }
         viewModelScope.launch {
-            val local = withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
+            val local = preparedFor(loc, _state.value.slow)
+                ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
             if (local != null) {
                 setChoice(local)
                 speakPlan(local)
@@ -443,7 +487,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** ルール 3: 選び直しも、まず端末ですぐ選ぶ（サーバーは 10 秒ほどかかり、Gemini Live が待ちきれない）。通信があれば後からサーバーで確かめる。 */
     private suspend fun reselect(speakResult: Boolean) {
         val loc = _state.value.location ?: return
-        val choice = withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
+        val choice = preparedFor(loc, _state.value.slow)
+            ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
             ?: (if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() else null)
             ?: return
         setChoice(choice)
@@ -642,7 +687,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         UiState(
             online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo,
             speechLang = it.speechLang, offlineSpeech = it.offlineSpeech, intentModel = it.intentModel, jmaLine = it.jmaLine,
-            nearby = it.nearby, stay = it.stay, stayPlace = it.stayPlace,
+            nearby = it.nearby, stay = it.stay, stayPlace = it.stayPlace, preparedAt = it.preparedAt,
+            alertKind = it.alertKind.takeIf { _ -> cachedAlert != null }, alertArrivalMillis = cachedAlert?.arrivalMillis,
+            isTraining = cachedAlert?.isTraining ?: false, alertReceivedAt = cachedAlert?.receivedAt, alertFromCache = cachedAlert != null,
         )
     }
 
@@ -659,10 +706,96 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         return Choice(plan.primary.shelter, plan.primary.walkMin, plan.decision.apiValue, "device (offline data, $how)", null)
     }
 
-    private suspend fun askServer(loc: Pair<Double, Double>, explain: Boolean): Choice {
+    private suspend fun loadPrepared() {
+        val (alert, plans) = withContext(Dispatchers.IO) { preparedStore.load() }
+        val now = System.currentTimeMillis()
+        cachedAlert = alert?.takeIf { it.arrivalMillis + ALERT_KEEP_AFTER_ARRIVAL_MS > now }
+        preparedPlans = plans.filter { now - it.preparedAt < PREPARED_MAX_AGE_MS }
+        _state.update { st ->
+            val c = cachedAlert
+            val withAlert = if (c != null && st.alertArrivalMillis == null) st.copy(
+                alertKind = c.kind, alertArrivalMillis = c.arrivalMillis, isTraining = c.isTraining,
+                alertReceivedAt = c.receivedAt, alertFromCache = true,
+            ) else st
+            withAlert.copy(preparedAt = preparedPlans.maxOfOrNull { it.preparedAt })
+        }
+    }
+
+    /** 気象庁が「警報なし」と確認できた時は、保存していた警報を消す。 */
+    private fun forgetAlert() {
+        if (cachedAlert == null) return
+        cachedAlert = null
+        viewModelScope.launch(Dispatchers.IO) { runCatching { preparedStore.save(null, preparedPlans) } }
+        _state.update { if (!it.active && it.alertFromCache) it.copy(alertKind = null, alertArrivalMillis = null, alertFromCache = false) else it }
+    }
+
+    /**
+     * 通信がある間に裏で行う準備。画面は待たせない。
+     * 1. 圏外用のデータが無ければ保存する
+     * 2. 今いる所と泊まる所から、普通の速さ・ゆっくりの 2 通りで、サーバーに避難先と Gemini の説明を出してもらい、保存する
+     *    （15 分たつか、150 m 動くか、警報が変わったら出し直す）
+     */
+    private suspend fun prepareInBackground(force: Boolean) {
+        if (!_state.value.online || !prepareLock.tryLock()) return
+        try {
+            if (pack == null) {
+                runCatching {
+                    store.download("osaka-bay", "en", null)
+                    pack = store.load()
+                    _state.update { it.copy(packInfo = pack?.let(::describe)) }
+                    lastNearbyAt = null
+                    refreshNearby()
+                    refreshStay()
+                }
+            }
+            val s = _state.value
+            val spots = listOfNotNull(s.location, s.stay)
+            val now = System.currentTimeMillis()
+            val alertKey = s.alertArrivalMillis
+            val needed = spots.flatMap { loc -> listOf(false, true).map { loc to it } }.filter { (loc, slow) ->
+                force || preparedPlans.none { p ->
+                    p.slow == slow && p.distanceTo(loc) < PREPARED_NEAR_M && now - p.preparedAt < PREPARE_REFRESH_MS && p.alertArrival == alertKey
+                }
+            }
+            if (needed.isEmpty()) return
+            _state.update { it.copy(preparing = true) }
+            val fresh = needed.mapNotNull { (loc, slow) ->
+                if (!_state.value.online) return@mapNotNull null
+                runCatching { askServer(loc, explain = true, slow = slow, excluded = emptySet()) }.getOrNull()?.let { c ->
+                    PreparedPlan(loc.first, loc.second, slow, System.currentTimeMillis(), alertKey, c.shelter, c.walkMin, c.decision, c.explanation)
+                }
+            }
+            if (fresh.isEmpty()) return
+            preparedPlans = (fresh + preparedPlans.filterNot { old -> fresh.any { it.slow == old.slow && old.distanceTo(it.lat to it.lon) < PREPARED_NEAR_M } }).take(8)
+            withContext(Dispatchers.IO) { runCatching { preparedStore.save(cachedAlert, preparedPlans) } }
+            _state.update { it.copy(preparedAt = fresh.maxOf { p -> p.preparedAt }) }
+        } finally {
+            _state.update { it.copy(preparing = false) }
+            prepareLock.unlock()
+        }
+    }
+
+    /** 前もって用意した避難先のうち、今いる所の近くで、今の残り時間でも間に合うもの。 */
+    private fun preparedFor(loc: Pair<Double, Double>, slow: Boolean): Choice? {
+        val now = System.currentTimeMillis()
+        val excluded = _state.value.excluded
+        val p = preparedPlans
+            .filter { it.slow == slow && it.distanceTo(loc) < PREPARED_NEAR_M && now - it.preparedAt < PREPARED_MAX_AGE_MS && it.shelter.id !in excluded }
+            .minByOrNull { it.distanceTo(loc) } ?: return null
+        if (p.walkMin + Planner.SAFETY_MARGIN_MIN > minutesLeftNow()) return null
+        val at = java.time.Instant.ofEpochMilli(p.preparedAt).atZone(java.time.ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0)
+        return Choice(p.shelter, p.walkMin, p.decision, "prepared online at $at (Routes API walking distance)", p.explanation)
+    }
+
+    private suspend fun askServer(
+        loc: Pair<Double, Double>,
+        explain: Boolean,
+        slow: Boolean = _state.value.slow,
+        excluded: Set<String> = _state.value.excluded,
+    ): Choice {
         val s = _state.value
-        val exclude = s.excluded.joinToString(",") { "\"$it\"" }
-        val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"en","slow":${s.slow},"explain":$explain,""" +
+        val exclude = excluded.joinToString(",") { "\"$it\"" }
+        val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"en","slow":$slow,"explain":$explain,""" +
             """"arrival_ms":${s.alertArrivalMillis},"shake_at_ms":${s.shakePressedMillis},"exclude_ids":[$exclude]}"""
         val res = Api.postJson("/api/plan", body)
         val plan = res["plan"]!!.jsonObject

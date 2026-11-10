@@ -174,7 +174,8 @@ private fun AppBar(s: UiState, vm: AppViewModel) {
                 Text("Tsunami Navi", fontWeight = FontWeight.Black, fontSize = 20.sp)
                 Text(
                     when {
-                        alert -> tr(alertEn(s.alertKind!!), s.alertKind!!) + if (s.isTraining) tr(" · training", " · 訓練") else tr(" · JMA", " · 気象庁")
+                        alert -> tr(alertEn(s.alertKind!!), s.alertKind!!) + (if (s.isTraining) tr(" · training", " · 訓練") else tr(" · JMA", " · 気象庁")) +
+                            (if (s.alertFromCache || !s.online) s.alertReceivedAt?.let { tr(" · received ${clock(it)}", " · ${clock(it)} 受信") } ?: "" else "")
                         else -> tr("No warning received", "警報は出ていません")
                     },
                     fontSize = 12.sp,
@@ -225,6 +226,25 @@ private fun Home(s: UiState, vm: AppViewModel) {
             headlineContent = { Text(tr("Osaka Bay offline data", "大阪湾のオフラインデータ"), fontWeight = FontWeight.SemiBold) },
             supportingContent = { Text(s.packInfo ?: tr("Not saved yet", "まだ保存していません")) },
             trailingContent = { FilledTonalButton(onClick = { vm.downloadPack() }) { Text(if (s.packInfo == null) tr("Save", "保存") else tr("Update", "更新")) } },
+            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        )
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        ListItem(
+            headlineContent = { Text(tr("Ready for no signal", "圏外への備え"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = {
+                Text(
+                    when {
+                        s.preparing -> tr("Getting the latest warning and routes in the background…", "最新の警報と避難先を裏で用意しています…")
+                        s.preparedAt != null -> tr(
+                            "Latest warning and routes from here prepared at ${clock(s.preparedAt)}. Kept up to date while online.",
+                            "最新の警報と、ここからの避難先を ${clock(s.preparedAt)} に用意しました。通信がある間は自動で更新します",
+                        )
+                        !s.online -> tr("Will prepare as soon as there is signal", "通信が戻ったら用意します")
+                        else -> tr("Preparing soon (in the background)", "まもなく裏で用意します")
+                    },
+                )
+            },
+            trailingContent = { if (s.preparing) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp) },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
         HorizontalDivider(color = MaterialTheme.colorScheme.outline)
@@ -395,7 +415,7 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     // 3. 地図（通信があって本物の GPS の時は Navigation SDK、それ以外は保存した道と浸水域から描く）
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
     else s.map?.let { MiniMap(it, s) }
-    if (!s.online) Ja(if (s.alertArrivalMillis != null) "Time basis: last JMA warning received / 時間の基準: 最後に受け取った気象庁の警報" else "Time basis: shaking + 26 min (estimate) / 時間の基準: 揺れてから 26 分（目安）")
+    if (!s.online) Ja(if (s.alertArrivalMillis != null) "Time basis: last JMA warning received${s.alertReceivedAt?.let { " (${clock(it)})" } ?: ""} / 時間の基準: 最後に受け取った気象庁の警報${s.alertReceivedAt?.let { "（${clock(it)}）" } ?: ""}" else "Time basis: shaking + 26 min (estimate) / 時間の基準: 揺れてから 26 分（目安）")
 
     // 4. やること
     Group("What to do", "やること") {
@@ -725,6 +745,10 @@ internal fun pick(text: String): String {
     if (i < 0) return text
     return if (LocalJa.current) text.substring(i + 3) else text.substring(0, i)
 }
+
+/** 時刻を「14:46」の形にする。 */
+internal fun clock(millis: Long): String =
+    java.time.Instant.ofEpochMilli(millis).atZone(java.time.ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0).toString()
 
 internal fun alertEn(kind: String) = when (kind) {
     "大津波警報" -> "Major Tsunami Warning"
