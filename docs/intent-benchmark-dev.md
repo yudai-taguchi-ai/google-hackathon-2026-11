@@ -9,6 +9,8 @@ Android の debug ビルドに独立した比較画面を用意する。結果�
 3. 端末のアプリ一覧から「Intent comparison (debug)」を開く。USB デバッグ接続なら `adb shell am start -a jp.oif.tsunaminavi.INTENT_BENCHMARK -p jp.oif.tsunaminavi` でも開ける。
 4. 3ファイルを選択し、文を入力して「同じ文章で測定」を押す。それぞれの判定と処理時間が表示される。
 
+受け渡し用ファイル: [BERTモデル（約712 MB）](https://drive.google.com/file/d/1jf0VhkLy5whcsC6xGM2ZTnmFRHjFPmGd/view?usp=drivesdk)、[BERT辞書](https://drive.google.com/file/d/1fVKqXUHjl8EAoK6FTzt7n-PWW4I0hL-4/view?usp=drivesdk)、[FunctionGemmaモデル（約286 MB）](https://drive.google.com/file/d/1AgfRlp5D_7u489kOO1BNC0ztVF-4L5cz/view?usp=drivesdk)。いずれも田口さんのアカウントに閲覧権限を付与済み。
+
 初期化時間はモデルの読み込み、判定時間はウォームアップ後の1回の推論とトークナイズを含む。ファイルのコピー時間は含まない。ルール方式は1回の判定。1回だけの測定はばらつくので繰り返し計測する。録音・音声認識時間は含まない。
 
 ## 検証済みと残り
