@@ -186,6 +186,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     init {
         tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) tts?.language = Locale.US }
         viewModelScope.launch {
+            // 起動直後の避難先の計算と CPU を取り合わないよう、少し待ってから読み込む
+            delay(15_000)
             onDevice.load()
             _state.update { it.copy(intentModel = onDevice.status) }
         }
