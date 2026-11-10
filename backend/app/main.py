@@ -25,6 +25,7 @@ from .flood import flood_in
 from .pack import ANSWERS_JA, ARRIVAL_DEFAULT_MIN, audio_wav, build_pack
 from .planner import _inundation, plan, shelters
 from .routes import safe_route
+from .walking import NoRouteFound
 
 STATIC = Path(__file__).resolve().parent / "static"
 AREAS = {"osaka-bay"}
@@ -83,7 +84,10 @@ def replay_alert() -> dict:
 def make_plan(req: PlanRequest) -> dict:
     alert = _alert_dict()
     minutes_left, time_source = _minutes_left(alert, req)
-    result = plan(req.lat, req.lon, minutes_left, slow=req.slow, exclude=set(req.exclude_ids))
+    try:
+        result = plan(req.lat, req.lon, minutes_left, slow=req.slow, exclude=set(req.exclude_ids))
+    except NoRouteFound as e:
+        raise HTTPException(503, str(e)) from e
     try:
         route = safe_route(req.lat, req.lon, result["primary"])
     except Exception as e:

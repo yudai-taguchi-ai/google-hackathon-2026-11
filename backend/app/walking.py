@@ -10,6 +10,20 @@ SLOW_WALK_SPEED_M_PER_S = 0.5
 FALLBACK_DETOUR = 1.6
 
 
+class NoRouteFound(Exception):
+    """No candidate has a known finite walking distance."""
+
+
+def routable_candidates(dests: list[dict], meters: list[float]) -> list[tuple[dict, float]]:
+    """Exclude missing/unreachable routes instead of serializing infinity as JSON."""
+    if len(dests) != len(meters):
+        raise ValueError("Route result count does not match candidate count")
+    candidates = [(d, m) for d, m in zip(dests, meters) if math.isfinite(m) and m >= 0]
+    if not candidates:
+        raise NoRouteFound("No walking route is available for the candidate shelters")
+    return candidates
+
+
 def distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     r = 6371000.0
     p1, p2 = math.radians(lat1), math.radians(lat2)
