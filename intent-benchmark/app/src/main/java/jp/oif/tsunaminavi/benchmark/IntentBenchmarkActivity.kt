@@ -50,6 +50,11 @@ class IntentBenchmarkActivity : ComponentActivity() {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("意図分類の比較（開発用）", style = MaterialTheme.typography.headlineSmall)
                     Text("判定結果は避難操作に反映されません。")
+                    Text("既存の評価（端末速度は未測定）", style = MaterialTheme.typography.titleMedium)
+                    Text("400件の正答率：ルール 70.5% / BERT 88.5% / FunctionGemma 93.25%")
+                    Text("危険ケースの取りこぼし：15.0% / 2.5% / 3.75%（危険ケース160件）")
+                    Text("無関係な言葉で動く割合：10.0% / 0% / 2.5%（無関係な40件）")
+                    Text("以下でこの端末の速度を測れます。初期化と音声認識は判定時間に含まれません。")
                     Button(onClick = { chooseModel.launch(arrayOf("*/*")) }, enabled = !running) {
                         Text(if (modelUri == null) "BERT ONNXモデルを選択" else "BERTモデル選択済み")
                     }
