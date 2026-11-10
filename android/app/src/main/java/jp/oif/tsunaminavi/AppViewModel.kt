@@ -366,7 +366,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         viewModelScope.launch {
+            if (onDevice.ready) _state.update { it.copy(busy = "Understanding on this device… / 端末の中で聞き分けています") }
             val byModel = onDevice.classify(text)
+            _state.update { it.copy(busy = null) }
             val id = byModel ?: classifier.classify(text)
             val by = if (byModel != null) "FunctionGemma (on device)" else "keywords"
             android.util.Log.i("TsunamiNavi", "heard '$text' -> $id by $by")
