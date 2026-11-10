@@ -6,9 +6,9 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /** 8 方位。画面の文字と、読み上げる言葉の元にする。 */
-enum class Compass(val ja: String, val en: String) {
-    N("北", "north"), NE("北東", "northeast"), E("東", "east"), SE("南東", "southeast"),
-    S("南", "south"), SW("南西", "southwest"), W("西", "west"), NW("北西", "northwest"),
+enum class Compass(val ja: String, val en: String, val zh: String, val ko: String) {
+    N("北", "north", "北", "북"), NE("北東", "northeast", "东北", "북동"), E("東", "east", "东", "동"), SE("南東", "southeast", "东南", "남동"),
+    S("南", "south", "南", "남"), SW("南西", "southwest", "西南", "남서"), W("西", "west", "西", "서"), NW("北西", "northwest", "西北", "북서"),
 }
 
 /**

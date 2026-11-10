@@ -10,5 +10,7 @@ class IntentClassifierTest {
         assertEquals("reselect_wheelchair", KeywordIntent.classify("I'm in a wheelchair"))
         assertEquals("injured", KeywordIntent.classify("けがをしました"))
         assertEquals("other", KeywordIntent.classify("nice weather today"))
+        assertEquals("reselect_slow", KeywordIntent.classify("I can’t walk fast"))
+        assertEquals("reselect_slow", KeywordIntent.classify("速く歩けない"))
     }
 }

@@ -18,10 +18,10 @@ data class Shelter(
 val DEPTH_ORDER = listOf("0.01～0.3m", "0.3～1.0m", "1.0～2.0m", "2.0～3.0m", "3.0～4.0m", "4.0～5.0m", "5.0m～")
 
 internal class Polygon(val rings: List<DoubleArray>) {
-    private val minLon: Double
-    private val maxLon: Double
-    private val minLat: Double
-    private val maxLat: Double
+    val minLon: Double
+    val maxLon: Double
+    val minLat: Double
+    val maxLat: Double
 
     init {
         val outer = rings.first()
@@ -62,6 +62,13 @@ class InundationMap private constructor(private val areas: List<Pair<String, Lis
         areas.filter { (_, polys) -> polys.any { it.contains(lat, lon) } }
             .maxByOrNull { (depth, _) -> DEPTH_ORDER.indexOf(depth) }
             ?.first
+
+    /** 範囲にかかる浸水域の外側の輪（[経度, 緯度, …]）と深さの区分。地図に色を塗るために使う。 */
+    fun ringsIn(minLat: Double, maxLat: Double, minLon: Double, maxLon: Double): List<Pair<String, DoubleArray>> =
+        areas.flatMap { (depth, polys) ->
+            polys.filter { it.maxLat >= minLat && it.minLat <= maxLat && it.maxLon >= minLon && it.minLon <= maxLon }
+                .map { depth to it.rings.first() }
+        }
 
     companion object {
         /**

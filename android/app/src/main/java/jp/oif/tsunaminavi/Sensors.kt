@@ -70,6 +70,7 @@ class HeadingSource(context: Context) : SensorEventListener {
     private val _heading = MutableStateFlow<Double?>(null)
     val heading: StateFlow<Double?> = _heading
     private val rotation = FloatArray(9)
+    private val upright = FloatArray(9)
     private val orientation = FloatArray(3)
 
     fun start() {
@@ -81,6 +82,11 @@ class HeadingSource(context: Context) : SensorEventListener {
     override fun onSensorChanged(event: SensorEvent) {
         SensorManager.getRotationMatrixFromVector(rotation, event.values)
         SensorManager.getOrientation(rotation, orientation)
+        // 縦に立てて持つ時（カメラを前に向ける時）は、画面の上ではなく背面のカメラが向く方角を使う
+        if (Math.toDegrees(orientation[1].toDouble()) < -45.0) {
+            SensorManager.remapCoordinateSystem(rotation, SensorManager.AXIS_X, SensorManager.AXIS_Z, upright)
+            SensorManager.getOrientation(upright, orientation)
+        }
         _heading.value = (Math.toDegrees(orientation[0].toDouble()) + 360.0) % 360.0
     }
 
