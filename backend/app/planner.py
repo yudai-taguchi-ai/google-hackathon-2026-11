@@ -7,7 +7,7 @@ from pathlib import Path
 from shapely.geometry import Point, shape
 from shapely.strtree import STRtree
 
-from .walking import distance_m, to_minutes, walking_distances
+from .walking import NoRouteFound, distance_m, routable_candidates, to_minutes, walking_distances
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 SAFETY_MARGIN_MIN = 3.0
@@ -63,15 +63,17 @@ def plan(lat: float, lon: float, minutes_left: float, slow: bool = False, exclud
         s for s in by_distance if s["inundation_depth"] is not None and not is_open_space(s["name"])
     ][:CANDIDATES]
     pool = outside_pool + upstairs_pool
+    if not pool:
+        raise NoRouteFound("No candidate shelters are available")
     meters, source = walking_distances(lat, lon, pool)
     budget = minutes_left - SAFETY_MARGIN_MIN
 
     options = []
-    for s, m in zip(pool, meters):
+    for s, m in routable_candidates(pool, meters):
         walk = to_minutes(m, slow)
         options.append({
             **s,
-            "walk_m": None if m == float("inf") else round(m),
+            "walk_m": round(m),
             "walk_min": round(walk, 1),
             "reachable": walk <= budget,
             "type": "outside_zone" if s["inundation_depth"] is None else "go_upstairs",
