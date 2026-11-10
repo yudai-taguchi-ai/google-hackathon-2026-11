@@ -425,7 +425,7 @@ function t(key, vars = {}) {
   if (!row) return key;
   return (row[langIndex()] ?? row[0]).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 }
-const kindName = (kind) => (KIND[kind]?.[langIndex()]) ?? kind ?? '';
+const kindName = (kind) => { const k = Object.keys(KIND).find(x => String(kind ?? '').includes(x)); return k ? KIND[k][langIndex()] : (kind ?? ''); };
 function applyLang() {
   document.documentElement.lang = $('lang').value;
   document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
