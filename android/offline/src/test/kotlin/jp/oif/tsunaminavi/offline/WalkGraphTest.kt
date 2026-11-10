@@ -33,4 +33,16 @@ class WalkGraphTest {
         assertEquals("walk_graph", p.distanceSource)
         assertEquals(200.0, p.primary.walkM, 1.0)
     }
+
+    @Test
+    fun 地図に描く道の点の並び() {
+        assertEquals(listOf(0, 1, 2), g.path(0, 2, 10_000.0))
+        assertEquals(null, g.path(0, 2, 150.0))
+    }
+
+    @Test
+    fun 範囲の中の道は重ねずに返す() {
+        val seg = g.segmentsIn(33.99, 34.01, 134.99, 135.01)
+        assertEquals(4 * 4, seg.size)
+    }
 }

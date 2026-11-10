@@ -68,6 +68,48 @@ class WalkGraph private constructor(
         return found
     }
 
+
+    /** source から goal までの道の点の並び（地図に道を描くため）。limitM までに着かなければ null。 */
+    fun path(source: Int, goal: Int, limitM: Double): List<Int>? {
+        val dist = HashMap<Int, Double>()
+        val prev = HashMap<Int, Int>()
+        val queue = PriorityQueue<Pair<Double, Int>>(compareBy { it.first })
+        dist[source] = 0.0
+        queue.add(0.0 to source)
+        while (queue.isNotEmpty()) {
+            val (d, u) = queue.poll()
+            if (d > (dist[u] ?: Double.MAX_VALUE)) continue
+            if (d > limitM) return null
+            if (u == goal) return generateSequence(goal) { prev[it] }.toList().reversed()
+            for (k in offsets[u] until offsets[u + 1]) {
+                val v = targets[k]
+                val nd = d + lengths[k]
+                if (nd < (dist[v] ?: Double.MAX_VALUE)) {
+                    dist[v] = nd
+                    prev[v] = u
+                    queue.add(nd to v)
+                }
+            }
+        }
+        return null
+    }
+
+    /** 範囲の中にある道を、線分（緯度1, 経度1, 緯度2, 経度2）の並びで返す。地図の背景に使う。 */
+    fun segmentsIn(minLat: Double, maxLat: Double, minLon: Double, maxLon: Double, max: Int = 4000): FloatArray {
+        val out = ArrayList<Float>()
+        val y0 = Math.floor(minLat / CELL).toLong(); val y1 = Math.floor(maxLat / CELL).toLong()
+        val x0 = Math.floor(minLon / CELL).toLong(); val x1 = Math.floor(maxLon / CELL).toLong()
+        loop@ for (y in y0..y1) for (x in x0..x1) for (u in grid[key(y, x)] ?: continue) {
+            for (k in offsets[u] until offsets[u + 1]) {
+                val v = targets[k]
+                if (v < u && (lat(v) in minLat..maxLat && lon(v) in minLon..maxLon)) continue
+                out.add(coords[2 * u]); out.add(coords[2 * u + 1]); out.add(coords[2 * v]); out.add(coords[2 * v + 1])
+                if (out.size >= max * 4) break@loop
+            }
+        }
+        return out.toFloatArray()
+    }
+
     companion object {
         private const val CELL = 0.003
 

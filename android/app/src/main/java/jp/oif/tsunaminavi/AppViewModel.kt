@@ -84,7 +84,21 @@ data class UiState(
     val speechLang: String = "en-US",
     /** 聞き取った頼みごと。確かめてから動く（聞き間違いで避難先が変わらないように）。 */
     val pendingIntent: String? = null,
+    /** 警報が届いた瞬間の全画面（押すか 5 秒で閉じ、裏では案内がもう始まっている）。 */
+    val takeover: Boolean = false,
+    /** 本人が「着いた・もう高い所にいる」と押した。 */
+    val arrivedManually: Boolean = false,
+    /** 選び直す前の避難先（前と後を並べて見せる）。 */
+    val previous: Previous? = null,
+    /** 端末に保存した道と浸水域から描く地図（圏外・デモ地点でも出す）。 */
+    val map: MiniMapData? = null,
+    /** 最初の画面で出す、今いる所からの避難先。 */
+    val nearby: NearbyPlace? = null,
+    /** 泊まる所と、そこからの避難先。 */
+    val stay: Pair<Double, Double>? = null,
+    val stayPlace: NearbyPlace? = null,
 ) {
+    val arrived: Boolean get() = arrivedManually || step?.arrived == true
     val location: Pair<Double, Double>? get() = if (useDemoPoint) DEMO_POINT else gps
 
     /** 残りの歩く時間（避難の速さ）。選んだ時の道のりの時間を、今の残りの直線距離の割合で減らす。表示する歩く時間はこれ 1 つだけ。 */
@@ -96,6 +110,25 @@ data class UiState(
     }
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
 }
+
+/** 選び直す前の避難先。walkMin は「今の歩く速さ」で数え直した時間。 */
+data class Previous(val name: String, val walkMin: Double, val reason: String)
+
+/** 前もって出しておく避難先（揺れる前に見せる）。 */
+data class NearbyPlace(val name: String, val walkMin: Double, val upstairs: Boolean, val floorMin: Int?)
+
+/** 地図に描くもの。roads は（緯度1, 経度1, 緯度2, 経度2）の並び、flood は（深さの区分, [経度, 緯度, …]）。 */
+class MiniMapData(
+    val minLat: Double,
+    val maxLat: Double,
+    val minLon: Double,
+    val maxLon: Double,
+    val roads: FloatArray,
+    val flood: List<Pair<String, DoubleArray>>,
+    val route: List<Pair<Double, Double>>,
+    val onRoads: Boolean,
+    val targetId: String,
+)
 
 /** 計算した避難先 1 件（端末かサーバーのどちらで計算したか付き）。 */
 private data class Choice(val shelter: Shelter, val walkMin: Double, val decision: String, val source: String, val explanation: String?)
@@ -131,6 +164,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val _state = MutableStateFlow(UiState(online = connectivity.online.value))
     val state: StateFlow<UiState> = _state
 
+    private val prefs = app.getSharedPreferences("tsunami", android.content.Context.MODE_PRIVATE)
+    private var lastNearbyAt: Pair<Double, Double>? = null
+
     init {
         tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) tts?.language = Locale.US }
         viewModelScope.launch {
@@ -139,7 +175,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch {
             pack = store.load()
-            _state.update { it.copy(packInfo = pack?.let(::describe)) }
+            val stay = prefs.getString("stay", null)?.split(",")?.let { it[0].toDouble() to it[1].toDouble() }
+            _state.update { it.copy(packInfo = pack?.let(::describe), stay = stay) }
+            refreshStay()
+            refreshNearby()
         }
         viewModelScope.launch {
             connectivity.online.collect { online ->
@@ -155,6 +194,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             locationSource.location.collect { loc ->
                 _state.update { it.copy(gps = loc) }
+                refreshNearby()
                 // 案内を始めた時に現在地がまだ無かった場合は、取れた時点で計算する
                 val s = _state.value
                 if (loc != null && s.active && s.target == null && !planning && !guidanceStarted) startGuidance()
@@ -181,7 +221,103 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         checkOfflineSpeech()
     }
 
-    fun setDemoPoint(on: Boolean) = _state.update { it.copy(useDemoPoint = on) }
+    fun setDemoPoint(on: Boolean) {
+        _state.update { it.copy(useDemoPoint = on) }
+        lastNearbyAt = null
+        refreshNearby()
+    }
+
+    fun closeTakeover() = _state.update { it.copy(takeover = false) }
+
+    /** 「着いた」「もう丈夫な建物の高い階にいる」。 */
+    fun markArrived() = _state.update { it.copy(takeover = false, active = true, arrivedManually = true) }
+
+    /** 着いた画面から案内に戻る（まだ着いていなかった時）。 */
+    fun backToGuide() = _state.update { it.copy(arrivedManually = false) }
+
+    fun clearPrevious() = _state.update { it.copy(previous = null) }
+
+    /** 今いる所を「泊まる所」として覚え、そこからの避難先を前もって出す。 */
+    fun setStayHere() {
+        val loc = _state.value.location ?: return
+        prefs.edit().putString("stay", "${loc.first},${loc.second}").apply()
+        _state.update { it.copy(stay = loc) }
+        refreshStay()
+    }
+
+    fun clearStay() {
+        prefs.edit().remove("stay").apply()
+        _state.update { it.copy(stay = null, stayPlace = null) }
+    }
+
+
+    private fun preview(loc: Pair<Double, Double>): NearbyPlace? {
+        val p = pack ?: return null
+        val plan = Planner.plan(loc.first, loc.second, Planner.ARRIVAL_DEFAULT_MIN, false, p.shelters, p.inundation, p.graph)
+        val sh = plan.primary.shelter
+        return NearbyPlace(sh.name, plan.primary.walkMin, sh.inundationDepth != null, sh.floorMin)
+    }
+
+    /** 最初の画面の「今いる所からの避難先」。80 m 以上動いた時だけ数え直す。 */
+    private fun refreshNearby() {
+        val loc = _state.value.location ?: return
+        if (_state.value.active || pack == null) return
+        lastNearbyAt?.let { if (Planner.distanceM(it.first, it.second, loc.first, loc.second) < 80) return }
+        lastNearbyAt = loc
+        viewModelScope.launch {
+            val place = withContext(Dispatchers.Default) { runCatching { preview(loc) }.getOrNull() }
+            _state.update { it.copy(nearby = place) }
+        }
+    }
+
+    private fun refreshStay() {
+        val stay = _state.value.stay ?: return
+        viewModelScope.launch {
+            val place = withContext(Dispatchers.Default) { runCatching { preview(stay) }.getOrNull() }
+            _state.update { it.copy(stayPlace = place) }
+        }
+    }
+
+    /** 保存した道のグラフと浸水域から、今いる所 → 避難先の地図を作る。 */
+    private fun buildMap(loc: Pair<Double, Double>, t: Shelter): MiniMapData? {
+        val p = pack ?: return null
+        val g = p.graph
+        var route: List<Pair<Double, Double>>? = null
+        if (g != null) {
+            val from = g.nearest(loc.first, loc.second)
+            val to = t.graphNode ?: g.nearest(t.lat, t.lon)?.first
+            if (from != null && to != null && from.second <= Planner.GRAPH_SNAP_MAX_M) {
+                route = g.path(from.first, to, 8_000.0)?.map { g.lat(it) to g.lon(it) }?.let { listOf(loc) + it + listOf(t.lat to t.lon) }
+            }
+        }
+        val line = route ?: listOf(loc, t.lat to t.lon)
+        var minLat = line.minOf { it.first }
+        var maxLat = line.maxOf { it.first }
+        var minLon = line.minOf { it.second }
+        var maxLon = line.maxOf { it.second }
+        val padLat = maxOf((maxLat - minLat) * 0.25, 0.0015)
+        val padLon = maxOf((maxLon - minLon) * 0.25, 0.0018)
+        minLat -= padLat; maxLat += padLat; minLon -= padLon; maxLon += padLon
+        return MiniMapData(
+            minLat, maxLat, minLon, maxLon,
+            roads = g?.segmentsIn(minLat, maxLat, minLon, maxLon) ?: FloatArray(0),
+            flood = p.inundation.ringsIn(minLat, maxLat, minLon, maxLon),
+            route = line,
+            onRoads = route != null,
+            targetId = t.id,
+        )
+    }
+
+    private fun refreshMap() {
+        val s = _state.value
+        val loc = s.location ?: return
+        val t = s.target ?: return
+        if (s.map?.targetId == t.id) return
+        viewModelScope.launch {
+            val m = withContext(Dispatchers.Default) { runCatching { buildMap(loc, t) }.getOrNull() }
+            if (_state.value.target?.id == t.id) _state.update { it.copy(map = m) }
+        }
+    }
 
     /** 圏外用の英語の音声データが端末にあるかを確かめ、無ければ（通信がある時に）ダウンロードを頼む。 */
     fun checkOfflineSpeech() {
@@ -196,6 +332,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             store.download("osaka-bay", "en", null)
             pack = store.load()
             _state.update { it.copy(packInfo = pack?.let(::describe), busy = null) }
+            lastNearbyAt = null
+            refreshNearby()
+            refreshStay()
             // 圏外で話しかけられるよう、英語の音声データも一緒に準備する
             checkOfflineSpeech()
         } catch (e: Exception) {
@@ -248,6 +387,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             )
         }
         if (!wasActive) {
+            _state.update { it.copy(takeover = true) }
             speak("Tsunami warning. Evacuate now.")
             startGuidance()
         }
@@ -325,6 +465,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private suspend fun handleIntent(id: String, fromLive: Boolean) {
         val target = _state.value.target
+        val beforeWalk = _state.value.targetWalkMin
+        val beforeSlow = _state.value.slow
         var note: String? = null
         when (id) {
             "reselect_slow", "reselect_wheelchair" -> {
@@ -338,6 +480,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 note = reselectNote(target?.id)
             }
             "ask_floor" -> if (!fromLive && target != null) speak("Go up to floor ${target.floorMin ?: 3} or higher.")
+        }
+        if (id in setOf("reselect_slow", "reselect_wheelchair", "reselect", "road_blocked") && target != null) {
+            val now = _state.value
+            val prev = if (now.target?.id == target.id || beforeWalk == null) null else Previous(
+                name = target.name,
+                walkMin = if (now.slow && !beforeSlow) beforeWalk * Planner.WALK_SPEED_M_PER_S / Planner.SLOW_WALK_SPEED_M_PER_S else beforeWalk,
+                reason = if (id == "road_blocked" || id == "reselect") "blocked" else "slow",
+            )
+            _state.update { it.copy(previous = prev) }
         }
         _state.update { it.copy(answer = note ?: pack?.answers?.get(id)?.let { en -> jaAnswers[id]?.let { ja -> "$en / $ja" } ?: en }) }
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
@@ -488,7 +639,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun reset() = _state.update {
         guidanceStarted = false
         dismissedArrival = it.alertArrivalMillis
-        UiState(online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo)
+        UiState(
+            online = it.online, gps = it.gps, useDemoPoint = it.useDemoPoint, heading = it.heading, packInfo = it.packInfo,
+            speechLang = it.speechLang, offlineSpeech = it.offlineSpeech, intentModel = it.intentModel, jmaLine = it.jmaLine,
+            nearby = it.nearby, stay = it.stay, stayPlace = it.stayPlace,
+        )
     }
 
     private fun minutesLeftNow(): Double {
@@ -532,7 +687,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         openSpace = false,
     )
 
-    private fun setChoice(c: Choice) = _state.update {
+    private fun setChoice(c: Choice) {
+        setChoiceState(c)
+        refreshMap()
+    }
+
+    private fun setChoiceState(c: Choice) = _state.update {
         it.copy(
             target = c.shelter,
             targetWalkMin = c.walkMin,

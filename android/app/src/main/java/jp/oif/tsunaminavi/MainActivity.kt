@@ -135,9 +135,10 @@ fun App(vm: AppViewModel = viewModel()) {
     KeepScreenOn(s.active)
     val guiding = s.active && s.target != null
     CompositionLocalProvider(LocalJa provides (s.speechLang == "ja-JP")) {
+    Box(Modifier.fillMaxSize()) {
     Scaffold(
         topBar = { AppBar(s, vm) },
-        bottomBar = { if (guiding) TalkBar(s, vm) },
+        bottomBar = { if (guiding && !s.arrived) TalkBar(s, vm) },
         containerColor = MaterialTheme.colorScheme.background,
     ) { inner ->
         Box(Modifier.fillMaxSize().padding(inner), contentAlignment = Alignment.TopCenter) {
@@ -145,12 +146,18 @@ fun App(vm: AppViewModel = viewModel()) {
                 Modifier.widthIn(max = 640.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(PaddingValues(16.dp)),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                if (s.switchedToOfflineAt != null) Banner("Switched to offline mode — guidance continues with saved data", "オフラインに切り替えました（保存したデータで案内を続けます）", Brand.Warn)
+                if (!s.online && s.active) OfflineStrip()
                 s.error?.let { Banner(it, null, Brand.Danger) }
                 s.busy?.let { Busy(it) }
-                if (!s.active) Home(s, vm) else Guide(s, vm)
+                when {
+                    !s.active -> Home(s, vm)
+                    s.arrived -> ArrivedScreen(s, vm)
+                    else -> Guide(s, vm)
+                }
             }
         }
+    }
+    if (s.takeover) AlertTakeover(s, vm)
     }
     }
 }
@@ -211,6 +218,7 @@ private fun Home(s: UiState, vm: AppViewModel) {
         modifier = Modifier.fillMaxWidth(),
     )
     s.jmaLine?.let { Banner(it, null, Brand.Teal) }
+    s.nearby?.let { NearbyCard(it, stay = false) }
 
     Group("Before your trip", "旅行の前に（Wi-Fi のある所で）") {
         ListItem(
@@ -225,7 +233,26 @@ private fun Home(s: UiState, vm: AppViewModel) {
             supportingContent = { Text(s.offlineSpeech ?: tr("checking…", "確認中…")) },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        ListItem(
+            headlineContent = { Text(tr("Where you're staying", "泊まる所"), fontWeight = FontWeight.SemiBold) },
+            supportingContent = {
+                Text(
+                    when {
+                        s.stay == null -> tr("At your hotel, tap \"Use this spot\" to plan your way out in advance", "宿で「ここにする」を押すと、そこからの避難先を前もって決めておけます")
+                        s.packInfo == null -> tr("Saved. Save the offline data to see where to go.", "保存しました。避難先はデータを保存すると出ます")
+                        else -> tr("Saved. Your way out is shown below.", "保存しました。避難先は下に出ています")
+                    },
+                )
+            },
+            trailingContent = {
+                if (s.stay == null) FilledTonalButton(onClick = { vm.setStayHere() }, enabled = s.location != null) { Text(tr("Use this spot", "ここにする")) }
+                else OutlinedButton(onClick = { vm.clearStay() }) { Text(tr("Clear", "消す")) }
+            },
+            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        )
     }
+    s.stayPlace?.let { NearbyCard(it, stay = true) }
 
     var demoOpen by rememberSaveable { mutableStateOf(false) }
     Group("Demo & test", "デモ・試験用") {
@@ -361,12 +388,14 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     // 2. 間に合うか
     if (walk != null || left != null) TimeLine(s, walk, left, late)
 
+    s.previous?.let { ReselectDiff(it, s, vm) }
     s.notice?.let { Banner(it, null, Brand.Teal) }
-    s.answer?.let { Banner(it, null, Brand.Info) }
+    s.answer?.takeIf { s.previous == null }?.let { Banner(it, null, Brand.Info) }
 
-    // 3. 地図（通信がある時）
+    // 3. 地図（通信があって本物の GPS の時は Navigation SDK、それ以外は保存した道と浸水域から描く）
     if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
-    else if (s.online) Ja("Map navigation is off at the demo location. Try with real GPS. / デモ地点では地図のナビを使いません")
+    else s.map?.let { MiniMap(it, s) }
+    if (!s.online) Ja(if (s.alertArrivalMillis != null) "Time basis: last JMA warning received / 時間の基準: 最後に受け取った気象庁の警報" else "Time basis: shaking + 26 min (estimate) / 時間の基準: 揺れてから 26 分（目安）")
 
     // 4. やること
     Group("What to do", "やること") {
@@ -381,6 +410,9 @@ private fun Guide(s: UiState, vm: AppViewModel) {
             s.explanation?.let { Text(it, fontSize = 15.sp) }
             Ja("Residents: follow your local evacuation plan. / 地元の方は、市や自治会が決めた避難先に従ってください")
         }
+    }
+    OutlinedButton(onClick = { vm.markArrived() }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+        Text(tr("I've arrived", "着いた"), fontWeight = FontWeight.Bold)
     }
 
     Ja(tr("Calculated by: ${s.planSource} · walking ${if (s.slow) "0.5" else "0.62"} m/s", "計算: ${s.planSource}・歩く速さ ${if (s.slow) "0.5" else "0.62"} m/秒"))
@@ -681,20 +713,20 @@ private fun Mic(color: Color) {
 }
 
 /** 画面の言語。true なら日本語だけ、false なら英語だけを出す（聞き取る言語と同じ）。 */
-private val LocalJa = compositionLocalOf { false }
+internal val LocalJa = compositionLocalOf { false }
 
 @Composable
-private fun tr(en: String, ja: String) = if (LocalJa.current) ja else en
+internal fun tr(en: String, ja: String) = if (LocalJa.current) ja else en
 
 /** アプリが作る「英語 / 日本語」の文から、選んだ言語の側だけを取り出す。 */
 @Composable
-private fun pick(text: String): String {
+internal fun pick(text: String): String {
     val i = text.indexOf(" / ")
     if (i < 0) return text
     return if (LocalJa.current) text.substring(i + 3) else text.substring(0, i)
 }
 
-private fun alertEn(kind: String) = when (kind) {
+internal fun alertEn(kind: String) = when (kind) {
     "大津波警報" -> "Major Tsunami Warning"
     "津波警報" -> "Tsunami Warning"
     "津波注意報" -> "Tsunami Advisory"
@@ -724,7 +756,7 @@ private fun Ja(text: String) {
 }
 
 @Composable
-private fun Banner(text: String, ja: String?, color: Color) {
+internal fun Banner(text: String, ja: String?, color: Color) {
     Column(Modifier.fillMaxWidth().clip(MaterialTheme.shapes.medium).background(color).padding(horizontal = 14.dp, vertical = 12.dp)) {
         Text(if (ja != null) tr(text, ja) else pick(text), color = Color.White, fontWeight = FontWeight.SemiBold)
     }
