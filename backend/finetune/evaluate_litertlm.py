@@ -3,24 +3,34 @@ import argparse
 import json
 from pathlib import Path
 
-import litert_lm
-from transformers import AutoTokenizer
-
-from finetune.train_functiongemma import format_row, parse_call
 from finetune.score import score
 
 
+def read_test_rows(path: Path, limit: int | None = None) -> list[dict]:
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not rows:
+        raise ValueError("Test dataset is empty")
+    if limit is not None and not 1 <= limit <= len(rows):
+        raise ValueError(f"limit must be between 1 and {len(rows)}")
+    return rows if limit is None else rows[:limit]
+
+
 def main():
+    import litert_lm
+    from transformers import AutoTokenizer
+    from finetune.train_functiongemma import format_row, parse_call
+
     parser = argparse.ArgumentParser()
     parser.add_argument("model")
     parser.add_argument("--tokenizer", required=True)
-    parser.add_argument("--limit", type=int, default=400)
+    parser.add_argument("--limit", type=int, default=None, help="Evaluate only the first N rows (default: all)")
+    parser.add_argument("--test-data", type=Path, default=Path(__file__).parent / "data/test.jsonl")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if not 1 <= args.limit <= 400:
-        parser.error("limit must be between 1 and 400")
-    rows = [json.loads(line) for line in (Path(__file__).parent / "data/test.jsonl").read_text(encoding="utf-8").splitlines()]
-    rows = rows[:args.limit]
+    try:
+        rows = read_test_rows(args.test_data, args.limit)
+    except ValueError as error:
+        parser.error(str(error))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     predictions = []
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer, local_files_only=True)
