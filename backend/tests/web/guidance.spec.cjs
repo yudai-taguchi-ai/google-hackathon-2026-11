@@ -318,3 +318,38 @@ test('watch the full flow replays the training warning and plans at Sakai', asyn
   await expect(page.locator('#out')).toContainText('training telegram');
   expect(state.inputs.at(-1)).toMatchObject({ lat: 34.5813, lon: 135.4673 });
 });
+
+test('a fresh warning takes over the screen, then guidance starts by itself', async ({ page }) => {
+  const { state } = await boot(page);
+  await page.route('http://tsunami.test/api/alert/replay', route => {
+    state.alert = { ...training, minutes_left: 17, arrival_time: '2026-11-10T15:03:00+09:00' };
+    return route.fulfill({ json: state.alert });
+  });
+  await page.locator('#demoRun').click();
+  await expect(page.locator('#takeover')).toBeVisible();
+  await expect(page.locator('#toTitle')).toHaveText('Major Tsunami Warning');
+  await expect(page.locator('#toMin')).toHaveText('17');
+  await expect(page.locator('#takeover')).toBeHidden({ timeout: 8000 });
+  await expect(page.locator('#out .card')).toBeVisible();
+});
+
+test('reselecting at a slower pace shows the old and the new place side by side', async ({ page }) => {
+  await boot(page);
+  await choose(page);
+  await page.locator('#slow').check();
+  await expect(page.locator('#diff')).toContainText('Hotel');
+  await expect(page.locator('#diff')).toContainText('Nearby building');
+  await expect(page.locator('#diff .old')).toContainText('16 min');
+});
+
+test('arriving shows what to do next and can go back to guidance', async ({ page }) => {
+  await boot(page);
+  await choose(page);
+  await page.locator('#arrivedBtn').click();
+  await expect(page.locator('#out')).toContainText("You've arrived");
+  await expect(page.locator('#out a[href="tel:119"]')).toBeVisible();
+  await page.locator('[data-answer="back"]').click();
+  await expect(page.locator('#out .answer')).toContainText('lifts the warning');
+  await page.locator('#notYet').click();
+  await expect(page.locator('#out .card')).toBeVisible();
+});

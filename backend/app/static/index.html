@@ -36,6 +36,50 @@
   :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
   .ja { color: var(--ink-3); font-size: 12px; font-weight: 400; }
 
+  /* 警報が届いた瞬間の全画面 */
+  .takeover { position: fixed; inset: 0; z-index: 3000; background: var(--red); color: #fff; overflow-y: auto; padding: max(28px, env(safe-area-inset-top)) 24px calc(28px + env(safe-area-inset-bottom)); }
+  .takeover[hidden] { display: none; }
+  .takeover .inner { max-width: 560px; min-height: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+  .takeover .meta { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 700; letter-spacing: .08em; opacity: .95; }
+  .takeover h2 { margin: 0; font-size: clamp(36px, 10vw, 52px); line-height: 1.02; font-weight: 900; letter-spacing: -.02em; }
+  .takeover .cap { border-top: 2px solid rgb(255 255 255 / .4); padding-top: 18px; font-size: 15px; font-weight: 700; }
+  .takeover .num { font-size: clamp(96px, 30vw, 140px); line-height: .9; font-weight: 900; letter-spacing: -.04em; }
+  .takeover .num small { font-size: 30px; font-weight: 800; letter-spacing: 0; margin-left: 6px; }
+  .takeover p { margin: 0; font-size: 20px; line-height: 1.35; font-weight: 700; }
+  .takeover .go { margin-top: auto; min-height: 64px; border: none; border-radius: 16px; background: #fff; color: var(--red); font-size: 20px; font-weight: 900; }
+  .takeover .auto { text-align: center; font-size: 13px; }
+  .takeover .high { align-self: center; background: none; border: none; color: #fff; font-size: 14px; font-weight: 700; text-decoration: underline; padding: 6px; }
+
+  /* 選び直した時の前と後 */
+  .diff { margin: 14px 0 4px; display: grid; gap: 8px; }
+  .diff .cap { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--ink-2); }
+  .diff .old { background: var(--paper-2); border-radius: 10px; padding: 10px 12px; }
+  .diff .old s { display: block; font-size: 13px; color: var(--ink-3); }
+  .diff .old b { color: #b30010; font-size: 14px; }
+  .diff .new { border: 2px solid var(--green); border-radius: 10px; padding: 10px 12px; }
+  .diff .new b { display: block; font-size: 16px; font-weight: 900; }
+  .diff .new span { color: #00602b; font-size: 14px; font-weight: 700; }
+
+  /* 着いた後 */
+  .arrived-top { margin: 0 -24px; padding: 20px 24px; background: var(--green); color: #fff; display: grid; gap: 10px; }
+  .arrived-top .row { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+  .arrived-top .row span:last-child { margin-left: auto; font-size: 13px; }
+  .arrived-top .big { font-size: 40px; line-height: 1.05; font-weight: 900; }
+  .arrived-top .ja { color: #fff; opacity: .9; }
+  @media (max-width: 860px) { .arrived-top { margin: 0 -16px; padding: 18px 16px; } }
+  .after { list-style: none; margin: 8px 0 0; padding: 0; }
+  .after li { border-bottom: 1px solid var(--rule); }
+  .after a, .after button { display: block; width: 100%; text-align: left; background: none; border: none; padding: 14px 2px; color: var(--ink); text-decoration: none; }
+  .after b { display: block; font-size: 16px; font-weight: 800; }
+  .after small { color: var(--ink-2); font-size: 13px; }
+  .after .answer { padding: 0 2px 14px; font-size: 14px; }
+  .arrivedbtn, .againbtn { width: 100%; min-height: 48px; margin-top: 12px; border: 2px solid var(--ink); background: var(--paper); border-radius: 12px; font-size: 16px; font-weight: 800; }
+
+  /* 地図の凡例 */
+  .legend { position: absolute; left: 16px; top: 16px; z-index: 500; display: none; align-items: center; gap: 6px; background: #fff; border-radius: 8px; padding: 6px 9px; font-size: 12px; font-weight: 700; box-shadow: 0 2px 8px rgb(0 0 0 / .15); }
+  .legend i { width: 12px; height: 12px; background: #8fb3e6; border: 1px solid #5a89cf; }
+  body[data-state="result"] .legend.on { display: flex; }
+
   /* 警報の帯 */
   .ticker { position: sticky; top: 0; z-index: 1000; background: var(--ink); color: #fff; padding: 8px 16px; display: flex; align-items: center; gap: 12px; min-height: 48px; }
   .ticker:has(.alert) { background: var(--red); }
@@ -237,7 +281,24 @@
   </main>
   <div class="mapwrap" aria-hidden="true">
     <div id="map"></div>
+    <div class="legend" id="legend"><i></i>Flood zone (MLIT) / 浸水想定区域</div>
     <div class="maphint">Tap a red circle to try / 赤い丸を押して試す</div>
+  </div>
+</div>
+
+<div class="takeover" id="takeover" role="alertdialog" aria-modal="true" aria-labelledby="toTitle" hidden>
+  <div class="inner">
+    <div class="meta">
+      <svg width="44" height="40" viewBox="0 0 26 23" aria-hidden="true"><path d="M13 1 25 22H1Z" fill="#ffd100" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 18c1.5 0 1.5-1.2 3.5-1.2S11.5 18 13 18s1.5-1.2 3.5-1.2S18.5 18 20 18M8.5 14c1.4 0 1.4-1 3-1.6 1-.4 2-.4 3 .2" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span id="toMeta"></span>
+    </div>
+    <h2 id="toTitle"></h2>
+    <div class="cap">First wave expected in <span class="ja" style="color:#fff">津波の到達まで</span></div>
+    <div class="num"><span id="toMin"></span><small>min</small></div>
+    <p>Move away from the sea and go high — now. Don't take a car.<br><span class="ja" style="color:#fff;font-size:14px">今すぐ海から離れ、高い所へ。車は使わないでください。</span></p>
+    <button class="go" id="toGo" type="button">Show me where to go <span class="ja" style="color:var(--red)">逃げる先を見る</span></button>
+    <div class="auto" id="toAuto"></div>
+    <button class="high" id="toHigh" type="button">I'm already high in a strong building / もう丈夫な建物の高い階にいる</button>
   </div>
 </div>
 
@@ -258,6 +319,12 @@ let retryAction = null;
 let map = null;
 let mapLayer = null;
 let lastPlan = null;
+let floodLayer = null;
+let previousPick = null;
+let alertKey = null;
+let firstAlertCheck = true;
+let takeoverTimer = null;
+let lastAlert = null;
 
 function swap(update) {
   if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -353,11 +420,13 @@ async function checkAlert(replay = false) {
     }, controller);
     if (version !== alertVersion) return;
     $('alertbox').innerHTML = alertMarkup(a);
+    maybeTakeover(a, replay);
   } catch (error) {
     if (version !== alertVersion) return;
     $('alertbox').textContent = `Warning status unavailable / 警報の有無は確認できません。${error.message} 「警報を再確認」を押してください。`;
   } finally {
     if (version === alertVersion) {
+      firstAlertCheck = false;
       alertController = null;
       $('replay').disabled = $('refreshAlert').disabled = false;
       if (position) run();
@@ -451,6 +520,110 @@ function altRow(o) {
   </div>`;
 }
 
+const KIND_EN = { '大津波警報': 'Major Tsunami Warning', '津波警報': 'Tsunami Warning', '津波注意報': 'Tsunami Advisory' };
+
+/* 警報が届いた瞬間は、画面全体で知らせる。押すか 5 秒で閉じる */
+function maybeTakeover(a, replay) {
+  if (!a || !a.active || typeof a.minutes_left !== 'number') { if (a && !a.active) alertKey = null; return; }
+  const key = `${a.kind}|${a.arrival_time ?? a.reported_at ?? ''}`;
+  const fresh = replay || (!firstAlertCheck && key !== alertKey);
+  alertKey = key;
+  if (!fresh) return;
+  $('toMeta').textContent = `JMA · OSAKA${a.is_training || a.replaying ? ' · TRAINING / 訓練' : ''} · ${a.kind ?? ''}`;
+  $('toTitle').textContent = KIND_EN[a.kind] ?? a.kind ?? 'Tsunami Warning';
+  $('toMin').textContent = Math.max(0, Math.round(a.minutes_left));
+  $('takeover').hidden = false;
+  $('toGo').focus();
+  let left = 5;
+  const tick = () => { $('toAuto').textContent = `Guidance starts by itself in ${left} s / ${left} 秒後に自動で案内へ`; };
+  tick();
+  clearInterval(takeoverTimer);
+  takeoverTimer = setInterval(() => { left -= 1; if (left <= 0) closeTakeover(); else tick(); }, 1000);
+}
+
+function closeTakeover() {
+  clearInterval(takeoverTimer);
+  takeoverTimer = null;
+  if ($('takeover').hidden) return;
+  $('takeover').hidden = true;
+  if (!position) $('here').focus();
+}
+
+/* 選び直した時、前の避難先と新しい避難先を並べる */
+function diffMarkup(prev, now, left) {
+  if (!prev || !now || prev.name === now.name) return '';
+  const oldWalk = Math.round(prev.slowNow ? prev.walk * 0.62 / 0.5 : prev.walk);
+  const spareOld = left - oldWalk;
+  const walk = Math.round(now.walk_min);
+  return `<div class="diff" id="diff">
+    <div class="cap">${prev.slowNow ? 'RECALCULATED AT A SLOWER PACE (0.5 m/s) / ゆっくり歩く速さで選び直しました' : 'RECALCULATED / 選び直しました'}</div>
+    <div class="old"><s>${esc(prev.name)}</s><b>${oldWalk} min — ${spareOld < 3 ? `only ${Math.max(0, spareOld)} min to spare / 余裕は ${Math.max(0, spareOld)} 分だけ` : `${spareOld} min to spare`}</b></div>
+    <div class="new"><b>${esc(now.name)}</b><span>${walk} min · ${now.type === 'go_upstairs' ? `floor ${esc(now.floor_min ?? 3)}+` : 'outside the flood zone'} · ${Math.max(0, left - walk)} min to spare</span></div>
+  </div>`;
+}
+
+/* 着いた後にすること */
+function showArrived() {
+  const p = lastPlan?.primary;
+  if (!p) return;
+  const left = Math.round(lastPlan.minutes_left);
+  const up = p.type === 'go_upstairs';
+  const text = `I'm safe. I evacuated from the tsunami warning to ${p.name} (https://maps.google.com/?q=${p.lat},${p.lon}). I will stay until the warning is lifted.`;
+  const answers = {
+    back: 'Only after JMA lifts the warning. Later waves can be bigger than the first. / 気象庁が警報を解除するまで戻らないでください。後の波の方が大きいことがあります。',
+    lost: 'Stay here. Shelter staff keep a list of names — tell them who you are looking for. / ここを動かずに。避難所の係の人に、探している人の名前を伝えてください。',
+  };
+  $('out').innerHTML = `<div class="result arrived">
+    <div class="arrived-top">
+      <div class="row"><span>✓ You've arrived / 着きました</span><span>Tsunami in ${left} min</span></div>
+      <div>${esc(p.name)}</div>
+      <div class="big">${up ? `Go up to floor ${esc(p.floor_min ?? 3)}+` : 'Stay here, away from the sea'}</div>
+      <div>Stay high until the warning is lifted. It can take hours.<br><span class="ja">警報が解除されるまで高い所に。何時間もかかることがあります。</span></div>
+    </div>
+    <ul class="after">
+      <li><a id="tellFamily" href="sms:?&body=${encodeURIComponent(text)}"><b>Tell your family you're safe</b><small>Opens a text message. SMS can get through when data does not. / 家族に無事を知らせる（SMS）</small></a></li>
+      <li><button type="button" data-answer="back"><b>When can I go back?</b><small>いつ戻れる？</small></button></li>
+      <li><a href="tel:119"><b>Injured? Call 119</b><small>Ambulance and fire. Say "English, please." / けがをしたら 119</small></a></li>
+      <li><button type="button" data-answer="lost"><b>Lost someone?</b><small>はぐれた人がいる</small></button></li>
+    </ul>
+    <button class="againbtn" id="notYet" type="button">Not there yet — back to guidance / まだ着いていない</button>
+  </div>`;
+  if (navigator.share) {
+    $('tellFamily').addEventListener('click', (e) => { e.preventDefault(); navigator.share({ text }).catch(() => {}); });
+  }
+  $('out').querySelectorAll('[data-answer]').forEach(b => b.addEventListener('click', () => {
+    b.parentElement.querySelector('.answer')?.remove();
+    b.insertAdjacentHTML('afterend', `<div class="answer">${esc(answers[b.dataset.answer])}</div>`);
+  }));
+  $('notYet').addEventListener('click', run);
+}
+
+/* 地図に浸水想定区域を塗る（見ている範囲だけ取ってくる） */
+async function drawFlood(bounds, version) {
+  if (!map || !floodLayer) return;
+  floodLayer.clearLayers();
+  $('legend').classList.remove('on');
+  const c = L.latLngBounds(bounds).getCenter();
+  try {
+    // 見えている範囲より広く取り、切り口が画面に出ないようにする（サーバーの上限は 0.04 度四方）
+    const q = new URLSearchParams({ south: c.lat - 0.02, west: c.lng - 0.02, north: c.lat + 0.02, east: c.lng + 0.02 });
+    const res = await fetch(`/api/flood?${q}`);
+    if (!res.ok || version !== planVersion) return;
+    const gj = await res.json();
+    const order = ['0.01', '0.3', '1.0', '2.0', '3.0', '4.0', '5.0'];
+    L.geoJSON(gj, {
+      pane: 'flood',
+      style: (f) => {
+        const i = Math.max(0, order.findIndex(o => String(f.properties.depth).startsWith(o)));
+        return { stroke: false, fillColor: ['#cfe0f5', '#b9d1f0', '#a2c2eb', '#8fb3e6', '#759fdc', '#5a89cf', '#3f72c2'][i], fillOpacity: 0.55 };
+      },
+    }).addTo(floodLayer);
+    if (gj.features?.length) $('legend').classList.add('on');
+  } catch (e) {
+    console.warn('flood', e);
+  }
+}
+
 async function run() {
   if (!position) return;
   cancelPlan();
@@ -484,8 +657,11 @@ async function run() {
       ? 'Routes API distance' : 'straight line × 1.6 (estimate)';
     const left = Math.round(plan.minutes_left);
     const walk = plan.primary ? Math.round(plan.primary.walk_min) : null;
+    const diff = diffMarkup(previousPick, plan.primary, left);
+    previousPick = null;
     const html = `<div class="result">
       ${verdict(left, walk)}
+      ${diff}
       ${primaryCard(plan.primary)}
       ${timeline(plan, alert, plan.primary)}
       <p class="message${explanation?.message ? '' : ' pending'}" id="explain">${explanation?.message
@@ -493,6 +669,7 @@ async function run() {
       ${alertMarkup(alert)}
       ${plan.alternatives.length ? `<details class="alts"><summary>Other shelters (${plan.alternatives.length}) / ほかの避難先</summary>
         ${plan.alternatives.map(altRow).join('')}</details>` : ''}
+      <button class="arrivedbtn" id="arrivedBtn" type="button">I've arrived / 着いた</button>
       <p class="src">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波） ·
         Flood depth: MLIT (Osaka 2023) / 国土数値情報 ·
         Walking: ${walkingSource} ÷ ${input.slow ? '0.5' : '0.62'} m/s ·
@@ -503,6 +680,8 @@ async function run() {
       if (version !== planVersion) return;
       $('out').innerHTML = html;
       lastPlan = plan;
+      lastAlert = alert;
+      $('arrivedBtn')?.addEventListener('click', showArrived);
       drawMap();
       if (!explanation?.message && plan.plan_id) loadExplanation(plan.plan_id, version);
     });
@@ -609,6 +788,8 @@ function drawMap() {
   try {
     mapLayer.clearLayers();
     if (!lastPlan || !position) {
+      floodLayer?.clearLayers();
+      $('legend').classList.remove('on');
       document.querySelectorAll('button[data-lat]').forEach((b, i) => {
         const left = i === 2;
         L.circleMarker([+b.dataset.lat, +b.dataset.lon], { radius: 11, color: '#d7000f', weight: 4, fillColor: '#fff', fillOpacity: 1 })
@@ -637,6 +818,7 @@ function drawMap() {
     }
     L.marker(you, { icon: L.divIcon({ className: '', html: '<div class="pin-you"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }) }).addTo(mapLayer);
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 17 });
+    drawFlood(bounds, planVersion);
   } catch (e) {
     console.warn('map', e);
   }
@@ -654,6 +836,8 @@ function loadMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
       L.control.zoom({ position: 'bottomright' }).addTo(map);
+      map.createPane('flood').style.zIndex = 350;
+      floodLayer = L.layerGroup().addTo(map);
       mapLayer = L.layerGroup().addTo(map);
       drawMap();
     } catch (e) {
@@ -665,6 +849,9 @@ function loadMap() {
 }
 
 $('retry').addEventListener('click', () => retryAction?.());
+$('toGo').addEventListener('click', closeTakeover);
+$('toHigh').addEventListener('click', () => { closeTakeover(); if (lastPlan) showArrived(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTakeover(); });
 $('replay').addEventListener('click', () => checkAlert(true));
 $('refreshAlert').addEventListener('click', () => checkAlert());
 $('back').addEventListener('click', backToStart);
@@ -674,7 +861,11 @@ $('demoRun').addEventListener('click', () => {
   selectPosition(+sakai.dataset.lat, +sakai.dataset.lon, sakai.firstChild.textContent.trim());
 });
 $('lang').addEventListener('change', run);
-$('slow').addEventListener('change', run);
+$('slow').addEventListener('change', () => {
+  const p = lastPlan?.primary;
+  previousPick = p ? { name: p.name, lat: p.lat, lon: p.lon, walk: p.walk_min, slowNow: $('slow').checked } : null;
+  run();
+});
 document.querySelectorAll('button[data-lat]').forEach(b =>
   b.addEventListener('click', () => selectPosition(+b.dataset.lat, +b.dataset.lon, b.firstChild.textContent.trim())));
 $('here').addEventListener('click', locate);

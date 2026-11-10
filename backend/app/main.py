@@ -21,6 +21,7 @@ from pydantic import BaseModel, Field
 
 from .alerts import current_alert, live_alert, start_replay
 from .explain import explain
+from .flood import flood_in
 from .pack import ANSWERS_JA, ARRIVAL_DEFAULT_MIN, audio_wav, build_pack
 from .planner import _inundation, plan, shelters
 from .routes import safe_route
@@ -103,6 +104,14 @@ def get_explain(plan_id: str) -> dict:
     if item is None:
         raise HTTPException(404, "plan not found")
     return explain(*item)
+
+
+@app.get("/api/flood")
+def get_flood(south: float, west: float, north: float, east: float) -> dict:
+    """地図に塗る浸水想定区域（見ている範囲だけ）。出典: 国土数値情報 津波浸水想定（大阪府 2023年版）を簡略化"""
+    if not (south < north and west < east):
+        raise HTTPException(400, "範囲が正しくありません")
+    return flood_in(south, west, north, east)
 
 
 @app.get("/api/pack")
