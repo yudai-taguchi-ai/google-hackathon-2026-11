@@ -265,6 +265,13 @@ private fun Home(s: UiState, vm: AppViewModel) {
                 leadingContent = { Icon(Icons.Filled.Info, null) },
                 colors = ListItemDefaults.colors(containerColor = Color.Transparent),
             )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+            ListItem(
+                headlineContent = { Text(tr("On-device intent model (FunctionGemma)", "端末の中の聞き分けモデル（FunctionGemma）")) },
+                supportingContent = { Text(s.intentModel ?: "…") },
+                leadingContent = { Icon(Icons.Filled.Info, null) },
+                colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+            )
         }
     }
     Ja("Warnings are also checked every 15 seconds when online. / 通信がある時は 15 秒ごとに警報を確かめ、出ていれば自動で案内を始めます")
@@ -575,7 +582,7 @@ private fun HoldToTalk(s: UiState, vm: AppViewModel) {
             }
         }
     }
-    s.heard?.let { Ja(tr("Heard: ", "聞き取った言葉: ") + "“$it”") }
+    s.heard?.let { Ja(tr("Heard: ", "聞き取った言葉: ") + "“$it”" + (s.heardBy?.let { by -> tr(" · understood by $by", " · 聞き分け: $by") } ?: "")) }
     s.speechError?.let { Ja(it) }
     // 音声認識が直らないエラーで止まった時は、タップの状態も戻す
     LaunchedEffect(s.listening) { if (!s.listening && tapMode && s.speechError != null) tapMode = false }

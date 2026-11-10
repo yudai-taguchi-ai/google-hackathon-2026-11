@@ -77,6 +77,9 @@ data class UiState(
     val listening: Boolean = false,
     val speechError: String? = null,
     val offlineSpeech: String? = null,
+    /** 端末の中の聞き分けモデルの状態と、最後に聞き分けたのはどちらか。 */
+    val intentModel: String? = null,
+    val heardBy: String? = null,
     /** 聞き取る言語（en-US / ja-JP）。 */
     val speechLang: String = "en-US",
     /** 聞き取った頼みごと。確かめてから動く（聞き間違いで避難先が変わらないように）。 */
@@ -121,6 +124,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** 圏外で話した言葉を頼みごとに振り分ける。今はキーワード方式。FunctionGemma の学習が済んだら差し替える。 */
     private val classifier: IntentClassifier = KeywordIntent
+    private val onDevice = OnDeviceIntent(app)
     val liveAvailable: Boolean get() = TsunamiApp.firebaseReady
     val debugSecret: String? get() = TsunamiApp.currentDebugSecret(getApplication())
 
@@ -129,6 +133,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) tts?.language = Locale.US }
+        viewModelScope.launch {
+            onDevice.load()
+            _state.update { it.copy(intentModel = onDevice.status) }
+        }
         viewModelScope.launch {
             pack = store.load()
             _state.update { it.copy(packInfo = pack?.let(::describe)) }
@@ -357,8 +365,17 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             _state.update { it.copy(answer = "Could not hear${error?.let { e -> " ($e)" } ?: ""}. Use the buttons. / 聞き取れませんでした。ボタンで選んでください") }
             return
         }
-        val id = classifier.classify(text)
-        android.util.Log.i("TsunamiNavi", "heard '$text' -> $id")
+        viewModelScope.launch {
+            val byModel = onDevice.classify(text)
+            val id = byModel ?: classifier.classify(text)
+            val by = if (byModel != null) "FunctionGemma (on device)" else "keywords"
+            android.util.Log.i("TsunamiNavi", "heard '$text' -> $id by $by")
+            _state.update { it.copy(heardBy = by) }
+            routeHeard(id)
+        }
+    }
+
+    private fun routeHeard(id: String) {
         if (id == "other") {
             _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください", pendingIntent = null) }
             speak("Please choose a button on the screen.")

@@ -50,6 +50,8 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        // LiteRT-LM は新しい Kotlin で作られているため、版の印の確認だけを外す
+        freeCompilerArgs += "-Xskip-metadata-version-check"
     }
 }
 
@@ -73,5 +75,6 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs.nio)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
+    implementation("com.google.ai.edge.litertlm:litertlm-android:0.16.1")
     implementation(libs.firebase.appcheck.debug)
 }
