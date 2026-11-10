@@ -51,7 +51,7 @@ def mobility(name: str | None, args: dict | None) -> str | None:
 def score(gold: list[dict], preds: list[dict]) -> dict:
     assert len(gold) == len(preds), f"行数が違う: test {len(gold)} / 予測 {len(preds)}"
     by_label, by_lang = defaultdict(list), defaultdict(list)
-    critical = false_action = parse_fail = 0
+    critical = critical_mismatch = false_action = parse_fail = 0
     n_critical_gold = n_other_gold = 0
     latencies = []
     for g, p in zip(gold, preds):
@@ -65,6 +65,8 @@ def score(gold: list[dict], preds: list[dict]) -> dict:
         gkey = (g["name"], mobility(g["name"], g["args"]))
         if gkey in CRITICAL_GOLD:
             n_critical_gold += 1
+            if not ok:
+                critical_mismatch += 1
             if pname == "other" or (pname == "reselect" and mobility(pname, pargs) == "normal"):
                 critical += 1
         if g["name"] == "other":
@@ -81,6 +83,8 @@ def score(gold: list[dict], preds: list[dict]) -> dict:
         "per_label": {k: sum(v) / len(v) for k, v in sorted(by_label.items())},
         "per_lang": {k: sum(v) / len(v) for k, v in sorted(by_lang.items())},
         "critical_rate": critical / max(1, n_critical_gold),
+        "critical_mismatch_rate": critical_mismatch / max(1, n_critical_gold),
+        "critical_total": n_critical_gold,
         "false_action_rate": false_action / max(1, n_other_gold),
         "parse_fail_rate": parse_fail / len(gold),
         "p95_latency_ms": p95,
@@ -98,7 +102,8 @@ def report(name: str, r: dict, baseline: dict | None) -> str:
     lines.append(f"| 頼みごとごと（一番低いもの） | {worst_label[0]} {worst_label[1]:.1%} | どれも {t['per_label']:.0%} 以上 | {mark(worst_label[1] >= t['per_label'])} |")
     worst_lang = min(r["per_lang"].items(), key=lambda kv: kv[1])
     lines.append(f"| 言語ごと（一番低いもの） | {worst_lang[0]} {worst_lang[1]:.1%} | どれも {t['per_lang']:.0%} 以上 | {mark(worst_lang[1] >= t['per_lang'])} |")
-    lines.append(f"| 危ない間違い | {r['critical_rate']:.1%} | {t['critical_max']:.0%} 以下 | {mark(r['critical_rate'] <= t['critical_max'])} |")
+    lines.append(f"| 危ない間違い（既存定義） | {r['critical_rate']:.1%} | {t['critical_max']:.0%} 以下 | {mark(r['critical_rate'] <= t['critical_max'])} |")
+    lines.append(f"| 危険ケースの全不一致（{r['critical_total']}件） | {r['critical_mismatch_rate']:.1%} | 参考値・基準未設定 | — |")
     lines.append(f"| 関係ない言葉で動いてしまう | {r['false_action_rate']:.1%} | {t['false_action_max']:.0%} 以下 | {mark(r['false_action_rate'] <= t['false_action_max'])} |")
     lines.append(f"| 形の崩れ | {r['parse_fail_rate']:.1%} | {t['parse_fail_max']:.0%} 以下 | {mark(r['parse_fail_rate'] <= t['parse_fail_max'])} |")
     lat = r["p95_latency_ms"]
