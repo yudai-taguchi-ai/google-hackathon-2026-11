@@ -56,4 +56,46 @@ python -X utf8 -m finetune.score finetune/data/test.jsonl finetune/output/predic
 
 ## 現在の状態
 
+### 出力とアプリ ID の対応
+
+出力は関数名と引数で識別する。アプリ側の `IntentClassifier` に渡す ID は次のとおり。
+
+| 関数名 | 引数 | アプリ ID |
+|---|---|---|
+| reselect | mobility=normal | reselect |
+| reselect | mobility=slow | reselect_slow |
+| reselect | mobility=wheelchair | reselect_wheelchair |
+| ask_floor | {} | ask_floor |
+| road_blocked | {} | road_blocked |
+| lost_family | {} | lost_family |
+| injured | {} | injured |
+| when_to_return | {} | when_to_return |
+| repeat | {} | repeat |
+| other | {} | other |
+
+2026-11-10 の PC 検証では LiteRT-LM 0.19.1 / 0.18.0 の会話 API が `Failed to apply template: undefined value (in template:69)` で停止した。0.18.0 の Session API に学習時と同じプロンプトを直接入力する方式で400件の評価を完了した。アプリの会話 API 向けテンプレート互換性は未解決。
+
+### 変換後の400件評価（2026-11-10）
+
+| 指標 | 変換前 | 変換後 |
+|---|---|---|
+| 完全一致 | 374/400（93.5%） | 373/400（93.25%） |
+| 危険ケースの取りこぼし | 5/160（3.125%） | 6/160（3.75%） |
+| 関係ない言葉で動く | 2.5% | 2.5% |
+| 関数呼び出しの解析失敗 | 0% | 0% |
+| 英語 / 中国語 / 韓国語 / 日本語 | 91% / 93% / 94% / 96% | 91% / 93% / 93% / 96% |
+
+キーワード方式70.5%を上回る。危険ケースの目標2%以下は未達。Android端末での応答時間は未計測。
+
+再現は `backend/` で以下を実行する。Python環境には `litert-lm==0.18.0` と学習時の Transformers を使用した。`--tokenizer` には保存済み学習モデルのフォルダを渡す。出力ファイルは新しい名前を指定する。
+
+```sh
+python -m finetune.evaluate_litertlm /path/to/model.litertlm --tokenizer /path/to/saved/model --output finetune/output/litertlm-predictions.jsonl
+python -m finetune.score finetune/data/test.jsonl finetune/output/litertlm-predictions.jsonl
+```
+
+`evaluate_litertlm.py` は学習コードの `format_row` で指示文・関数定義・ユーザー文を整形し、`create_session(apply_prompt_template=False)` に渡す。各文で新しいセッションを作り、top-k=1・最大64生成トークンで評価する。予測全文は `output/litertlm-predictions.jsonl` に保存済み。
+
+採点指標の補足として、危険ケースの取りこぼしは5/160（すべて other）。別指標の「関係ない言葉で動く」は2.5%。「誤った行動が全400件で0件」とは評価していない。
+
 Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。共通 `score.py` による採点と、端末用 `.litertlm` への変換まで実施済み。端末上の速さとAndroidへの組み込みは未実施。
