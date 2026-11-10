@@ -377,6 +377,21 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     val left = s.minutesLeft
     val late = walk != null && left != null && walk > left
 
+    // 今いる所がもう浸水想定区域の外なら、遠くの避難先へ歩かせず「内陸へ」とだけ出す
+    if (s.decision == "already_outside_zone") {
+        Surface(color = Brand.Safe, contentColor = Color.White, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(tr("You are outside the flood zone", "浸水想定区域の外にいます", "您在浸水预想区域之外", "침수 예상 구역 밖에 있습니다"), fontSize = 26.sp, fontWeight = FontWeight.Black, lineHeight = 30.sp)
+                Text(tr("Stay away from the sea and rivers. Move further inland if you can.", "海と川から離れてください。できれば、さらに内陸へ", "请远离大海和河流。如果可以，请继续往内陆走。", "바다와 강에서 멀어지세요. 가능하면 더 내륙으로 이동하세요."), fontSize = 16.sp)
+            }
+        }
+        s.notice?.let { Banner(it, null, Brand.Teal) }
+        s.answer?.let { Banner(it, null, Brand.Info) }
+        Ja(tr("Nearest designated tsunami site: ${t.name}", "近くの津波の指定避難場所: ${t.name}", "最近的海啸指定避难场所: ${t.name}", "가장 가까운 쓰나미 지정 대피 장소: ${t.name}"))
+        Sources(s)
+        return
+    }
+
     // 1. どっちへ・どこへ（ナビの案内の帯と同じ形）
     Surface(color = if (late) Brand.Danger else Brand.Safe, contentColor = Color.White, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -762,18 +777,18 @@ internal fun pick(text: String): String {
 internal fun alertName(kind: String): String = tr(
     alertEn(kind),
     kind,
-    when (kind) { "大津波警報" -> "大海啸警报"; "津波警報" -> "海啸警报"; "津波注意報" -> "海啸注意报"; else -> kind },
-    when (kind) { "大津波警報" -> "대형 쓰나미 경보"; "津波警報" -> "쓰나미 경보"; "津波注意報" -> "쓰나미 주의보"; else -> kind },
+    when { kind.contains("大津波警報") -> "大海啸警报"; kind.contains("津波警報") -> "海啸警报"; kind.contains("津波注意報") -> "海啸注意报"; else -> kind },
+    when { kind.contains("大津波警報") -> "대형 쓰나미 경보"; kind.contains("津波警報") -> "쓰나미 경보"; kind.contains("津波注意報") -> "쓰나미 주의보"; else -> kind },
 )
 
 /** 時刻を「14:46」の形にする。 */
 internal fun clock(millis: Long): String =
     java.time.Instant.ofEpochMilli(millis).atZone(java.time.ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0).toString()
 
-internal fun alertEn(kind: String) = when (kind) {
-    "大津波警報" -> "Major Tsunami Warning"
-    "津波警報" -> "Tsunami Warning"
-    "津波注意報" -> "Tsunami Advisory"
+internal fun alertEn(kind: String) = when {
+    kind.contains("大津波警報") -> "Major Tsunami Warning"
+    kind.contains("津波警報") -> "Tsunami Warning"
+    kind.contains("津波注意報") -> "Tsunami Advisory"
     else -> kind
 }
 

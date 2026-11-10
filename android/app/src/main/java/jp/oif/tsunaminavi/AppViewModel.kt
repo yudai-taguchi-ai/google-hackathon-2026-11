@@ -192,6 +192,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         prefs.getString("lang", null)?.let { code -> _state.update { it.copy(speechLang = SPEECH_LANG[code] ?: "en-US") } }
         tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) applyTtsLanguage() }
         viewModelScope.launch {
+            // 起動直後の避難先の計算と CPU を取り合わないよう、少し待ってから読み込む
+            delay(15_000)
             onDevice.load()
             _state.update { it.copy(intentModel = onDevice.status) }
         }
@@ -578,11 +580,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         viewModelScope.launch {
-            if (onDevice.ready) _state.update { it.copy(busy = msg("Understanding on this device…", "端末の中で聞き分けています…", "正在本机上理解…", "이 기기에서 이해하는 중…")) }
+            val modelWasReady = onDevice.ready
+            if (modelWasReady) _state.update { it.copy(busy = msg("Understanding on this device…", "端末の中で聞き分けています…", "正在本机上理解…", "이 기기에서 이해하는 중…")) }
             val byModel = onDevice.classify(text)
             _state.update { it.copy(busy = null) }
-            val id = byModel ?: classifier.classify(text)
-            val by = if (byModel != null) "FunctionGemma (on device)" else "keywords"
+            val modelFailed = byModel == null && (modelWasReady || onDevice.status.startsWith("load failed"))
+            val id = byModel ?: if (modelFailed) "other" else classifier.classify(text)
+            val by = if (byModel != null) "FunctionGemma (on device)" else if (modelFailed) "buttons (model error)" else "keywords"
             android.util.Log.i("TsunamiNavi", "heard '$text' -> $id by $by")
             _state.update { it.copy(heardBy = by) }
             routeHeard(id)
