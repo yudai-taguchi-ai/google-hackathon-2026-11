@@ -332,6 +332,21 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     val left = s.minutesLeft
     val late = walk != null && left != null && walk > left
 
+    // 今いる所がもう浸水想定区域の外なら、遠くの避難先へ歩かせず「内陸へ」とだけ出す
+    if (s.decision == "already_outside_zone") {
+        Surface(color = Brand.Safe, contentColor = Color.White, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(tr("You are outside the flood zone", "浸水想定区域の外にいます"), fontSize = 26.sp, fontWeight = FontWeight.Black, lineHeight = 30.sp)
+                Text(tr("Stay away from the sea and rivers. Move further inland if you can.", "海と川から離れてください。できれば、さらに内陸へ"), fontSize = 16.sp)
+            }
+        }
+        s.notice?.let { Banner(it, null, Brand.Teal) }
+        s.answer?.let { Banner(it, null, Brand.Info) }
+        Ja(tr("Nearest designated tsunami site: ${t.name}", "近くの津波の指定避難場所: ${t.name}"))
+        Sources(s)
+        return
+    }
+
     // 1. どっちへ・どこへ（ナビの案内の帯と同じ形）
     Surface(color = if (late) Brand.Danger else Brand.Safe, contentColor = Color.White, shape = MaterialTheme.shapes.large, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
