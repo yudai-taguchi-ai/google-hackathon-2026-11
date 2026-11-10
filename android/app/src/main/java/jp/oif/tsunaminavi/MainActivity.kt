@@ -428,7 +428,8 @@ private fun Guide(s: UiState, vm: AppViewModel) {
     s.answer?.takeIf { s.previous == null }?.let { Banner(it, null, Brand.Info) }
 
     // 3. 地図（通信があって本物の GPS の時は Navigation SDK、それ以外は保存した道と浸水域から描く）
-    if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive)
+    if (s.online && !s.useDemoPoint) NavPanel(t, silent = s.liveActive, flood = s.map)
+    else if (s.online) s.map?.let { GoogleMapPanel(it, s) }
     else s.map?.let { MiniMap(it, s) }
     if (!s.online) Ja(if (s.alertArrivalMillis != null) "Time basis: last JMA warning received${s.alertReceivedAt?.let { " (${clock(it)})" } ?: ""} / 時間の基準: 最後に受け取った気象庁の警報${s.alertReceivedAt?.let { "（${clock(it)}）" } ?: ""}" else "Time basis: shaking + 26 min (estimate) / 時間の基準: 揺れてから 26 分（目安）")
 
