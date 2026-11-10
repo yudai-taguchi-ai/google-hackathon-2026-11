@@ -46,13 +46,13 @@ python -X utf8 -m finetune.score finetune/data/test.jsonl finetune/output/predic
 
 ### アプリ担当への受け渡し情報（2026-11-10）
 
-- 保存先は [Drive の litertlm フォルダ](https://drive.google.com/drive/folders/1Fs5IC6ZM0fkrJJNx8-iag-pr3VckWAIA)。田口さんへの閲覧権限付与は共有先メールアドレスの確認待ち。
+- 保存先は [FunctionGemma モデル](https://drive.google.com/file/d/1AgfRlp5D_7u489kOO1BNC0ztVF-4L5cz/view?usp=drivesdk)。田口さんのアカウントに閲覧権限を付与済み。
 - 学習レポート `tsunami-functiongemma-output/report.json` の `best_checkpoint` は `finetune/output/checkpoints/checkpoint-270`。変換には保存済みの `tsunami-functiongemma-output/model/` を WSL の `/opt/functiongemma-model` にコピーして使用した。
 - アプリで使う指示文と関数定義は、このフォルダの `train_functiongemma.py` の `SYSTEM` と `TOOLS` を使用する。変換時にこれらを変更する処理は行っていない。システム指示文は `You are a model that can do function calling with the following functions. Choose exactly one function for the user's message.`。
 - 関数は `reselect(mobility=normal|slow|wheelchair)`、`ask_floor`、`road_blocked`、`lost_family`、`injured`、`when_to_return`、`repeat`、`other`。`reselect` 以外の引数は空オブジェクト。関数の説明文も `TOOLS` からそのまま使用する。
 - 変換設定は `prefill_lengths=[512]`、`cache_length=1024`、`quantization_recipe="dynamic_wi8_afp32"`、`task="text_generation"`、`bundle_litert_lm=True`、`litert_lm_model_type_override="function_gemma"`。変換 API は `litert_torch.generative.export_hf.export.export`。環境は上記2パッケージに加えて `tensorflow==2.21.0`。
 - SHA-256 は `c90233ffdb2e9fdea4a2ec703591922d6557a0447de418a53d3ad2587b04de4b`。WSL の変換出力と G ドライブ保存済みファイルの一致を確認した。
-- 93.5% は変換前のモデルの400件評価。変換後の精度評価と実機の読み込み・応答時間測定は未実施。
+- 93.5% は変換前のモデルの400件評価。変換後の評価は下記のとおり。実機の読み込み・応答時間測定は未実施。
 
 ## 現在の状態
 
@@ -98,4 +98,4 @@ python -m finetune.score finetune/data/test.jsonl finetune/output/litertlm-predi
 
 採点指標の補足として、危険ケースの取りこぼしは5/160（すべて other）。別指標の「関係ない言葉で動く」は2.5%。「誤った行動が全400件で0件」とは評価していない。
 
-Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。共通 `score.py` による採点と、端末用 `.litertlm` への変換まで実施済み。端末上の速さとAndroidへの組み込みは未実施。
+Google Colab の T4 で3エポック学習し、モデルとレポートを Google Drive に保存済み。400件の完全一致は学習前 106件（26.5%）、学習後 374件（93.5%）。言語別は en 91/100、zh 93/100、ko 94/100、ja 96/100。端末用 `.litertlm` に変換後は 373件（93.25%）。比較用Androidデバッグ画面に実装済みだが、端末上での動作と速さは未確認。
