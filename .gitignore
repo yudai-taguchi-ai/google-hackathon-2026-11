@@ -12,6 +12,7 @@ service-account*.json
 
 # Android
 .gradle/
+.kotlin/
 build/
 captures/
 .idea/
