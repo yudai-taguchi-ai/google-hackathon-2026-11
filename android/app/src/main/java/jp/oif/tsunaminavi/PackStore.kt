@@ -21,6 +21,8 @@ import kotlinx.serialization.json.jsonPrimitive
 /** 圏外でも使えるように端末に保存したパック。 */
 class Pack(
     val version: String,
+    /** 答えの文と音声の言語（en / ja / zh / ko）。 */
+    val lang: String,
     val shelters: List<Shelter>,
     val inundation: InundationMap,
     val answers: Map<String, String>,
@@ -57,6 +59,7 @@ class PackStore(context: Context) {
         val json = Json.parseToJsonElement(packFile.readText()).jsonObject
         Pack(
             version = json["version"]!!.jsonPrimitive.content,
+            lang = json["lang"]?.jsonPrimitive?.content ?: "en",
             shelters = json["shelters"]!!.jsonArray.map { parseShelter(it.jsonObject) },
             inundation = parseInundation(json["inundation"]!!.jsonObject),
             answers = json["answers"]!!.jsonArray.associate {
