@@ -26,6 +26,7 @@ import com.google.android.libraries.navigation.NavigationView
 import com.google.android.libraries.navigation.Navigator
 import com.google.android.libraries.navigation.RoutingOptions
 import com.google.android.libraries.navigation.Waypoint
+import com.google.android.gms.maps.GoogleMap
 import jp.oif.tsunaminavi.offline.Shelter
 
 /**
@@ -34,10 +35,12 @@ import jp.oif.tsunaminavi.offline.Shelter
  * @param silent Gemini Live と話している間は、ナビの声を止める（声がぶつからないように）
  */
 @Composable
-fun NavPanel(target: Shelter, silent: Boolean) {
+fun NavPanel(target: Shelter, silent: Boolean, flood: MiniMapData? = null) {
     val activity = LocalContext.current as Activity
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var navigator by remember { mutableStateOf<Navigator?>(null) }
+    var navMap by remember { mutableStateOf<GoogleMap?>(null) }
+    val floodShapes = remember { mutableListOf<() -> Unit>() }
     var status by remember { mutableStateOf("ナビを準備中…") }
     val latestSilent by rememberUpdatedState(silent)
     val guidanceMode = { if (latestSilent) Navigator.AudioGuidance.SILENT else Navigator.AudioGuidance.VOICE_ALERTS_AND_GUIDANCE }
@@ -81,6 +84,17 @@ fun NavPanel(target: Shelter, silent: Boolean) {
         }.onFailure { status = "Navigation failed (${it.message}). Use the arrow below. / ナビに失敗。矢印の案内を使ってください" }
     }
 
+    // ナビの地図にも浸水想定区域（国交省）を重ねる
+    LaunchedEffect(navMap, flood) {
+        val map = navMap ?: return@LaunchedEffect
+        val f = flood ?: return@LaunchedEffect
+        runCatching {
+            floodShapes.forEach { it() }
+            floodShapes.clear()
+            floodShapes += addFlood(map, f)
+        }
+    }
+
     LaunchedEffect(navigator, silent) {
         navigator?.setAudioGuidance(guidanceMode())
     }
@@ -109,6 +123,7 @@ fun NavPanel(target: Shelter, silent: Boolean) {
                     }
                     lifecycle.addObserver(observer)
                     view.tag = observer
+                    runCatching { view.getMapAsync { navMap = it } }
                 } }
             },
             modifier = Modifier.fillMaxWidth().height(420.dp),

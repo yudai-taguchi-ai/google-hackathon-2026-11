@@ -44,7 +44,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -171,8 +176,16 @@ fun MiniMap(m: MiniMapData, s: UiState) {
             typeface = Typeface.DEFAULT_BOLD
         }
     }
-    Box(Modifier.fillMaxWidth().height(320.dp).clip(MaterialTheme.shapes.large)) {
-        Canvas(Modifier.fillMaxSize()) {
+    val shelterLabel = tr("Shelter", "避難先", "避难所", "대피소")
+    var zoom by remember { mutableStateOf(1f) }
+    var pan by remember { mutableStateOf(Offset.Zero) }
+    Box(
+        Modifier.fillMaxWidth().height(360.dp).clip(MaterialTheme.shapes.large)
+            // 2 本指で拡大・1 本指で移動・2 回たたくと元に戻す
+            .pointerInput(Unit) { detectTransformGestures { _, p, z, _ -> zoom = (zoom * z).coerceIn(1f, 8f); pan += p } }
+            .pointerInput(Unit) { detectTapGestures(onDoubleTap = { zoom = 1f; pan = Offset.Zero }) },
+    ) {
+        Canvas(Modifier.fillMaxSize().graphicsLayer { scaleX = zoom; scaleY = zoom; translationX = pan.x; translationY = pan.y }) {
             val k = cos(Math.toRadians((m.minLat + m.maxLat) / 2))
             val spanX = (m.maxLon - m.minLon) * k
             val spanY = m.maxLat - m.minLat
@@ -209,17 +222,20 @@ fun MiniMap(m: MiniMapData, s: UiState) {
             drawPath(route, Brand.Safe, style = Stroke(width = 12f, cap = StrokeCap.Round, join = StrokeJoin.Round))
             if (target != null) {
                 val p = pt(target.lat, target.lon)
-                val half = 34f
-                drawRoundRect(Color.White, Offset(p.x - half - 5, p.y - half - 5), Size(2 * half + 10, 2 * half + 10), androidx.compose.ui.geometry.CornerRadius(16f))
-                drawRoundRect(Brand.Safe, Offset(p.x - half, p.y - half), Size(2 * half, 2 * half), androidx.compose.ui.geometry.CornerRadius(12f))
-                label.textSize = 38f
-                drawContext.canvas.nativeCanvas.drawText("避", p.x, p.y + 13f, label)
+                // 避難先: 緑の丸と、言語に合わせた名札
+                drawCircle(Color.White, 24f / zoom, p)
+                drawCircle(Brand.Safe, 17f / zoom, p)
+                label.textSize = 30f / zoom
+                val w = label.measureText(shelterLabel) + 28f / zoom
+                val top = p.y - 74f / zoom
+                drawRoundRect(Brand.Safe, Offset(p.x - w / 2, top), Size(w, 44f / zoom), androidx.compose.ui.geometry.CornerRadius(12f / zoom))
+                drawContext.canvas.nativeCanvas.drawText(shelterLabel, p.x, top + 32f / zoom, label)
             }
             if (here != null) {
                 val p = pt(here.first, here.second)
-                drawCircle(Brand.Info.copy(alpha = .18f), 46f, p)
-                drawCircle(Color.White, 22f, p)
-                drawCircle(Brand.Info, 15f, p)
+                drawCircle(Brand.Info.copy(alpha = .18f), 46f / zoom, p)
+                drawCircle(Color.White, 22f / zoom, p)
+                drawCircle(Brand.Info, 15f / zoom, p)
             }
         }
         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -236,7 +252,7 @@ fun MiniMap(m: MiniMapData, s: UiState) {
             }
         }
         Row(Modifier.align(Alignment.BottomStart).padding(10.dp)) {
-            Chip { Text(tr("Saved map · roads © OpenStreetMap", "保存した地図・道 © OpenStreetMap", "已保存的地图 · 道路 © OpenStreetMap", "저장한 지도 · 도로 © OpenStreetMap"), fontSize = 11.sp, color = Color(0xFF4A4A4A)) }
+            Chip { Text(tr("Saved map · pinch to zoom · roads © OpenStreetMap", "保存した地図・2 本指で拡大・道 © OpenStreetMap", "已保存的地图 · 双指缩放 · 道路 © OpenStreetMap", "저장한 지도 · 두 손가락으로 확대 · 도로 © OpenStreetMap"), fontSize = 11.sp, color = Color(0xFF4A4A4A)) }
         }
     }
 }
