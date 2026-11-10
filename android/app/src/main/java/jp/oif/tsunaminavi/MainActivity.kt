@@ -765,10 +765,10 @@ internal fun pick(text: String): String {
 internal fun clock(millis: Long): String =
     java.time.Instant.ofEpochMilli(millis).atZone(java.time.ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0).toString()
 
-internal fun alertEn(kind: String) = when (kind) {
-    "大津波警報" -> "Major Tsunami Warning"
-    "津波警報" -> "Tsunami Warning"
-    "津波注意報" -> "Tsunami Advisory"
+internal fun alertEn(kind: String) = when {
+    kind.contains("大津波警報") -> "Major Tsunami Warning"
+    kind.contains("津波警報") -> "Tsunami Warning"
+    kind.contains("津波注意報") -> "Tsunami Advisory"
     else -> kind
 }
 
