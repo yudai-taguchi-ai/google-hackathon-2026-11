@@ -3,7 +3,7 @@
 > 公式テンプレートの見出しに合わせて貼り替える。【要確認】は本人が確かめてから埋める。数字は docs/ と backend/eval/results/ が出典。
 
 ## 1. プロダクト名
-津波避難ナビ（旅行者向け）【仮。名前は要決定】
+Tsunami Navi（津波避難ナビ）
 
 ## チーム
 OIF Team A（大阪会場）。メンバーの名前は Google ドキュメントに直接書く
@@ -78,7 +78,7 @@ OIF Team A（大阪会場）。メンバーの名前は Google ドキュメン�
 
 ## 5 章に書くこと（デプロイした URL・提出ルール 3.1）
 - Web 版（Cloud Run）: https://tsunami-navi-129745156402.asia-northeast1.run.app
-- Android アプリ（APK）: GitHub Releases の URL【正式なリリースを作ってから入れる】
+- Android アプリ（APK）: https://github.com/yudai-taguchi-ai/google-hackathon-2026-11/releases/tag/v1.6.0
 - 特記事項: APK を入れるだけで動く（Android 8 以上）。圏外の聞き分けモデル（約 286MB）は APK に入れていない。端末の `Android/data/jp.oif.tsunaminavi/files/intent.litertlm` に置くと使われ、無い時はキーワード方式で動く。Gemini Live と Navigation SDK は通信が必要
 
 ## 10. 構成図
