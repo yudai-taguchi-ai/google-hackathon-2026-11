@@ -121,7 +121,7 @@ fun AlertTakeover(s: UiState, vm: AppViewModel) {
             modifier = Modifier.fillMaxWidth().height(64.dp),
         ) { Text(tr("Show me where to go", "逃げる先を見る", "查看避难地点", "대피 장소 보기"), fontSize = 20.sp, fontWeight = FontWeight.Black) }
         Text(
-            tr("Guidance starts by itself in $left s", "$left 秒後に自動で案内を始めます", "$left 秒后自动开始引导", "$left초 후 자동으로 안내를 시작합니다"),
+            tr("Guidance starts by itself in $left s", "$left 秒後に自動で案内を始めます", "$left 秒后自动开始引导", "${left}초 후 자동으로 안내를 시작합니다"),
             color = Color.White.copy(alpha = .9f), fontSize = 13.sp, modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Text(

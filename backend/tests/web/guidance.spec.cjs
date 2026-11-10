@@ -54,10 +54,10 @@ async function choose(page) {
 
 test('W-1 distinguishes a successful warning check from JMA failure and can retry', async ({ page }) => {
   const { state, errors } = await boot(page, { alert: { ...quiet, jma_error: 'network failed' } });
-  await expect(page.locator('#alertbox')).toContainText('警報の有無は確認できません');
+  await expect(page.locator('#alertbox')).toContainText('Warning status unavailable');
   await expect(page.locator('#alertbox')).not.toContainText('no tsunami warning');
   await choose(page);
-  await expect(page.locator('#out')).toContainText('警報の有無は確認できません');
+  await expect(page.locator('#out')).toContainText('Warning status unavailable');
   state.alert = quiet;
   await page.locator('#refreshAlert').click();
   await expect(page.locator('#alertbox')).toContainText('no tsunami warning');
@@ -66,13 +66,13 @@ test('W-1 distinguishes a successful warning check from JMA failure and can retr
 
 test('W-1 preserves cached warning as unconfirmed instead of claiming a fresh check', async ({ page }) => {
   await boot(page, { alert: { ...live, jma_error: 'failed' } });
-  await expect(page.locator('#alertbox')).toContainText('以前受け取った警報: 津波警報');
-  await expect(page.locator('#alertbox')).toContainText('最新の状態は未確認');
+  await expect(page.locator('#alertbox')).toContainText('Previously received warning: Tsunami Warning');
+  await expect(page.locator('#alertbox')).toContainText('latest status not confirmed');
 });
 
 test('W-1 transport failure and missing check metadata never mean no warning', async ({ page }) => {
   const { state } = await boot(page, { alertFailure: true });
-  await expect(page.locator('#alertbox')).toContainText('警報の有無は確認できません');
+  await expect(page.locator('#alertbox')).toContainText('Warning status unavailable');
   state.alertFailure = false;
   state.alert = { active: false };
   await page.locator('#refreshAlert').click();
@@ -87,7 +87,7 @@ test('W-3 reload during training and actual warnings use distinct time labels', 
   state.alert = live;
   await page.locator('#refreshAlert').click();
   await expect(page.locator('#out .card')).toBeVisible();
-  await expect(page.locator('#out')).toContainText('JMA arrival time /');
+  await expect(page.locator('#out')).toContainText('JMA arrival time');
   await expect(page.locator('#out')).not.toContainText('training telegram');
 });
 
@@ -168,9 +168,9 @@ for (const failure of ['network', 'server', 'invalid-json', 'incomplete', 'out-o
     } });
     await page.locator('button[data-lat]').first().click();
     await expect(page.locator('#retry')).toBeVisible();
-    await expect(page.locator('#out')).not.toContainText('計算中');
+    await expect(page.locator('#out')).not.toContainText('Calculating');
     await expect(page.locator('#out')).not.toContainText('private diagnostic');
-    if (failure === 'out-of-range') await expect(page.locator('#out')).toContainText('対象地域外');
+    if (failure === 'out-of-range') await expect(page.locator('#out')).toContainText('outside the supported range');
     state.plan = null;
     await page.locator('#retry').click();
     await expect(page.locator('#out .card')).toBeVisible();
@@ -187,7 +187,7 @@ test('plan timeout exits calculating and offers retry', async ({ page }) => {
   await page.locator('button[data-lat]').first().click();
   await pending.promise;
   await page.clock.fastForward(30001);
-  await expect(page.locator('#out')).toContainText('タイムアウト');
+  await expect(page.locator('#out')).toContainText('timed out');
   await expect(page.locator('#retry')).toBeVisible();
   release.resolve();
 });
@@ -206,10 +206,10 @@ for (const code of [1, 2, 3]) {
     await boot(page);
     await page.locator('#here').click();
     await expect(page.locator('#retry')).toBeVisible();
-    await expect(page.locator('#out')).toContainText(['', '許可されていません', '取得できませんでした', 'タイムアウト'][code]);
+    await expect(page.locator('#out')).toContainText(['', 'permission denied', 'Location unavailable', 'timed out'][code]);
     await page.locator('#retry').click();
     await expect(page.locator('#out .card')).toBeVisible();
-    await expect(page.locator('#conditions')).toContainText('現在地');
+    await expect(page.locator('#conditions')).toContainText('Current location');
   });
 }
 
@@ -252,7 +252,7 @@ test('warning check latency does not postpone the evacuation start time', async 
   await pending.promise;
   await page.locator('button[data-lat]').first().click();
   const selectedAt = await page.evaluate(() => Date.now());
-  await expect(page.locator('#out')).toContainText('警報の確認後に計算します');
+  await expect(page.locator('#out')).toContainText('Waiting for warning check');
   await page.clock.fastForward(5000);
   release.resolve();
   await expect(page.locator('#out .card')).toBeVisible();
@@ -277,7 +277,7 @@ test('shelter appears before the Gemini explanation, which is filled in afterwar
   });
   await choose(page);
   expect(state.inputs[0].explain).toBe(false);
-  await expect(page.locator('#explain')).toContainText('Gemini が説明を作成中');
+  await expect(page.locator('#explain')).toContainText('Gemini is writing');
   release.resolve();
   await expect(page.locator('#explain')).toHaveText('Walk to the hotel now.');
   await expect(page.locator('#explainSrc')).toHaveText('Gemini');
@@ -294,7 +294,7 @@ test('explanation failure keeps the guidance and says so', async ({ page }) => {
     explain: route => route.fulfill({ status: 500, body: '' }),
   });
   await choose(page);
-  await expect(page.locator('#explain')).toContainText('説明を出せませんでした');
+  await expect(page.locator('#explain')).toContainText('Explanation unavailable');
   await expect(page.locator('#out .card')).toBeVisible();
 });
 
@@ -306,7 +306,7 @@ test('current location outside Osaka Bay points to the sample places instead of 
   });
   const { state } = await boot(page);
   await page.locator('#here').click();
-  await expect(page.locator('#out')).toContainText('対応地域（大阪湾岸）の外');
+  await expect(page.locator('#out')).toContainText('outside the Osaka Bay area');
   await expect(page.locator('button[data-lat]').first()).toBeVisible();
   expect(state.inputs).toHaveLength(0);
 });
@@ -352,4 +352,19 @@ test('arriving shows what to do next and can go back to guidance', async ({ page
   await expect(page.locator('#out .answer')).toContainText('lifts the warning');
   await page.locator('#notYet').click();
   await expect(page.locator('#out .card')).toBeVisible();
+});
+
+test('choosing a language shows the whole screen in that language only', async ({ page }) => {
+  const { state } = await boot(page);
+  await page.locator('#lang').selectOption('ko');
+  await expect(page.locator('#here')).toContainText('흔들렸어요');
+  await expect(page.locator('#here')).not.toContainText('揺れた');
+  await choose(page);
+  await expect(page.locator('#out .card')).toContainText('지금 출발');
+  await expect(page.locator('#out')).not.toContainText('Leave now');
+  expect(state.inputs.at(-1)).toMatchObject({ lang: 'ko' });
+  await page.locator('#lang').selectOption('zh');
+  await expect(page.locator('#out .card')).toContainText('立即出发');
+  await page.reload();
+  await expect(page.locator('#lang')).toHaveValue('zh');
 });
