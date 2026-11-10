@@ -232,57 +232,57 @@
     <svg width="26" height="23" viewBox="0 0 26 23" aria-hidden="true"><path d="M13 1 25 22H1Z" fill="#ffd100" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 18c1.5 0 1.5-1.2 3.5-1.2S11.5 18 13 18s1.5-1.2 3.5-1.2S18.5 18 20 18M8.5 14c1.4 0 1.4-1 3-1.6 1-.4 2-.4 3 .2" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg>
     <span>Tsunami Navi<small>津波避難ナビ</small></span>
   </div>
-  <div id="alertbox" role="status" aria-live="polite">Checking warning status… / 警報を確認中</div>
-  <button id="refreshAlert" aria-label="Check again / 警報を再確認" title="Check again / 警報を再確認">↻</button>
+  <div id="alertbox" role="status" aria-live="polite">Checking warning status…</div>
+  <button id="refreshAlert" data-t-label="checkAgain" aria-label="Check again" title="Check again">↻</button>
 </div>
 
 <div class="app">
   <main class="sheet">
-    <button class="back" id="back" type="button">‹ Change place / 場所を選び直す</button>
+    <button class="back" id="back" type="button" data-t="changePlace">‹ Change place</button>
 
     <div class="idle">
-      <h1 class="lead">Felt a strong quake near the sea?</h1>
-      <span class="ja">海の近くで強い揺れを感じたら、すぐに押してください。逃げる先と、間に合うかを出します。</span>
+      <h1 class="lead" data-t="lead">Felt a strong quake near the sea?</h1>
+      <span class="ja" data-t="leadSub">Tap right away. You get where to go and whether you will make it.</span>
       <button id="here">
         <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="20" cy="20" r="6" fill="#fff"/></svg>
-        <span>I felt shaking — use my location <span class="ja">揺れた（現在地）</span></span>
+        <span data-t="here">I felt shaking — use my location</span>
       </button>
-      <p class="sub">Not in Osaka? Try it here <span class="ja">大阪にいない時は、ここで試す</span></p>
+      <p class="sub" data-t="notOsaka">Not in Osaka? Try it here</p>
       <button id="demoRun" class="demorun" type="button">
         <span class="play" aria-hidden="true"></span>
-        <span>Watch the full flow <span class="ja">訓練の警報が出た時の流れを試す（南海 堺駅の東）</span></span>
+        <span><span data-t="demoRun">Watch the full flow</span> <span class="ja" data-t="demoRunSub">Training warning at Nankai Sakai Sta.</span></span>
       </button>
       <div class="places">
-        <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
-        <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
-        <button data-lat="34.5786" data-lon="135.4610">Ohama Park <span class="ja">大浜公園</span></button>
+        <button data-lat="34.5813" data-lon="135.4673"><span data-t="pSakai">Nankai Sakai Sta.</span></button>
+        <button data-lat="34.6545" data-lon="135.4290"><span data-t="pKaiyukan">Kaiyukan</span></button>
+        <button data-lat="34.5786" data-lon="135.4610"><span data-t="pOhama">Ohama Park</span></button>
       </div>
     </div>
 
     <div class="opts">
-      <select id="lang" aria-label="Language / 言語">
+      <select id="lang" data-t-label="langLabel" aria-label="Language">
         <option value="en">English</option>
         <option value="ja">日本語</option>
         <option value="zh">简体中文</option>
         <option value="ko">한국어</option>
       </select>
-      <label class="switch"><input type="checkbox" id="slow" role="switch"> <span>Cannot walk fast <span class="ja">速く歩けない（子ども・高齢者・けが）</span></span></label>
+      <label class="switch"><input type="checkbox" id="slow" role="switch"> <span data-t="slow">Cannot walk fast (child, elderly, injured)</span></label>
     </div>
     <p id="conditions"></p>
 
     <div id="out" role="status" aria-live="polite"></div>
-    <button id="retry" hidden>Retry / 再試行</button>
+    <button id="retry" hidden data-t="retry">Retry</button>
 
     <div class="demo">
       <span>DEMO</span>
-      <button id="replay">Receive warning (training replay) <span class="ja">訓練電文を流し直す</span></button>
+      <button id="replay" data-t="replay">Receive warning (training replay)</button>
     </div>
-    <p class="foot">Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください。</p>
+    <p class="foot" data-t="foot">Reference guidance based on official data. Always follow local instructions and announcements.</p>
   </main>
   <div class="mapwrap" aria-hidden="true">
     <div id="map"></div>
-    <div class="legend" id="legend"><i></i>Flood zone (MLIT) / 浸水想定区域</div>
-    <div class="maphint">Tap a red circle to try / 赤い丸を押して試す</div>
+    <div class="legend" id="legend"><i></i><span data-t="legend">Flood zone (MLIT)</span></div>
+    <div class="maphint" data-t="maphint">Tap a red circle to try</div>
   </div>
 </div>
 
@@ -293,12 +293,12 @@
       <span id="toMeta"></span>
     </div>
     <h2 id="toTitle"></h2>
-    <div class="cap">First wave expected in <span class="ja" style="color:#fff">津波の到達まで</span></div>
-    <div class="num"><span id="toMin"></span><small>min</small></div>
-    <p>Move away from the sea and go high — now. Don't take a car.<br><span class="ja" style="color:#fff;font-size:14px">今すぐ海から離れ、高い所へ。車は使わないでください。</span></p>
-    <button class="go" id="toGo" type="button">Show me where to go <span class="ja" style="color:var(--red)">逃げる先を見る</span></button>
+    <div class="cap" data-t="toCap">First wave expected in</div>
+    <div class="num"><span id="toMin"></span><small data-t="min">min</small></div>
+    <p data-t="toMsg">Move away from the sea and go high — now. Don't take a car.</p>
+    <button class="go" id="toGo" type="button" data-t="toGo">Show me where to go</button>
     <div class="auto" id="toAuto"></div>
-    <button class="high" id="toHigh" type="button">I'm already high in a strong building / もう丈夫な建物の高い階にいる</button>
+    <button class="high" id="toHigh" type="button" data-t="toHigh">I'm already high in a strong building</button>
   </div>
 </div>
 
@@ -308,6 +308,131 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 }[c]));
 const TIMEOUT_MS = 30000;
+/* 画面の言語。選んだ言語（英・日・中・韓）だけで出す。{n} などは差し込む値 */
+const I18N = {
+  checking: ['Checking warning status…', '警報を確認中…', '正在确认警报…', '경보 확인 중…'],
+  replaying: ['Starting training replay…', '訓練を開始中…', '正在开始演练…', '훈련 시작 중…'],
+  checkAgain: ['Check again', '警報を再確認', '重新确认', '다시 확인'],
+  changePlace: ['‹ Change place', '‹ 場所を選び直す', '‹ 重新选择地点', '‹ 장소 다시 선택'],
+  lead: ['Felt a strong quake near the sea?', '海の近くで強い揺れを感じた？', '在海边感到强烈地震？', '바닷가에서 강한 지진을 느꼈나요?'],
+  leadSub: ['Tap right away. You get where to go and whether you will make it.', 'すぐに押してください。逃げる先と、間に合うかを出します。', '请立即点击。会显示去哪里避难，以及能否及时到达。', '바로 누르세요. 어디로 가야 하는지, 제때 도착할 수 있는지 알려 드립니다.'],
+  here: ['I felt shaking — use my location', '揺れた（現在地で調べる）', '感到摇晃 — 使用我的位置', '흔들렸어요 — 내 위치 사용'],
+  notOsaka: ['Not in Osaka? Try it here', '大阪にいない時は、ここで試す', '不在大阪？在这里试试', '오사카에 없나요? 여기서 해 보세요'],
+  demoRun: ['Watch the full flow', '警報が出た時の流れを試す', '观看完整流程', '전체 흐름 보기'],
+  demoRunSub: ['Training warning at Nankai Sakai Sta.', '南海 堺駅の東で訓練の警報', '在南海堺站模拟演练警报', '난카이 사카이역에서 훈련 경보'],
+  pSakai: ['Nankai Sakai Sta.', '南海 堺駅の東', '南海堺站东侧', '난카이 사카이역 동쪽'],
+  pKaiyukan: ['Kaiyukan', '海遊館', '海游馆', '가이유칸'],
+  pOhama: ['Ohama Park', '大浜公園', '大滨公园', '오하마 공원'],
+  langLabel: ['Language', '言語', '语言', '언어'],
+  slow: ['Cannot walk fast (child, elderly, injured)', '速く歩けない（子ども・高齢者・けが）', '走不快（儿童・老人・受伤）', '빨리 걸을 수 없음 (아이·노인·부상)'],
+  retry: ['Retry', '再試行', '重试', '다시 시도'],
+  replay: ['Receive warning (training replay)', '訓練の警報を流し直す', '接收警报（演练重播）', '경보 받기 (훈련 재생)'],
+  foot: ['Reference guidance based on official data. Always follow local instructions and announcements.', '公式データに基づく参考の案内です。現地の指示・放送を優先してください。', '这是基于官方数据的参考引导。请始终优先听从当地的指示和广播。', '공식 데이터에 기반한 참고 안내입니다. 항상 현지 지시와 방송을 우선하세요.'],
+  legend: ['Flood zone (MLIT)', '浸水想定区域（国交省）', '浸水预想区域（国土交通省）', '침수 예상 구역 (국토교통성)'],
+  maphint: ['Tap a red circle to try', '赤い丸を押して試す', '点击红色圆圈试试', '빨간 원을 눌러 보세요'],
+  toCap: ['First wave expected in', '津波の到達まで', '距第一波海啸到达', '첫 파도 도달까지'],
+  toMsg: ["Move away from the sea and go high — now. Don't take a car.", '今すぐ海から離れ、高い所へ。車は使わないでください。', '立即远离大海，前往高处。不要开车。', '지금 바로 바다에서 멀어져 높은 곳으로 가세요. 차는 타지 마세요.'],
+  toGo: ['Show me where to go', '逃げる先を見る', '查看避难地点', '대피 장소 보기'],
+  toHigh: ["I'm already high in a strong building", 'もう丈夫な建物の高い階にいる', '我已在坚固建筑的高层', '이미 튼튼한 건물의 높은 층에 있어요'],
+  toAuto: ['Guidance starts by itself in {n} s', '{n} 秒後に自動で案内を始めます', '{n} 秒后自动开始引导', '{n}초 후 자동으로 안내를 시작합니다'],
+  training: ['TRAINING', '訓練', '演练', '훈련'],
+  min: ['min', '分', '分钟', '분'],
+  errRange: ['This location or input is outside the supported range.', '対象地域外、または入力が不正です。', '该地点或输入超出支持范围。', '지원 범위를 벗어난 위치이거나 입력입니다.'],
+  errServer: ['The server could not complete the request.', 'サーバーで処理できませんでした。', '服务器无法完成请求。', '서버가 요청을 처리하지 못했습니다.'],
+  errTimeout: ['The request timed out.', '通信がタイムアウトしました。', '请求超时。', '요청 시간이 초과되었습니다.'],
+  errConnect: ['Could not connect. Check your connection.', '通信に失敗しました。接続を確認してください。', '无法连接。请检查网络。', '연결할 수 없습니다. 연결을 확인하세요.'],
+  errParse: ['Could not read the server response.', 'サーバーの応答を読み取れませんでした。', '无法读取服务器响应。', '서버 응답을 읽을 수 없습니다.'],
+  errIncomplete: ['Incomplete server response.', 'サーバーの応答が不完全です。', '服务器响应不完整。', '서버 응답이 불완전합니다.'],
+  trainingReplay: ['Training replay: {kind} — {area}', '訓練電文: {kind} — {area}', '演练电文: {kind} — {area}', '훈련 전문: {kind} — {area}'],
+  notLive: ['Not a live warning', '実際の警報ではありません', '不是实际警报', '실제 경보가 아닙니다'],
+  liveUnknown: ['Live warning status unavailable', '実際の警報の有無は確認できません', '无法确认实际警报', '실제 경보 여부를 확인할 수 없습니다'],
+  statusUnknown: ['Warning status unavailable. Check again.', '警報の有無は確認できません。再確認してください。', '无法确认是否有警报。请重新确认。', '경보 여부를 확인할 수 없습니다. 다시 확인하세요.'],
+  prevReceived: ['Previously received warning: {kind} (latest status not confirmed)', '以前受け取った警報: {kind}（最新の状態は未確認）', '之前收到的警报: {kind}（最新状态未确认）', '이전에 받은 경보: {kind} (최신 상태 미확인)'],
+  jmaActive: ['JMA: {kind} — Osaka (checked {t}) · not a drill', '気象庁: 大阪府に{kind}（{t} 確認）· 訓練ではありません', '日本气象厅: 大阪府 {kind}（{t} 确认）· 不是演练', '일본 기상청: 오사카부 {kind} ({t} 확인) · 훈련 아님'],
+  noWarning: ['JMA live check: no tsunami warning for Osaka (checked {t}). If you feel strong shaking, evacuate without waiting for a warning.', '確認時点（{t}）では大阪府に津波の警報・注意報なし。強い揺れを感じたら警報を待たずに避難してください。', '日本气象厅实时确认（{t}）: 大阪府没有海啸警报。如感到强烈摇晃，请不要等待警报，立即避难。', '일본 기상청 실시간 확인 ({t}): 오사카부에 쓰나미 경보 없음. 강한 흔들림을 느끼면 경보를 기다리지 말고 대피하세요.'],
+  statusFailed: ['Warning status unavailable. {msg} Press "Check again".', '警報の有無は確認できません。{msg}「警報を再確認」を押してください。', '无法确认是否有警报。{msg} 请点击“重新确认”。', '경보 여부를 확인할 수 없습니다. {msg} "다시 확인"을 누르세요.'],
+  slowPace: ['Slow (0.5 m/s)', 'ゆっくり (0.5 m/秒)', '慢速 (0.5 米/秒)', '느리게 (0.5 m/초)'],
+  normalPace: ['Normal (0.62 m/s)', '通常 (0.62 m/秒)', '正常 (0.62 米/秒)', '보통 (0.62 m/초)'],
+  tbTraining: ['JMA arrival time (training telegram)', '気象庁の到達予想時刻（訓練電文）', '日本气象厅预计到达时间（演练电文）', '일본 기상청 도달 예상 시각 (훈련 전문)'],
+  tbJma: ['JMA arrival time', '気象庁の到達予想時刻', '日本气象厅预计到达时间', '일본 기상청 도달 예상 시각'],
+  tbCached: ['Last received JMA time', '受け取った到達予想時刻', '最后收到的预计到达时间', '마지막으로 받은 도달 예상 시각'],
+  tbShake: ['Shaking time + 26 min (estimate)', '揺れた時刻＋26分（目安）', '摇晃时间 + 26 分钟（估计）', '흔들린 시각 + 26분 (추정)'],
+  tbDefault: ['Now + 26 min (estimate)', '今＋26分（目安）', '现在 + 26 分钟（估计）', '지금 + 26분 (추정)'],
+  tbUnknown: ['Time basis unavailable', '時刻の基準を確認できません', '无法确认时间依据', '시간 기준을 확인할 수 없습니다'],
+  goUp: ['Go up to floor {n} or higher', '建物の{n}階以上へ', '上到 {n} 楼以上', '{n}층 이상으로 올라가세요'],
+  outZone: ['Get outside the flood zone', '浸水想定区域の外へ', '离开浸水预想区域', '침수 예상 구역 밖으로'],
+  late: ['May not make it in time', '間に合わない恐れ', '可能来不及', '늦을 수 있습니다'],
+  lateSub: ['Go up to the nearest tall, strong building now.', '近くのできるだけ高い建物へ上がってください', '请立即上到附近尽量高的坚固建筑。', '지금 가장 가까운 높고 튼튼한 건물로 올라가세요.'],
+  spare: ['Leave now — about {n} min to spare', '今すぐ出発 — 約{n}分の余裕', '立即出发 — 约有 {n} 分钟余裕', '지금 출발 — 약 {n}분 여유'],
+  noDest: ['No evacuation destination returned.', '避難先を取得できませんでした。', '未能获取避难地点。', '대피 장소를 받지 못했습니다.'],
+  goTo: ['GO TO', '避難先', '避难地点', '대피 장소'],
+  leaveNow: ['Leave now', '今すぐ出発', '立即出发', '지금 출발'],
+  walkAbout: ['Walk about {n} min', '歩いて約{n}分', '步行约 {n} 分钟', '걸어서 약 {n}분'],
+  directions: ['Start walking directions', 'Google マップで道案内', '开始步行导航', '도보 길안내 시작'],
+  tlWalk: ['Walk', '歩いて', '步行', '걸어서'],
+  tlTsunami: ['Tsunami in', '津波まで', '距海啸', '쓰나미까지'],
+  tlNow: ['Now', '今', '现在', '지금'],
+  tlArrive: ['Arrive', '到着', '到达', '도착'],
+  tlWave: ['Tsunami', '津波', '海啸', '쓰나미'],
+  leftAbout: ['About {n} min left', '残り約{n}分', '剩余约 {n} 分钟', '약 {n}분 남음'],
+  altLine: ['About {n} min on foot', '歩いて約{n}分', '步行约 {n} 分钟', '걸어서 약 {n}분'],
+  altDir: ['Directions ›', '道案内 ›', '导航 ›', '길안내 ›'],
+  diffSlow: ['RECALCULATED AT A SLOWER PACE (0.5 m/s)', 'ゆっくり歩く速さ（0.5 m/秒）で選び直しました', '已按较慢的步行速度（0.5 米/秒）重新选择', '느린 걸음(0.5 m/초)으로 다시 골랐습니다'],
+  diffAny: ['RECALCULATED', '選び直しました', '已重新选择', '다시 골랐습니다'],
+  spareOnly: ['{w} min — only {n} min to spare', '{w}分 — 余裕は {n} 分だけ', '{w} 分钟 — 只剩 {n} 分钟余裕', '{w}분 — 여유 {n}분뿐'],
+  spareOk: ['{w} min — {n} min to spare', '{w}分 — 余裕 {n} 分', '{w} 分钟 — 余裕 {n} 分钟', '{w}분 — 여유 {n}분'],
+  floorPlus: ['floor {n}+', '{n}階以上', '{n} 楼以上', '{n}층 이상'],
+  outZoneShort: ['outside the flood zone', '浸水想定の外', '浸水预想区域外', '침수 예상 구역 밖'],
+  minSpare: ['{n} min to spare', '余裕 {n} 分', '余裕 {n} 分钟', '여유 {n}분'],
+  minN: ['{n} min', '{n}分', '{n} 分钟', '{n}분'],
+  arrived: ["You've arrived", '着きました', '已到达', '도착했습니다'],
+  tsunamiIn: ['Tsunami in {n} min', '津波まで {n} 分', '距海啸 {n} 分钟', '쓰나미까지 {n}분'],
+  goUpBig: ['Go up to floor {n}+', '{n}階以上へ', '上到 {n} 楼以上', '{n}층 이상으로'],
+  stayHere: ['Stay here, away from the sea', 'ここで待つ（海に近づかない）', '留在这里，远离大海', '여기 머무르세요, 바다에서 떨어져서'],
+  stayHigh: ['Stay high until the warning is lifted. It can take hours.', '警報が解除されるまで高い所に。何時間もかかることがあります。', '在警报解除前请留在高处。可能需要几个小时。', '경보가 해제될 때까지 높은 곳에 있으세요. 몇 시간이 걸릴 수 있습니다.'],
+  tellFamily: ["Tell your family you're safe", '家族に無事を知らせる', '告诉家人您平安', '가족에게 무사하다고 알리기'],
+  tellFamilySub: ['Opens a text message. SMS can get through when data does not.', 'SMS を開きます。データ通信が無くても SMS は届くことがあります。', '打开短信。没有数据网络时短信也可能送达。', '문자를 엽니다. 데이터가 안 될 때도 문자는 갈 수 있습니다.'],
+  whenBack: ['When can I go back?', 'いつ戻れる？', '什么时候可以回去？', '언제 돌아갈 수 있나요?'],
+  injured: ['Injured? Call 119', 'けがをしたら 119', '受伤了？拨打 119', '다쳤나요? 119에 전화'],
+  injuredSub: ['Ambulance and fire. Say "English, please."', '救急・消防', '救护车和消防。可以说 "English, please."', '구급차와 소방. "English, please."라고 말하세요'],
+  lost: ['Lost someone?', 'はぐれた人がいる', '和同伴走散了？', '일행을 잃어버렸나요?'],
+  notYet: ['Not there yet — back to guidance', 'まだ着いていない（案内に戻る）', '还没到 — 返回引导', '아직 도착 안 함 — 안내로 돌아가기'],
+  ansBack: ['Only after JMA lifts the warning. Later waves can be bigger than the first.', '気象庁が警報を解除するまで戻らないでください。後の波の方が大きいことがあります。', '在日本气象厅解除警报之前不要返回。后面的海浪可能比第一波更大。', '일본 기상청이 경보를 해제할 때까지 돌아가지 마세요. 나중 파도가 첫 파도보다 클 수 있습니다.'],
+  ansLost: ['Stay here. Shelter staff keep a list of names — tell them who you are looking for.', 'ここを動かずに。避難所の係の人に、探している人の名前を伝えてください。', '请留在这里。避难所工作人员有人员名单 — 请告诉他们您在找谁。', '여기 계세요. 대피소 직원이 이름 명단을 갖고 있습니다 — 찾는 사람을 알려 주세요.'],
+  waitAlert: ['Waiting for warning check…', '警報の確認後に計算します', '确认警报后再计算…', '경보 확인 후 계산합니다…'],
+  calculating: ['Calculating…', '計算中…', '计算中…', '계산 중…'],
+  explaining: ['Gemini is writing a short explanation…', 'Gemini が説明を作成中…', 'Gemini 正在写简短说明…', 'Gemini가 짧은 설명을 작성 중…'],
+  explainFail: ['Explanation unavailable — follow the steps above.', '説明を出せませんでした。上の手順に従ってください。', '无法显示说明 — 请按照上面的步骤行动。', '설명을 표시할 수 없습니다 — 위의 단계를 따르세요.'],
+  otherShelters: ['Other shelters ({n})', 'ほかの避難先（{n}）', '其他避难地点（{n}）', '다른 대피 장소 ({n})'],
+  iArrived: ["I've arrived", '着いた', '我已到达', '도착했어요'],
+  srcLine: ['Shelters: GSI designated tsunami evacuation sites · Flood depth: MLIT (Osaka 2023) · Walking: {walk} ÷ {pace} m/s · Explanation: ', '避難先: 国土地理院 指定緊急避難場所（津波）・浸水の深さ: 国土数値情報（大阪府 2023）・歩く時間: {walk} ÷ {pace} m/秒・説明: ', '避难地点: 国土地理院 指定紧急避难场所（海啸）· 浸水深度: 国土数值信息（大阪府 2023）· 步行: {walk} ÷ {pace} 米/秒 · 说明: ', '대피 장소: 국토지리원 지정 긴급 대피 장소(쓰나미) · 침수 깊이: 국토수치정보(오사카부 2023) · 도보: {walk} ÷ {pace} m/초 · 설명: '],
+  walkRoutes: ['Routes API distance', 'Routes API の道のり', 'Routes API 步行距离', 'Routes API 도보 거리'],
+  walkStraight: ['straight line × 1.6 (estimate)', '直線 × 1.6（目安）', '直线 × 1.6（估计）', '직선 × 1.6 (추정)'],
+  fixedText: ['fixed text', '固定の文', '固定文本', '고정 문구'],
+  locating: ['Getting your location…', '現在地を取得中…', '正在获取位置…', '위치를 확인하는 중…'],
+  geo1: ['Location permission denied. Allow location access or select a demo location.', '位置情報が許可されていません。設定を変更するか地点ボタンを選んでください。', '未允许位置信息。请允许访问位置或选择演示地点。', '위치 권한이 거부되었습니다. 위치 접근을 허용하거나 데모 위치를 선택하세요.'],
+  geo2: ['Location unavailable.', '現在地を取得できませんでした。', '无法获取当前位置。', '현재 위치를 확인할 수 없습니다.'],
+  geo3: ['Location request timed out.', '現在地の取得がタイムアウトしました。', '获取位置超时。', '위치 확인 시간이 초과되었습니다.'],
+  geoNone: ['Geolocation is unavailable in this browser.', 'このブラウザでは位置情報を利用できません。', '此浏览器无法使用位置信息。', '이 브라우저에서는 위치 정보를 사용할 수 없습니다.'],
+  outside: ['You are outside the Osaka Bay area this app covers. Try a place above, or “Watch the full flow”.', '対応地域（大阪湾岸）の外にいます。上の地点か「警報が出た時の流れを試す」で試せます。', '您不在本应用支持的大阪湾地区。请试试上面的地点，或“观看完整流程”。', '이 앱이 지원하는 오사카만 지역 밖에 있습니다. 위의 장소나 "전체 흐름 보기"로 해 보세요.'],
+  currentLoc: ['Current location', '現在地', '当前位置', '현재 위치'],
+};
+const LANGS = ['en', 'ja', 'zh', 'ko'];
+const KIND = { '大津波警報': ['Major Tsunami Warning', '大津波警報', '大海啸警报', '대형 쓰나미 경보'], '津波警報': ['Tsunami Warning', '津波警報', '海啸警报', '쓰나미 경보'], '津波注意報': ['Tsunami Advisory', '津波注意報', '海啸注意报', '쓰나미 주의보'] };
+const langIndex = () => Math.max(0, LANGS.indexOf($('lang').value));
+function t(key, vars = {}) {
+  const row = I18N[key];
+  if (!row) return key;
+  return (row[langIndex()] ?? row[0]).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
+}
+const kindName = (kind) => { const k = Object.keys(KIND).find(x => String(kind ?? '').includes(x)); return k ? KIND[k][langIndex()] : (kind ?? ''); };
+function applyLang() {
+  document.documentElement.lang = $('lang').value;
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll('[data-t-label]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.tLabel)); el.title = t(el.dataset.tLabel); });
+  try { localStorage.setItem('lang', $('lang').value); } catch (e) { /* 保存できなくても動く */ }
+}
+
 let position = null;
 let shakeAt = null;
 let planVersion = 0;
@@ -339,15 +464,13 @@ async function requestJson(url, options, controller) {
   try {
     const response = await fetch(url, { ...options, signal: controller.signal });
     if (!response.ok) {
-      throw new Error(response.status === 422
-        ? "This location or input is outside the supported range. / 対象地域外、または入力が不正です。"
-        : "The server could not complete the request. / サーバーで処理できませんでした。");
+      throw new Error(response.status === 422 ? t('errRange') : t('errServer'));
     }
     return await response.json();
   } catch (error) {
-    if (controller.signal.aborted) throw new Error("The request timed out. / 通信がタイムアウトしました。");
-    if (error instanceof TypeError) throw new Error("Could not connect. Check your connection. / 通信に失敗しました。接続を確認してください。");
-    if (error instanceof SyntaxError) throw new Error("Could not read the server response. / サーバーの応答を読み取れませんでした。");
+    if (controller.signal.aborted) throw new Error(t('errTimeout'));
+    if (error instanceof TypeError) throw new Error(t('errConnect'));
+    if (error instanceof SyntaxError) throw new Error(t('errParse'));
     throw error;
   } finally {
     clearTimeout(timeout);
@@ -360,19 +483,18 @@ function alertMarkup(a) {
   const checked = a.jma_checked_at
     ? new Date(a.jma_checked_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) : "—";
   if (training) {
-    return `<div class="alert"><div><b>Training replay / 訓練電文: ${esc(a.kind)} — ${esc(a.area_name || "大阪府")}</b>
-      · Not a live warning / 実際の警報ではありません
-      ${failed ? '· Live warning status unavailable / 実際の警報の有無は確認できません' : ''}</div></div>`;
+    return `<div class="alert"><div><b>${esc(t('trainingReplay', { kind: kindName(a.kind), area: a.area_name || '大阪府' }))}</b>
+      · ${esc(t('notLive'))}
+      ${failed ? '· ' + esc(t('liveUnknown')) : ''}</div></div>`;
   }
   if (failed) {
-    return `<div class="noalert"><div>Warning status unavailable / 警報の有無は確認できません。再確認してください。
-      ${a.active ? `<br>Previously received warning / 以前受け取った警報: ${esc(a.kind)}（最新の状態は未確認）` : ''}</div></div>`;
+    return `<div class="noalert"><div>${esc(t('statusUnknown'))}
+      ${a.active ? `<br>${esc(t('prevReceived', { kind: kindName(a.kind) }))}` : ''}</div></div>`;
   }
   if (a.active) {
-    return `<div class="alert"><div><b>JMA: ${esc(a.kind)} — Osaka</b> (checked ${esc(checked)}) · 気象庁の警報・注意報（訓練ではありません）</div></div>`;
+    return `<div class="alert"><div><b>${esc(t('jmaActive', { kind: kindName(a.kind), t: checked }))}</b></div></div>`;
   }
-  return `<div class="noalert"><div>JMA live check: no tsunami warning for Osaka (checked ${esc(checked)}).
-    確認時点では大阪府に津波の警報・注意報なし。強い揺れを感じたら警報を待たずに避難してください。</div></div>`;
+  return `<div class="noalert"><div>${esc(t('noWarning', { t: checked }))}</div></div>`;
 }
 
 function cancelPlan() {
@@ -398,7 +520,7 @@ function setState(state) {
 function updateConditions() {
   setState(position ? 'result' : 'idle');
   $('conditions').textContent = position
-    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').selectedOptions[0].textContent} · ${$('slow').checked ? 'Slow / ゆっくり (0.5 m/s)' : 'Normal / 通常 (0.62 m/s)'}`
+    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').selectedOptions[0].textContent} · ${$('slow').checked ? t('slowPace') : t('normalPace')}`
     : '';
 }
 
@@ -411,19 +533,18 @@ async function checkAlert(replay = false) {
   $('out').textContent = '';
   $('retry').hidden = true;
   $('replay').disabled = $('refreshAlert').disabled = true;
-  $('alertbox').textContent = replay
-    ? 'Starting training replay… / 訓練を開始中'
-    : 'Checking warning status… / 警報を確認中';
+  $('alertbox').textContent = replay ? t('replaying') : t('checking');
   try {
     const a = await requestJson(replay ? '/api/alert/replay' : '/api/alert', {
       method: replay ? 'POST' : 'GET',
     }, controller);
     if (version !== alertVersion) return;
     $('alertbox').innerHTML = alertMarkup(a);
+    lastAlert = a;
     maybeTakeover(a, replay);
   } catch (error) {
     if (version !== alertVersion) return;
-    $('alertbox').textContent = `Warning status unavailable / 警報の有無は確認できません。${error.message} 「警報を再確認」を押してください。`;
+    $('alertbox').textContent = t('statusFailed', { msg: error.message });
   } finally {
     if (version === alertVersion) {
       firstAlertCheck = false;
@@ -436,15 +557,9 @@ async function checkAlert(replay = false) {
 
 function timeBasis(plan, alert) {
   if (plan.time_source === 'jma_alert') {
-    return alert.is_training || alert.replaying || alert.source === 'training_replay'
-      ? 'JMA arrival time (training telegram) / 気象庁の到達予想時刻（訓練電文）'
-      : 'JMA arrival time / 気象庁の到達予想時刻';
+    return alert.is_training || alert.replaying || alert.source === 'training_replay' ? t('tbTraining') : t('tbJma');
   }
-  return ({
-    cached_alert: 'Last received JMA time / 受け取った到達予想時刻',
-    shake_plus_26: 'Shaking time + 26 min (estimate) / 揺れた時刻＋26分（目安）',
-    default_26: 'Now + 26 min (estimate) / 今＋26分（目安）',
-  })[plan.time_source] || 'Time basis unavailable / 時刻の基準を確認できません';
+  return t({ cached_alert: 'tbCached', shake_plus_26: 'tbShake', default_26: 'tbDefault' }[plan.time_source] || 'tbUnknown');
 }
 
 function mapsHref(o) {
@@ -457,35 +572,32 @@ function mapsHref(o) {
 }
 
 function destinationText(o) {
-  return o.type === 'go_upstairs'
-    ? `Go up to floor ${esc(o.floor_min ?? 'top')} or higher <span class="ja">建物の${esc(o.floor_min ?? '最上')}階以上へ</span>`
-    : 'Get outside the flood zone <span class="ja">浸水想定区域の外へ</span>';
+  return o.type === 'go_upstairs' ? esc(t('goUp', { n: o.floor_min ?? 3 })) : esc(t('outZone'));
 }
 
 function verdict(left, walk) {
   if (walk == null) return '';
   if (walk > left) {
-    return `<div class="verdict late"><b>May not make it in time</b>
-      <span class="ja">間に合わない恐れ。近くのできるだけ高い建物へ上がってください</span></div>`;
+    return `<div class="verdict late"><b>${esc(t('late'))}</b>
+      <span class="ja">${esc(t('lateSub'))}</span></div>`;
   }
-  return `<div class="verdict"><b>Leave now — about ${left - walk} min to spare</b>
-    <span class="ja">今すぐ出れば、約${left - walk}分の余裕があります</span></div>`;
+  return `<div class="verdict"><b>${esc(t('spare', { n: left - walk }))}</b></div>`;
 }
 
 function primaryCard(o) {
-  if (!o) return '<p>No evacuation destination returned / 避難先を取得できませんでした。</p>';
+  if (!o) return `<p>${esc(t('noDest'))}</p>`;
   const walk = Math.round(o.walk_min);
   return `<div class="card go">
-    <div class="label">GO TO · 避難先</div>
+    <div class="label">${esc(t('goTo'))}</div>
     <div class="name">${esc(o.name)}</div>
     <div class="addr">${esc(o.city)} · ${esc(o.address)}</div>
     <ol class="todo">
-      <li><span>Leave now <span class="ja">今すぐ出発</span></span></li>
-      <li><span>Walk about ${walk} min <span class="ja">歩いて約${walk}分</span></span></li>
+      <li><span>${esc(t('leaveNow'))}</span></li>
+      <li><span>${esc(t('walkAbout', { n: walk }))}</span></li>
       <li><span>${destinationText(o)}</span></li>
     </ol>
     <a class="navbtn" href="${esc(mapsHref(o))}" target="_blank" rel="noopener">
-      <span>Start walking directions <span class="ja">Google マップで道案内</span></span>
+      <span>${esc(t('directions'))}</span>
     </a>
   </div>`;
 }
@@ -495,19 +607,19 @@ function timeline(plan, alert, o) {
   const walk = o ? Math.round(o.walk_min) : null;
   const max = Math.max(left, walk ?? 0, 1);
   const w = walk == null ? 0 : (walk / max) * 100;
-  const t = (left / max) * 100;
+  const tp = (left / max) * 100;
   return `<div class="tl">
     <div class="tl-head">
-      <div><div class="tl-cap">Walk / 歩いて</div><div class="tl-num">${walk ?? '—'}<small>min</small></div></div>
-      <div><div class="tl-cap" style="text-align:right">Tsunami / 津波まで</div><div class="tl-num red">${left}<small>min</small></div></div>
+      <div><div class="tl-cap">${esc(t('tlWalk'))}</div><div class="tl-num">${walk ?? '—'}<small>${esc(t('min'))}</small></div></div>
+      <div><div class="tl-cap" style="text-align:right">${esc(t('tlTsunami'))}</div><div class="tl-num red">${left}<small>${esc(t('min'))}</small></div></div>
     </div>
     <div class="tl-track" role="img" aria-label="Arrive in ${walk ?? '?'} min, tsunami in ${left} min">
       <span class="tl-walk" style="width:${w}%"></span>
-      <i class="tl-pin start" style="left:0"><span>Now</span></i>
-      ${walk != null ? `<i class="tl-pin${w > 80 ? ' end' : ''}" style="left:${w}%"><span>${w < 20 ? '' : 'Arrive'}</span></i>` : ''}
-      <i class="tl-pin wave${t > 80 ? ' end' : ''}" style="left:calc(${t}% - 2px)"><span>Tsunami</span></i>
+      <i class="tl-pin start" style="left:0"><span>${esc(t('tlNow'))}</span></i>
+      ${walk != null ? `<i class="tl-pin${w > 80 ? ' end' : ''}" style="left:${w}%"><span>${w < 20 ? '' : esc(t('tlArrive'))}</span></i>` : ''}
+      <i class="tl-pin wave${tp > 80 ? ' end' : ''}" style="left:calc(${tp}% - 2px)"><span>${esc(t('tlWave'))}</span></i>
     </div>
-    <p class="basis">About ${left} min left / 残り約${left}分 · ${esc(timeBasis(plan, alert))}</p>
+    <p class="basis">${esc(t('leftAbout', { n: left }))} · ${esc(timeBasis(plan, alert))}</p>
   </div>`;
 }
 
@@ -515,12 +627,11 @@ function altRow(o) {
   return `<div class="alt">
     <b>${esc(o.name)}</b>
     <span class="ja">${esc(o.address)}</span>
-    <div>About ${Math.round(o.walk_min)} min on foot · ${destinationText(o)}</div>
-    <a href="${esc(mapsHref(o))}" target="_blank" rel="noopener">Directions ›</a>
+    <div>${esc(t('altLine', { n: Math.round(o.walk_min) }))} · ${destinationText(o)}</div>
+    <a href="${esc(mapsHref(o))}" target="_blank" rel="noopener">${esc(t('altDir'))}</a>
   </div>`;
 }
 
-const KIND_EN = { '大津波警報': 'Major Tsunami Warning', '津波警報': 'Tsunami Warning', '津波注意報': 'Tsunami Advisory' };
 
 /* 警報が届いた瞬間は、画面全体で知らせる。押すか 5 秒で閉じる */
 function maybeTakeover(a, replay) {
@@ -529,13 +640,13 @@ function maybeTakeover(a, replay) {
   const fresh = replay || (!firstAlertCheck && key !== alertKey);
   alertKey = key;
   if (!fresh) return;
-  $('toMeta').textContent = `JMA · OSAKA${a.is_training || a.replaying ? ' · TRAINING / 訓練' : ''} · ${a.kind ?? ''}`;
-  $('toTitle').textContent = KIND_EN[a.kind] ?? a.kind ?? 'Tsunami Warning';
+  $('toMeta').textContent = `JMA · OSAKA${a.is_training || a.replaying ? ' · ' + t('training') : ''} · ${a.kind ?? ''}`;
+  $('toTitle').textContent = kindName(a.kind) || 'Tsunami Warning';
   $('toMin').textContent = Math.max(0, Math.round(a.minutes_left));
   $('takeover').hidden = false;
   $('toGo').focus();
   let left = 5;
-  const tick = () => { $('toAuto').textContent = `Guidance starts by itself in ${left} s / ${left} 秒後に自動で案内へ`; };
+  const tick = () => { $('toAuto').textContent = t('toAuto', { n: left }); };
   tick();
   clearInterval(takeoverTimer);
   takeoverTimer = setInterval(() => { left -= 1; if (left <= 0) closeTakeover(); else tick(); }, 1000);
@@ -556,9 +667,9 @@ function diffMarkup(prev, now, left) {
   const spareOld = left - oldWalk;
   const walk = Math.round(now.walk_min);
   return `<div class="diff" id="diff">
-    <div class="cap">${prev.slowNow ? 'RECALCULATED AT A SLOWER PACE (0.5 m/s) / ゆっくり歩く速さで選び直しました' : 'RECALCULATED / 選び直しました'}</div>
-    <div class="old"><s>${esc(prev.name)}</s><b>${oldWalk} min — ${spareOld < 3 ? `only ${Math.max(0, spareOld)} min to spare / 余裕は ${Math.max(0, spareOld)} 分だけ` : `${spareOld} min to spare`}</b></div>
-    <div class="new"><b>${esc(now.name)}</b><span>${walk} min · ${now.type === 'go_upstairs' ? `floor ${esc(now.floor_min ?? 3)}+` : 'outside the flood zone'} · ${Math.max(0, left - walk)} min to spare</span></div>
+    <div class="cap">${esc(prev.slowNow ? t('diffSlow') : t('diffAny'))}</div>
+    <div class="old"><s>${esc(prev.name)}</s><b>${esc(t(spareOld < 3 ? 'spareOnly' : 'spareOk', { w: oldWalk, n: Math.max(0, spareOld) }))}</b></div>
+    <div class="new"><b>${esc(now.name)}</b><span>${esc(t('minN', { n: walk }))} · ${esc(now.type === 'go_upstairs' ? t('floorPlus', { n: now.floor_min ?? 3 }) : t('outZoneShort'))} · ${esc(t('minSpare', { n: Math.max(0, left - walk) }))}</span></div>
   </div>`;
 }
 
@@ -569,24 +680,21 @@ function showArrived() {
   const left = Math.round(lastPlan.minutes_left);
   const up = p.type === 'go_upstairs';
   const text = `I'm safe. I evacuated from the tsunami warning to ${p.name} (https://maps.google.com/?q=${p.lat},${p.lon}). I will stay until the warning is lifted.`;
-  const answers = {
-    back: 'Only after JMA lifts the warning. Later waves can be bigger than the first. / 気象庁が警報を解除するまで戻らないでください。後の波の方が大きいことがあります。',
-    lost: 'Stay here. Shelter staff keep a list of names — tell them who you are looking for. / ここを動かずに。避難所の係の人に、探している人の名前を伝えてください。',
-  };
+  const answers = { back: t('ansBack'), lost: t('ansLost') };
   $('out').innerHTML = `<div class="result arrived">
     <div class="arrived-top">
-      <div class="row"><span>✓ You've arrived / 着きました</span><span>Tsunami in ${left} min</span></div>
+      <div class="row"><span>✓ ${esc(t('arrived'))}</span><span>${esc(t('tsunamiIn', { n: left }))}</span></div>
       <div>${esc(p.name)}</div>
-      <div class="big">${up ? `Go up to floor ${esc(p.floor_min ?? 3)}+` : 'Stay here, away from the sea'}</div>
-      <div>Stay high until the warning is lifted. It can take hours.<br><span class="ja">警報が解除されるまで高い所に。何時間もかかることがあります。</span></div>
+      <div class="big">${esc(up ? t('goUpBig', { n: p.floor_min ?? 3 }) : t('stayHere'))}</div>
+      <div>${esc(t('stayHigh'))}</div>
     </div>
     <ul class="after">
-      <li><a id="tellFamily" href="sms:?&body=${encodeURIComponent(text)}"><b>Tell your family you're safe</b><small>Opens a text message. SMS can get through when data does not. / 家族に無事を知らせる（SMS）</small></a></li>
-      <li><button type="button" data-answer="back"><b>When can I go back?</b><small>いつ戻れる？</small></button></li>
-      <li><a href="tel:119"><b>Injured? Call 119</b><small>Ambulance and fire. Say "English, please." / けがをしたら 119</small></a></li>
-      <li><button type="button" data-answer="lost"><b>Lost someone?</b><small>はぐれた人がいる</small></button></li>
+      <li><a id="tellFamily" href="sms:?&body=${encodeURIComponent(text)}"><b>${esc(t('tellFamily'))}</b><small>${esc(t('tellFamilySub'))}</small></a></li>
+      <li><button type="button" data-answer="back"><b>${esc(t('whenBack'))}</b></button></li>
+      <li><a href="tel:119"><b>${esc(t('injured'))}</b><small>${esc(t('injuredSub'))}</small></a></li>
+      <li><button type="button" data-answer="lost"><b>${esc(t('lost'))}</b></button></li>
     </ul>
-    <button class="againbtn" id="notYet" type="button">Not there yet — back to guidance / まだ着いていない</button>
+    <button class="againbtn" id="notYet" type="button">${esc(t('notYet'))}</button>
   </div>`;
   if (navigator.share) {
     $('tellFamily').addEventListener('click', (e) => { e.preventDefault(); navigator.share({ text }).catch(() => {}); });
@@ -630,7 +738,7 @@ async function run() {
   updateConditions();
   $('retry').hidden = true;
   if (alertController) {
-    $('out').textContent = 'Waiting for warning check… / 警報の確認後に計算します';
+    $('out').textContent = t('waitAlert');
     return;
   }
   const version = planVersion;
@@ -642,7 +750,7 @@ async function run() {
     lat: position.lat, lon: position.lon, lang: $('lang').value,
     slow: $('slow').checked, shake_at_ms: shakeAt, explain: false,
   };
-  $('out').textContent = 'Calculating… / 計算中';
+  $('out').textContent = t('calculating');
   $('out').setAttribute('aria-busy', 'true');
   try {
     const { alert, plan, explanation } = await requestJson('/api/plan', {
@@ -650,11 +758,10 @@ async function run() {
     }, controller);
     if (version !== planVersion) return;
     if (!alert || !plan || !Array.isArray(plan.alternatives)) {
-      throw new Error('Incomplete server response / サーバーの応答が不完全です。');
+      throw new Error(t('errIncomplete'));
     }
     if (warningVersion === alertVersion) $('alertbox').innerHTML = alertMarkup(alert);
-    const walkingSource = plan.walking_time_source === 'routes_api'
-      ? 'Routes API distance' : 'straight line × 1.6 (estimate)';
+    const walkingSource = plan.walking_time_source === 'routes_api' ? t('walkRoutes') : t('walkStraight');
     const left = Math.round(plan.minutes_left);
     const walk = plan.primary ? Math.round(plan.primary.walk_min) : null;
     const diff = diffMarkup(previousPick, plan.primary, left);
@@ -665,15 +772,12 @@ async function run() {
       ${primaryCard(plan.primary)}
       ${timeline(plan, alert, plan.primary)}
       <p class="message${explanation?.message ? '' : ' pending'}" id="explain">${explanation?.message
-        ? esc(explanation.message) : 'Gemini is writing a short explanation… / Gemini が説明を作成中…'}</p>
+        ? esc(explanation.message) : esc(t('explaining'))}</p>
       ${alertMarkup(alert)}
-      ${plan.alternatives.length ? `<details class="alts"><summary>Other shelters (${plan.alternatives.length}) / ほかの避難先</summary>
+      ${plan.alternatives.length ? `<details class="alts"><summary>${esc(t('otherShelters', { n: plan.alternatives.length }))}</summary>
         ${plan.alternatives.map(altRow).join('')}</details>` : ''}
-      <button class="arrivedbtn" id="arrivedBtn" type="button">I've arrived / 着いた</button>
-      <p class="src">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波） ·
-        Flood depth: MLIT (Osaka 2023) / 国土数値情報 ·
-        Walking: ${walkingSource} ÷ ${input.slow ? '0.5' : '0.62'} m/s ·
-        Explanation: <span id="explainSrc">${explanation ? (explanation.source === 'gemini' ? 'Gemini' : 'fixed text') : 'Gemini'}</span></p>
+      <button class="arrivedbtn" id="arrivedBtn" type="button">${esc(t('iArrived'))}</button>
+      <p class="src">${esc(t('srcLine', { walk: walkingSource, pace: input.slow ? '0.5' : '0.62' }))}<span id="explainSrc">${explanation ? (explanation.source === 'gemini' ? 'Gemini' : esc(t('fixedText'))) : 'Gemini'}</span></p>
     </div>`;
     $('out').setAttribute('aria-busy', 'false');
     swap(() => {
@@ -696,13 +800,13 @@ async function run() {
 }
 
 async function loadExplanation(planId, version) {
-  let text = 'Explanation unavailable — follow the steps above. / 説明を出せませんでした。上の手順に従ってください。';
+  let text = t('explainFail');
   let source = 'unavailable';
   try {
     const e = await requestJson(`/api/explain?plan_id=${encodeURIComponent(planId)}`, {}, new AbortController());
     if (e?.message) {
       text = e.message;
-      source = e.source === 'gemini' ? 'Gemini' : 'fixed text';
+      source = e.source === 'gemini' ? 'Gemini' : t('fixedText');
     }
   } catch (error) {
     // 説明が無くても避難先と手順は出ているので、案内は続けられる
@@ -730,16 +834,11 @@ function locate() {
   shakeAt = shakeAt ?? Date.now();
   updateConditions();
   $('retry').hidden = true;
-  $('out').textContent = 'Getting your location… / 現在地を取得中';
+  $('out').textContent = t('locating');
   const fail = (error) => {
     if (version !== locationVersion) return;
-    const messages = {
-      1: 'Location permission denied. Allow location access or select a demo location. / 位置情報が許可されていません。設定を変更するか地点ボタンを選んでください。',
-      2: 'Location unavailable. / 現在地を取得できませんでした。',
-      3: 'Location request timed out. / 現在地の取得がタイムアウトしました。',
-    };
-    showError(new Error(messages[error.code]
-      || 'Geolocation is unavailable in this browser. / このブラウザでは位置情報を利用できません。'), locate);
+    const messages = { 1: t('geo1'), 2: t('geo2'), 3: t('geo3') };
+    showError(new Error(messages[error.code] || t('geoNone')), locate);
   };
   if (!navigator.geolocation) {
     fail({});
@@ -748,12 +847,11 @@ function locate() {
   navigator.geolocation.getCurrentPosition(p => {
     if (version !== locationVersion) return;
     if (!inArea(p.coords.latitude, p.coords.longitude)) {
-      $('out').innerHTML = `<div class="outside"><b>You are outside the Osaka Bay area this app covers.</b>
-        Try a place above, or “Watch the full flow”. / 対応地域（大阪湾岸）の外にいます。上の地点か「流れを試す」で試せます。</div>`;
+      $('out').innerHTML = `<div class="outside">${esc(t('outside'))}</div>`;
       document.querySelector('.places').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    selectPosition(p.coords.latitude, p.coords.longitude, 'Current location / 現在地');
+    selectPosition(p.coords.latitude, p.coords.longitude, t('currentLoc'));
   }, fail, { timeout: 10000, maximumAge: 0, enableHighAccuracy: true });
 }
 
@@ -860,7 +958,23 @@ $('demoRun').addEventListener('click', () => {
   const sakai = document.querySelector('button[data-lat]');
   selectPosition(+sakai.dataset.lat, +sakai.dataset.lon, sakai.firstChild.textContent.trim());
 });
-$('lang').addEventListener('change', run);
+$('lang').addEventListener('change', () => {
+  applyLang();
+  if (position?.label) {
+    const b = [...document.querySelectorAll('button[data-lat]')].find(x => +x.dataset.lat === position.lat && +x.dataset.lon === position.lon);
+    position.label = b ? b.firstChild.textContent.trim() : t('currentLoc');
+  }
+  if (lastAlert) $('alertbox').innerHTML = alertMarkup(lastAlert);
+  if (!position) drawMap();
+  run();
+});
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) { /* 無くても動く */ }
+  const guess = (saved || navigator.language || 'en').slice(0, 2);
+  if (LANGS.includes(guess)) $('lang').value = guess;
+  applyLang();
+})();
 $('slow').addEventListener('change', () => {
   const p = lastPlan?.primary;
   previousPick = p ? { name: p.name, lat: p.lat, lon: p.lon, walk: p.walk_min, slowNow: $('slow').checked } : null;

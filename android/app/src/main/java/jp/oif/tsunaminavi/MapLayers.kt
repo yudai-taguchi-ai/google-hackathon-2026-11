@@ -51,9 +51,9 @@ fun GoogleMapPanel(m: MiniMapData, s: UiState) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     var gmap by remember { mutableStateOf<GoogleMap?>(null) }
     var fittedFor by remember { mutableStateOf<String?>(null) }
-    val shelterTitle = tr("Shelter", "避難先") + ": " + (s.target?.name ?: "")
-    val shelterSub = s.target?.let { t -> if (s.targetIsUpstairs) tr("Go up to floor ${t.floorMin ?: 3}+", "${t.floorMin ?: 3}階以上へ") else tr("Outside the flood zone", "浸水想定区域の外") }
-    val youTitle = tr("You are here", "現在地")
+    val shelterTitle = tr("Shelter", "避難先", "避难所", "대피소") + ": " + (s.target?.name ?: "")
+    val shelterSub = s.target?.let { t -> if (s.targetIsUpstairs) tr("Go up to floor ${t.floorMin ?: 3}+", "${t.floorMin ?: 3}階以上へ", "请上到${t.floorMin ?: 3}楼以上", "${t.floorMin ?: 3}층 이상으로 올라가세요") else tr("Outside the flood zone", "浸水想定区域の外", "浸水预想区域外", "침수 예상 구역 밖") }
+    val youTitle = tr("You are here", "現在地", "您的位置", "현재 위치")
 
     AndroidView(
         factory = { ctx ->

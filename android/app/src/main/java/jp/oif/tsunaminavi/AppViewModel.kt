@@ -38,6 +38,9 @@ private val DEMO_POINT = 34.5813 to 135.4673
 private const val ADOPT_IF_SHORTER_MIN = 2.0
 private const val ALERT_POLL_MS = 15_000L
 private const val LIVE_SERVER_TIMEOUT_MS = 8_000L
+/** 言語 → 聞き取り・読み上げの言語。 */
+private val SPEECH_LANG = mapOf("en" to "en-US", "ja" to "ja-JP", "zh" to "zh-CN", "ko" to "ko-KR")
+private val LANG_NAME = mapOf("en" to "English", "ja" to "Japanese", "zh" to "Simplified Chinese", "ko" to "Korean")
 /** 前もって用意した避難先を数え直す間隔と、使ってよい古さ・近さ。 */
 private const val PREPARE_REFRESH_MS = 15 * 60_000L
 private const val PREPARED_MAX_AGE_MS = 6 * 60 * 60_000L
@@ -120,6 +123,8 @@ data class UiState(
         val now = step?.distanceM ?: return total
         return if (start <= 1.0) 0.0 else total * (now / start).coerceIn(0.0, 1.0)
     }
+    /** 画面・声・説明の言語（en / ja / zh / ko）。聞き取る言語から決まる。 */
+    val lang: String get() = speechLang.substringBefore('-')
     val timeBasis: String get() = if (alertArrivalMillis != null) "JMA arrival time" else "shaking + 26 min (estimate)"
 }
 
@@ -184,7 +189,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private var lastNearbyAt: Pair<Double, Double>? = null
 
     init {
-        tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) tts?.language = Locale.US }
+        prefs.getString("lang", null)?.let { code -> _state.update { it.copy(speechLang = SPEECH_LANG[code] ?: "en-US") } }
+        tts = TextToSpeech(app) { status -> if (status == TextToSpeech.SUCCESS) applyTtsLanguage() }
         viewModelScope.launch {
             // 起動直後の避難先の計算と CPU を取り合わないよう、少し待ってから読み込む
             delay(15_000)
@@ -353,14 +359,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** 圏外用の英語の音声データが端末にあるかを確かめ、無ければ（通信がある時に）ダウンロードを頼む。 */
     fun checkOfflineSpeech() {
         runCatching {
-            speech.prepareOffline("en-US") { status -> _state.update { it.copy(offlineSpeech = status) } }
+            speech.prepareOffline(_state.value.speechLang) { status -> _state.update { it.copy(offlineSpeech = status) } }
         }.onFailure { e -> _state.update { it.copy(offlineSpeech = "cannot check (${e.message})") } }
     }
 
     fun downloadPack() = viewModelScope.launch {
-        _state.update { it.copy(busy = "Saving offline data… / データを保存中", error = null) }
+        _state.update { it.copy(busy = msg("Saving offline data…", "データを保存中…", "正在保存离线数据…", "오프라인 데이터 저장 중…"), error = null) }
         try {
-            store.download("osaka-bay", "en", null)
+            store.download("osaka-bay", _state.value.lang, null)
             pack = store.load()
             _state.update { it.copy(packInfo = pack?.let(::describe), busy = null) }
             lastNearbyAt = null
@@ -369,7 +375,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             // 圏外で話しかけられるよう、英語の音声データも一緒に準備する
             checkOfflineSpeech()
         } catch (e: Exception) {
-            _state.update { it.copy(busy = null, error = "Could not save data / 保存できませんでした: ${e.message}") }
+            _state.update { it.copy(busy = null, error = msg("Could not save data", "保存できませんでした", "无法保存数据", "데이터를 저장할 수 없습니다") + ": ${e.message}") }
         }
     }
 
@@ -378,7 +384,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         try {
             applyAlert(Api.postJson("/api/alert/replay"))
         } catch (e: Exception) {
-            _state.update { it.copy(error = "Could not reach the server / サーバーにつながりません: ${e.message}") }
+            _state.update { it.copy(error = msg("Could not reach the server", "サーバーにつながりません", "无法连接服务器", "서버에 연결할 수 없습니다") + ": ${e.message}") }
         }
     }
 
@@ -397,9 +403,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         val err = a["jma_error"]?.takeIf { it !is JsonNull }
         val live = a["source"]?.jsonPrimitive?.content == "jma_live" && a["active"]?.jsonPrimitive?.content == "true"
         return when {
-            err != null -> "JMA: could not check (last $checked) / 気象庁の電文を確認できません"
-            live -> "JMA: ${a["kind"]?.jsonPrimitive?.content} for Osaka (checked $checked) / 気象庁の発表"
-            else -> "JMA: no tsunami warning for Osaka (checked $checked) / 気象庁: 大阪府に津波の警報・注意報なし"
+            err != null -> msg("JMA: could not check (last $checked)", "気象庁の電文を確認できません（最後 $checked）", "日本气象厅: 无法确认（上次 $checked）", "일본 기상청: 확인할 수 없음 (마지막 $checked)")
+            live -> msg("JMA: ${a["kind"]?.jsonPrimitive?.content} for Osaka (checked $checked)", "気象庁: 大阪府に${a["kind"]?.jsonPrimitive?.content}（$checked 確認）", "日本气象厅: 大阪府发布了警报（$checked 确认）", "일본 기상청: 오사카부에 경보 발령 ($checked 확인)")
+            else -> msg("JMA: no tsunami warning for Osaka (checked $checked)", "気象庁: 大阪府に津波の警報・注意報なし（$checked 確認）", "日本气象厅: 大阪府没有海啸警报（$checked 确认）", "일본 기상청: 오사카부에 쓰나미 경보 없음 ($checked 확인)")
         }
     }
 
@@ -433,7 +439,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
         if (!wasActive) {
             _state.update { it.copy(takeover = true) }
-            speak("Tsunami warning. Evacuate now.")
+            say("Tsunami warning. Evacuate now.", "津波警報です。今すぐ避難してください。", "海啸警报。请立即避难。", "쓰나미 경보입니다. 지금 바로 대피하세요.")
             startGuidance()
         }
     }
@@ -447,16 +453,16 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     /** ルール 1: 端末ですぐ選んで案内し、サーバーの答えは「歩く時間が 2 分以上短い」時だけ採る。 */
     private fun startGuidance() {
         val loc = _state.value.location ?: run {
-            _state.update { it.copy(error = "Waiting for GPS… guidance starts automatically / 現在地を取得中。取れたら自動で始めます") }
+            _state.update { it.copy(error = msg("Waiting for GPS… guidance starts automatically", "現在地を取得中。取れたら自動で始めます", "正在获取位置… 获取后会自动开始引导", "위치를 확인하는 중… 확인되면 자동으로 안내를 시작합니다")) }
             return
         }
         if (pack == null && !_state.value.online) {
-            _state.update { it.copy(error = "No offline data saved. Save it on Wi-Fi first. / データが保存されていません") }
+            _state.update { it.copy(error = msg("No offline data saved. Save it on Wi-Fi first.", "データが保存されていません。Wi-Fi のある所で保存してください", "尚未保存离线数据。请先在有 Wi-Fi 的地方保存。", "오프라인 데이터가 없습니다. 먼저 Wi-Fi에서 저장하세요.")) }
             return
         }
         planning = true
         guidanceStarted = true
-        _state.update { it.copy(error = null, busy = "Finding a shelter… / 避難先を計算中") }
+        _state.update { it.copy(error = null, busy = msg("Finding a shelter…", "避難先を計算中…", "正在寻找避难地点…", "대피 장소를 찾는 중…")) }
         viewModelScope.launch {
             val local = preparedFor(loc, _state.value.slow)
                 ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
@@ -477,8 +483,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             if (better) {
                 setChoice(server)
                 if (current.target != null && current.target.id != server.shelter.id) {
-                    _state.update { it.copy(notice = "Updated with a more accurate walking route / より正確な道のりで選び直しました") }
-                    speak("Updated with a more accurate walking route.")
+                    _state.update { it.copy(notice = msg("Updated with a more accurate walking route", "より正確な道のりで選び直しました", "已按更准确的步行路线重新选择", "더 정확한 도보 경로로 다시 골랐습니다")) }
+                    say("Updated with a more accurate walking route.", "より正確な道のりで選び直しました。", "已按更准确的步行路线重新选择。", "더 정확한 도보 경로로 다시 골랐습니다.")
                 }
                 if (current.target == null) speakPlan(server)
             } else {
@@ -506,8 +512,18 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         val t = s.target ?: return null
         val min = s.targetWalkMin?.toInt() ?: 0
         val pace = if (s.slow) "0.5" else "0.62"
-        return if (t.id == beforeId) "Checked again at $pace m/s: ${t.name} is still the best place (about $min min). / 選び直しました。${t.name} のままが最善です（約 $min 分）"
-        else "New place: ${t.name} (about $min min at $pace m/s). / 新しい避難先: ${t.name}（約 $min 分）"
+        return if (t.id == beforeId) msg(
+            "Checked again at $pace m/s: ${t.name} is still the best place (about $min min).",
+            "選び直しました。${t.name} のままが最善です（約 $min 分）",
+            "已按 $pace 米/秒重新检查: ${t.name} 仍是最佳地点（约 $min 分钟）。",
+            "$pace m/초로 다시 확인: ${t.name}이(가) 여전히 가장 좋은 장소입니다 (약 ${min}분).",
+        )
+        else msg(
+            "New place: ${t.name} (about $min min at $pace m/s).",
+            "新しい避難先: ${t.name}（約 $min 分）",
+            "新的避难地点: ${t.name}（约 $min 分钟）",
+            "새 대피 장소: ${t.name} (약 ${min}분)",
+        )
     }
 
     private suspend fun handleIntent(id: String, fromLive: Boolean) {
@@ -526,7 +542,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 reselect(speakResult = !fromLive)
                 note = reselectNote(target?.id)
             }
-            "ask_floor" -> if (!fromLive && target != null) speak("Go up to floor ${target.floorMin ?: 3} or higher.")
+            "ask_floor" -> if (!fromLive && target != null) say("Go up to floor ${target.floorMin ?: 3} or higher.", "${target.floorMin ?: 3}階以上に上がってください。", "请上到 ${target.floorMin ?: 3} 楼以上。", "${target.floorMin ?: 3}층 이상으로 올라가세요.")
         }
         if (id in setOf("reselect_slow", "reselect_wheelchair", "reselect", "road_blocked") && target != null) {
             val now = _state.value
@@ -537,7 +553,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             )
             _state.update { it.copy(previous = prev) }
         }
-        _state.update { it.copy(answer = note ?: pack?.answers?.get(id)?.let { en -> jaAnswers[id]?.let { ja -> "$en / $ja" } ?: en }) }
+        _state.update { it.copy(answer = note ?: pack?.answers?.get(id)) }
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
     }
 
@@ -560,12 +576,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private fun handleHeard(text: String?, error: String?) {
         _state.update { it.copy(listening = false, heard = text, speechError = error) }
         if (text.isNullOrBlank()) {
-            _state.update { it.copy(answer = "Could not hear${error?.let { e -> " ($e)" } ?: ""}. Use the buttons. / 聞き取れませんでした。ボタンで選んでください") }
+            _state.update { it.copy(answer = msg("Could not hear", "聞き取れませんでした", "没有听清", "알아듣지 못했습니다") + (error?.let { e -> " ($e)" } ?: "") + msg(". Use the buttons.", "。ボタンで選んでください", "。请使用按钮。", ". 버튼을 사용하세요.")) }
             return
         }
         viewModelScope.launch {
             val modelWasReady = onDevice.ready
-            if (modelWasReady) _state.update { it.copy(busy = "Understanding on this device… / 端末の中で聞き分けています") }
+            if (modelWasReady) _state.update { it.copy(busy = msg("Understanding on this device…", "端末の中で聞き分けています…", "正在本机上理解…", "이 기기에서 이해하는 중…")) }
             val byModel = onDevice.classify(text)
             _state.update { it.copy(busy = null) }
             val modelFailed = byModel == null && (modelWasReady || onDevice.status.startsWith("load failed"))
@@ -579,12 +595,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun routeHeard(id: String) {
         if (id == "other") {
-            _state.update { it.copy(answer = "Please choose a button below. / 下のボタンから選んでください", pendingIntent = null) }
-            speak("Please choose a button on the screen.")
+            _state.update { it.copy(answer = msg("Please choose a button below.", "下のボタンから選んでください", "请从下方按钮中选择。", "아래 버튼에서 골라 주세요."), pendingIntent = null) }
+            say("Please choose a button on the screen.", "画面のボタンから選んでください。", "请在屏幕上选择一个按钮。", "화면의 버튼에서 골라 주세요.")
         } else {
             // すぐには動かず、「これでよいか」を確かめる
             _state.update { it.copy(pendingIntent = id, answer = null) }
-            speak("Is this right? Tap yes or no.")
+            say("Is this right? Tap yes or no.", "これでよいですか？はいか、いいえを押してください。", "这样对吗？请点击是或否。", "이게 맞나요? 예 또는 아니요를 누르세요.")
         }
     }
 
@@ -596,14 +612,50 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }.getOrDefault(emptyMap())
     }
 
-    fun setSpeechLang(lang: String) = _state.update { it.copy(speechLang = lang) }
+    /**
+     * 言語を変える。画面・読み上げ・聞き取りはすぐ変わり、圏外用のデータ（答えの文と音声）と
+     * 前もって用意した避難先の説明は、その言語で裏で取り直す。
+     */
+    fun setLang(code: String) {
+        val speech = SPEECH_LANG[code] ?: return
+        prefs.edit().putString("lang", code).apply()
+        _state.update { it.copy(speechLang = speech) }
+        _state.update { it.copy(packInfo = pack?.let(::describe)) }
+        applyTtsLanguage()
+        checkOfflineSpeech()
+        preparedPlans = emptyList()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) { runCatching { preparedStore.save(cachedAlert, preparedPlans) } }
+            prepareInBackground(force = true)
+        }
+    }
+
+    @Volatile private var ttsLangOk = true
+
+    /** 読み上げの言語を合わせる。その言語の声が端末に無い時は英語で読む。 */
+    private fun applyTtsLanguage() {
+        val r = tts?.setLanguage(Locale.forLanguageTag(_state.value.speechLang)) ?: return
+        ttsLangOk = r >= TextToSpeech.LANG_AVAILABLE
+        if (!ttsLangOk) tts?.language = Locale.US
+    }
+
+    /** 選んだ言語の文を返す（アプリが出す案内・エラー）。 */
+    private fun msg(en: String, ja: String, zh: String, ko: String) = when (_state.value.lang) {
+        "ja" -> ja
+        "zh" -> zh
+        "ko" -> ko
+        else -> en
+    }
+
+    /** 選んだ言語で読み上げる（その言語の声が無ければ英語）。 */
+    private fun say(en: String, ja: String, zh: String, ko: String) = speak(if (ttsLangOk) msg(en, ja, zh, ko) else en)
 
     /** 聞き取った頼みごとを確かめた結果。はい → その頼みごとを実行／いいえ → ボタンで選んでもらう。 */
     fun confirmIntent(yes: Boolean) {
         val id = _state.value.pendingIntent ?: return
         _state.update { it.copy(pendingIntent = null) }
         if (yes) onIntent(id)
-        else _state.update { it.copy(answer = "OK. Please choose a button below. / 下のボタンから選んでください") }
+        else _state.update { it.copy(answer = msg("OK. Please choose a button below.", "わかりました。下のボタンから選んでください", "好的。请从下方按钮中选择。", "알겠습니다. 아래 버튼에서 골라 주세요.")) }
     }
 
     fun toggleLive() = viewModelScope.launch {
@@ -622,7 +674,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         } catch (e: Exception) {
             val detail = generateSequence(e as Throwable?) { it.cause }.take(4).joinToString(" ← ") { "${it::class.simpleName}: ${it.message}" }
             android.util.Log.e("TsunamiNavi", "Gemini Live failed", e)
-            _state.update { it.copy(liveActive = false, error = "Gemini Live could not start / 始められませんでした: $detail") }
+            _state.update { it.copy(liveActive = false, error = msg("Gemini Live could not start", "Gemini Live を始められませんでした", "无法启动 Gemini Live", "Gemini Live를 시작할 수 없습니다") + ": $detail") }
         }
     }
 
@@ -647,6 +699,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             } else add("- Evacuation place: not decided yet. Call get_guidance.")
             s.minutesLeft?.let { add("- Time until the tsunami may arrive: about ${it.toInt()} min (basis: ${s.timeBasis})") }
             add("- Walking pace: ${if (s.slow) "slow (cannot walk fast)" else "normal"}")
+            add("- The user chose ${LANG_NAME[s.lang] ?: "English"} in the app. Always speak in ${LANG_NAME[s.lang] ?: "English"}.")
             pack?.answers?.takeIf { it.isNotEmpty() }?.let { answers ->
                 add("- Official answers you may read out (call the matching function first when the user asks):")
                 answers.forEach { (id, text) -> add("  - $id: $text") }
@@ -742,9 +795,9 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private suspend fun prepareInBackground(force: Boolean) {
         if (!_state.value.online || !prepareLock.tryLock()) return
         try {
-            if (pack == null) {
+            if (pack == null || pack?.lang != _state.value.lang) {
                 runCatching {
-                    store.download("osaka-bay", "en", null)
+                    store.download("osaka-bay", _state.value.lang, null)
                     pack = store.load()
                     _state.update { it.copy(packInfo = pack?.let(::describe)) }
                     lastNearbyAt = null
@@ -799,7 +852,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     ): Choice {
         val s = _state.value
         val exclude = excluded.joinToString(",") { "\"$it\"" }
-        val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"en","slow":$slow,"explain":$explain,""" +
+        val body = """{"lat":${loc.first},"lon":${loc.second},"lang":"${s.lang}","slow":$slow,"explain":$explain,""" +
             """"arrival_ms":${s.alertArrivalMillis},"shake_at_ms":${s.shakePressedMillis},"exclude_ids":[$exclude]}"""
         val res = Api.postJson("/api/plan", body)
         val plan = res["plan"]!!.jsonObject
@@ -852,13 +905,33 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun speakPlan(c: Choice) {
         val minutes = maxOf(1, c.walkMin.toInt())
-        val text = when (Decision.entries.firstOrNull { it.apiValue == c.decision }) {
-            Decision.REACH_OUTSIDE_ZONE -> "Go now to the place on the screen, out of the flood zone. About $minutes minutes on foot. You have time."
-            Decision.ALREADY_OUTSIDE_ZONE -> "You are outside the flood zone. Move further inland, away from the sea and rivers."
-            Decision.GO_UPSTAIRS -> "Go now to the building on the screen, and go up to floor ${c.shelter.floorMin ?: 3} or higher. About $minutes minutes on foot."
-            Decision.MAY_NOT_MAKE_IT, null -> "You may not make it in time. Go up to a high floor of the nearest strong building now."
+        val floor = c.shelter.floorMin ?: 3
+        when (Decision.entries.firstOrNull { it.apiValue == c.decision }) {
+            Decision.REACH_OUTSIDE_ZONE -> say(
+                "Go now to the place on the screen, out of the flood zone. About $minutes minutes on foot. You have time.",
+                "今すぐ画面の避難先へ向かってください。浸水想定区域の外です。歩いて約${minutes}分。間に合います。",
+                "请立即前往屏幕上的地点，那里在浸水预想区域之外。步行约 $minutes 分钟，来得及。",
+                "지금 화면의 장소로 가세요. 침수 예상 구역 밖입니다. 걸어서 약 ${minutes}분, 늦지 않습니다.",
+            )
+            Decision.ALREADY_OUTSIDE_ZONE -> say(
+                "You are outside the flood zone. Move further inland, away from the sea and rivers.",
+                "浸水想定区域の外にいます。海や川から離れ、さらに内陸へ移動してください。",
+                "您在浸水预想区域之外。请远离大海和河流，继续往内陆走。",
+                "침수 예상 구역 밖에 있습니다. 바다와 강에서 멀어져 더 내륙으로 이동하세요.",
+            )
+            Decision.GO_UPSTAIRS -> say(
+                "Go now to the building on the screen, and go up to floor $floor or higher. About $minutes minutes on foot.",
+                "今すぐ画面の建物へ向かい、${floor}階以上に上がってください。歩いて約${minutes}分です。",
+                "请立即前往屏幕上的建筑，上到 $floor 楼以上。步行约 $minutes 分钟。",
+                "지금 화면의 건물로 가서 ${floor}층 이상으로 올라가세요. 걸어서 약 ${minutes}분입니다.",
+            )
+            Decision.MAY_NOT_MAKE_IT, null -> say(
+                "You may not make it in time. Go up to a high floor of the nearest strong building now.",
+                "間に合わない恐れがあります。今すぐ近くの丈夫な建物の高い階へ上がってください。",
+                "可能来不及。请立即上到附近坚固建筑的高层。",
+                "늦을 수 있습니다. 지금 바로 가까운 튼튼한 건물의 높은 층으로 올라가세요.",
+            )
         }
-        speak(text)
     }
 
     /** ルール 4: 声は 1 つずつ。Gemini Live が話している間は、読み上げと保存した音声を止める。 */
@@ -880,7 +953,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun describe(p: Pack) = "Saved ${p.version} · ${p.shelters.size} shelters · ${if (p.graph != null) "walking roads ${p.graph.size} points · " else ""}${"%.1f".format(p.sizeBytes / 1_000_000.0)} MB"
+    private fun describe(p: Pack) = msg("Saved", "保存済み", "已保存", "저장됨") + " ${p.version} · " +
+        msg("${p.shelters.size} shelters", "避難先 ${p.shelters.size} 件", "避难地点 ${p.shelters.size} 个", "대피 장소 ${p.shelters.size}곳") + " · " +
+        (if (p.graph != null) msg("walking roads ${p.graph.size} points", "歩ける道 ${p.graph.size} 点", "步行道路 ${p.graph.size} 点", "보행 도로 ${p.graph.size}개 지점") + " · " else "") +
+        "%.1f MB".format(p.sizeBytes / 1_000_000.0) + " · " + (LANG_NAME[p.lang] ?: p.lang)
 
     override fun onCleared() {
         viewModelScope.launch { live.stop() }
