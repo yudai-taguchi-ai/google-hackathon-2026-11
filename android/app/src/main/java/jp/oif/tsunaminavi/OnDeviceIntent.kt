@@ -9,23 +9,32 @@ import com.google.ai.edge.litertlm.InputData
 import com.google.ai.edge.litertlm.SamplerConfig
 import com.google.ai.edge.litertlm.SessionConfig
 import java.io.File
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.coroutines.resume
+import jp.oif.tsunaminavi.offline.FunctionCallParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * 端末の中の聞き分けモデル（追加学習した FunctionGemma・LiteRT-LM）。
  * モデルの置き場所: <外部の files>/intent.litertlm（286MB のため APK に入れず、adb push で置く）。
  * 入力の型 intent_prompt.txt はモデルの中の型と学習の関数一覧から作り、assets に同梱した（{text} の所に聞いた文が入る）。
- * どちらか無い・読めない・時間切れの時は null を返し、呼ぶ側はキーワード方式に戻る。
+ * 利用できない・読めない・時間切れの時は null を返す。
  */
 class OnDeviceIntent(private val context: Context) {
-    private var engine: Engine? = null
-    private var prompt: String? = null
+    @Volatile private var engine: Engine? = null
+    @Volatile private var prompt: String? = null
     private val lock = Mutex()
-    var status: String = "not loaded"
+    private val running = AtomicBoolean(false)
+    private val worker = Executors.newSingleThreadExecutor { task ->
+        Thread(task, "functiongemma-inference").apply { isDaemon = true }
+    }
+    @Volatile var status: String = "not loaded"
         private set
 
     suspend fun load() = withContext(Dispatchers.Default) {
@@ -37,17 +46,22 @@ class OnDeviceIntent(private val context: Context) {
                 status = "model not on device"
                 return@withLock
             }
+            var candidate: Engine? = null
             runCatching {
                 val started = System.currentTimeMillis()
                 val e = Engine(EngineConfig(modelPath = model.path, backend = Backend.CPU(), cacheDir = context.cacheDir.path))
+                candidate = e
                 e.initialize()
-                engine = e
-                prompt = context.assets.open("intent_prompt.txt").bufferedReader().use { it.readText() }.removePrefix("<bos>")
+                val loadedPrompt = context.assets.open("intent_prompt.txt").bufferedReader().use { it.readText() }.removePrefix("<bos>")
                 val loaded = System.currentTimeMillis() - started
                 val warm = System.currentTimeMillis()
-                run(e, prompt!!, "The road is blocked.")
+                check(toId(run(e, loadedPrompt, "The road is blocked.")) != null) { "warm-up returned an invalid call" }
+                prompt = loadedPrompt
+                engine = e
+                candidate = null
                 status = "ready (load ${loaded} ms · first answer ${System.currentTimeMillis() - warm} ms)"
             }.onFailure {
+                candidate?.let { e -> runCatching { e.close() } }
                 status = "load failed: ${it.message}"
             }
             Log.i("TsunamiNavi", "on-device intent model: $status")
@@ -57,20 +71,33 @@ class OnDeviceIntent(private val context: Context) {
     val ready: Boolean get() = engine != null
 
     /** 聞いた文 → 頼みごとの id。使えない時は null。 */
-    suspend fun classify(text: String): String? = withContext(Dispatchers.Default) {
-        val e = engine ?: return@withContext null
-        val p = prompt ?: return@withContext null
-        withTimeoutOrNull(TIMEOUT_MS) {
-            lock.withLock {
-                runCatching {
-                    val started = System.currentTimeMillis()
-                    val out = run(e, p, text)
-                    val id = toId(out)
-                    Log.i("TsunamiNavi", "on-device '$text' -> $id in ${System.currentTimeMillis() - started} ms (raw: ${out.take(120)})")
-                    id
-                }.getOrElse {
-                    Log.w("TsunamiNavi", "on-device classify failed: ${it.message}")
-                    null
+    suspend fun classify(text: String): String? {
+        val e = engine ?: return null
+        val p = prompt ?: return null
+        // Native inference may ignore coroutine cancellation. Keep it on a dedicated
+        // worker and keep the engine busy until that call actually exits.
+        return withTimeoutOrNull(TIMEOUT_MS) {
+            suspendCancellableCoroutine { continuation ->
+                if (!running.compareAndSet(false, true)) {
+                    continuation.resume(null)
+                    return@suspendCancellableCoroutine
+                }
+                try {
+                    worker.execute {
+                        val id = try {
+                            toId(run(e, p, text))
+                        } catch (error: Exception) {
+                            Log.w("TsunamiNavi", "on-device classify failed: ${error.message}")
+                            null
+                        } finally {
+                            running.set(false)
+                        }
+                        if (continuation.isActive) continuation.resume(id)
+                    }
+                } catch (error: Exception) {
+                    running.set(false)
+                    Log.w("TsunamiNavi", "on-device worker failed: ${error.message}")
+                    continuation.resume(null)
                 }
             }
         }
@@ -83,24 +110,7 @@ class OnDeviceIntent(private val context: Context) {
 
     companion object {
         private const val TIMEOUT_MS = 8000L
-        private val CALL = Regex("""call:(\w+)\{(.*?)\}""", RegexOption.DOT_MATCHES_ALL)
-        private val ARG = Regex("""([^:,{}]+?):<escape>(.*?)<escape>""", RegexOption.DOT_MATCHES_ALL)
-        private val NAMES = setOf("ask_floor", "road_blocked", "lost_family", "injured", "when_to_return", "repeat", "other")
-
         /** 学習の関数名・引数 → アプリの id（docs/intent-model.md の対応表）。 */
-        fun toId(output: String): String? {
-            val m = CALL.find(output) ?: return null
-            val name = m.groupValues[1]
-            val args = ARG.findAll(m.groupValues[2]).associate { it.groupValues[1].trim() to it.groupValues[2].trim() }
-            return when (name) {
-                "reselect" -> when (args["mobility"]) {
-                    "slow" -> "reselect_slow"
-                    "wheelchair" -> "reselect_wheelchair"
-                    else -> "reselect"
-                }
-                in NAMES -> name
-                else -> null
-            }
-        }
+        fun toId(output: String): String? = FunctionCallParser.toId(output)
     }
 }

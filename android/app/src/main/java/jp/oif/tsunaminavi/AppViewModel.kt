@@ -562,11 +562,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             return
         }
         viewModelScope.launch {
-            if (onDevice.ready) _state.update { it.copy(busy = "Understanding on this device… / 端末の中で聞き分けています") }
+            val modelWasReady = onDevice.ready
+            if (modelWasReady) _state.update { it.copy(busy = "Understanding on this device… / 端末の中で聞き分けています") }
             val byModel = onDevice.classify(text)
             _state.update { it.copy(busy = null) }
-            val id = byModel ?: classifier.classify(text)
-            val by = if (byModel != null) "FunctionGemma (on device)" else "keywords"
+            val modelFailed = byModel == null && (modelWasReady || onDevice.status.startsWith("load failed"))
+            val id = byModel ?: if (modelFailed) "other" else classifier.classify(text)
+            val by = if (byModel != null) "FunctionGemma (on device)" else if (modelFailed) "buttons (model error)" else "keywords"
             android.util.Log.i("TsunamiNavi", "heard '$text' -> $id by $by")
             _state.update { it.copy(heardBy = by) }
             routeHeard(id)
