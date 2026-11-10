@@ -69,7 +69,10 @@ object Planner {
         val budget = minutesLeft - SAFETY_MARGIN_MIN
         val pool = outsidePool + upstairsPool
         val onGraph = graph?.let { graphDistances(lat, lon, pool, it, maxOf(budget, 10.0) * 60 * speed * 2) }
-        val options = pool.map { s ->
+        val options = pool.mapNotNull { s ->
+            // A known graph node with no path within the search limit is not a
+            // confirmed route. Do not silently substitute a straight line.
+            if (onGraph != null && s.graphNode != null && s.id !in onGraph) return@mapNotNull null
             val meters = onGraph?.get(s.id) ?: (distanceM(lat, lon, s.lat, s.lon) * DETOUR)
             val minutes = meters / speed / 60.0
             Option(
@@ -80,6 +83,7 @@ object Planner {
                 type = if (s.inundationDepth == null) OptionType.OUTSIDE_ZONE else OptionType.GO_UPSTAIRS,
             )
         }
+        require(options.isNotEmpty()) { "No candidate with a known route" }
 
         val reachable = options.filter { it.reachable }
         val outside = reachable.filter { it.type == OptionType.OUTSIDE_ZONE }.sortedBy { it.walkMin }

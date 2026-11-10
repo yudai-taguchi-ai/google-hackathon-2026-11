@@ -474,6 +474,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             if (local != null) {
                 setChoice(local)
                 speakPlan(local)
+            } else if (!_state.value.online) {
+                _state.update { it.copy(error = msg("Could not find a known route. Seek higher ground and follow local guidance.", "確認できる経路がありません。高い場所へ避難し、現地の案内に従ってください。", "无法确认路线。请向高处避难并遵循当地指引。", "확인된 경로가 없습니다. 높은 곳으로 대피하고 현지 안내를 따르세요.")) }
             }
             _state.update { it.copy(busy = null) }
             planning = false
@@ -498,15 +500,20 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
 
     /** ルール 3: 選び直しも、まず端末ですぐ選ぶ（サーバーは 10 秒ほどかかり、Gemini Live が待ちきれない）。通信があれば後からサーバーで確かめる。 */
-    private suspend fun reselect(speakResult: Boolean) {
-        val loc = _state.value.location ?: return
+    private suspend fun reselect(speakResult: Boolean): Boolean {
+        val loc = _state.value.location ?: return false
         val choice = preparedFor(loc, _state.value.slow)
             ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
             ?: (if (_state.value.online) runCatching { askServer(loc, explain = false) }.getOrNull() else null)
-            ?: return
+            ?: run {
+                _state.update { it.copy(error = msg("Could not find another known route. Seek higher ground and follow local guidance.", "別の確認できる経路がありません。高い場所へ避難し、現地の案内に従ってください。", "无法确认其他路线。请向高处避难并遵循当地指引。", "확인된 다른 경로가 없습니다. 높은 곳으로 대피하고 현지 안내를 따르세요.")) }
+                return false
+            }
         setChoice(choice)
+        _state.update { it.copy(error = null) }
         if (_state.value.online) askServerAndMaybeAdopt(loc)
         if (speakResult) speakPlan(choice)
+        return true
     }
 
     fun onIntent(id: String) = viewModelScope.launch { handleIntent(id, fromLive = false) }
@@ -539,12 +546,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         when (id) {
             "reselect_slow", "reselect_wheelchair" -> {
                 _state.update { it.copy(slow = true) }
-                reselect(speakResult = !fromLive)
+                if (!reselect(speakResult = !fromLive)) return
                 note = reselectNote(target?.id)
             }
             "reselect", "road_blocked" -> {
                 _state.update { st -> st.copy(excluded = st.excluded + listOfNotNull(st.target?.id)) }
-                reselect(speakResult = !fromLive)
+                val found = reselect(speakResult = !fromLive)
+                if (id == "road_blocked" && found) _state.update { it.copy(notice = msg("The blocked road has not been identified; the new route may use it. Follow local guidance.", "通行止めの場所は特定できていません。新しい経路もその道を通る可能性があります。現地の案内に従ってください。", "尚未确定道路受阻的位置，新路线可能仍会经过该处。请遵循当地指引。", "통제된 도로의 위치가 확인되지 않아 새 경로도 지날 수 있습니다. 현지 안내를 따르세요.")) }
+                if (!found) return
                 note = reselectNote(target?.id)
             }
             "ask_floor" -> if (!fromLive && target != null) say("Go up to floor ${target.floorMin ?: 3} or higher.", "${target.floorMin ?: 3}階以上に上がってください。", "请上到 ${target.floorMin ?: 3} 楼以上。", "${target.floorMin ?: 3}층 이상으로 올라가세요.")
