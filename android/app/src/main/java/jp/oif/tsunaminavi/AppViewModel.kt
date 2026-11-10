@@ -14,6 +14,7 @@ import jp.oif.tsunaminavi.offline.IntentClassifier
 import jp.oif.tsunaminavi.offline.KeywordIntent
 import jp.oif.tsunaminavi.offline.Planner
 import jp.oif.tsunaminavi.offline.Shelter
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -180,6 +181,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private val _state = MutableStateFlow(UiState(online = connectivity.online.value))
     val state: StateFlow<UiState> = _state
+    private val packLoaded = CompletableDeferred<Unit>()
 
     private val prefs = app.getSharedPreferences("tsunami", android.content.Context.MODE_PRIVATE)
     private val preparedStore = PreparedStore(app)
@@ -198,7 +200,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             _state.update { it.copy(intentModel = onDevice.status) }
         }
         viewModelScope.launch {
-            pack = store.load()
+            pack = runCatching { store.load() }.getOrNull()
+            packLoaded.complete(Unit)
             loadPrepared()
             val stay = prefs.getString("stay", null)?.split(",")?.let { it[0].toDouble() to it[1].toDouble() }
             _state.update { it.copy(packInfo = pack?.let(::describe), stay = stay) }
@@ -464,6 +467,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         guidanceStarted = true
         _state.update { it.copy(error = null, busy = msg("Finding a shelter…", "避難先を計算中…", "正在寻找避难地点…", "대피 장소를 찾는 중…")) }
         viewModelScope.launch {
+            // 起動直後は保存したデータを読み込み中のことがある。読み終わるのを待ってから端末の中で計算する（サーバーの遅い計算に頼らない）
+            withTimeoutOrNull(20_000) { packLoaded.await() }
             val local = preparedFor(loc, _state.value.slow)
                 ?: withContext(Dispatchers.Default) { runCatching { computeLocal(loc) }.getOrNull() }
             if (local != null) {
