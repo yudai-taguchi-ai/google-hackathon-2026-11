@@ -85,6 +85,18 @@ def current_alert(now: datetime) -> tuple[TsunamiAlert, bool]:
     ), True
 
 
+def select_alert(jma: dict, now: datetime, training_enabled: bool) -> tuple[TsunamiAlert | None, str]:
+    """A live warning always takes precedence; replay is opt-in for a dedicated demo server."""
+    if jma.get("active"):
+        return jma["alert"], "jma_live"
+    # Do not introduce a simulated warning while the actual status is unknown.
+    if training_enabled and not jma.get("error"):
+        training, replaying = current_alert(now)
+        if replaying:
+            return training, "training_replay"
+    return None, "jma_live"
+
+
 # ---- 気象庁の本物の電文（防災情報 XML のフィード。登録不要）----
 import time
 import urllib.request

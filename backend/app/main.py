@@ -9,6 +9,7 @@
 import threading
 import time
 import uuid
+import os
 from collections import OrderedDict
 from dataclasses import asdict
 from datetime import date, datetime, timezone
@@ -19,7 +20,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 
-from .alerts import current_alert, live_alert, start_replay
+from .alerts import live_alert, select_alert, start_replay
 from .explain import explain
 from .flood import flood_in
 from .pack import ANSWERS_JA, ARRIVAL_DEFAULT_MIN, audio_wav, build_pack
@@ -75,6 +76,8 @@ def get_alert() -> dict:
 
 @app.post("/api/alert/replay")
 def replay_alert() -> dict:
+    if os.environ.get("ENABLE_TRAINING_REPLAY", "").lower() != "true":
+        raise HTTPException(403, "Training replay is disabled on this server")
     start_replay(datetime.now(timezone.utc))
     return _alert_dict()
 
@@ -146,15 +149,14 @@ def _minutes_left(alert: dict, req: PlanRequest) -> tuple[float, str]:
 
 
 def _alert_dict() -> dict:
-    """今の警報。順番: デモの訓練電文（流し直し中）＞ 気象庁の本物の電文（大阪府 510）＞ 警報なし。"""
+    """今の警報。本物の警報を優先し、訓練は専用サーバーでのみ有効にする。"""
     now = datetime.now(timezone.utc)
     jma = live_alert(now)
     jma_info = {"jma_checked_at": jma.get("checked_at"), "jma_error": jma.get("error"), "jma_reason": jma.get("reason")}
-    a, replaying = current_alert(now)
-    if replaying and a is not None:
-        return {**_from_alert(a, now), "is_training": True, "replaying": True, "source": "training_replay", **jma_info}
-    if jma.get("active"):
-        return {**_from_alert(jma["alert"], now), "is_training": False, "replaying": False, "source": "jma_live", **jma_info}
+    a, source = select_alert(jma, now, os.environ.get("ENABLE_TRAINING_REPLAY", "").lower() == "true")
+    if a is not None:
+        training = source == "training_replay"
+        return {**_from_alert(a, now), "is_training": training, "replaying": training, "source": source, **jma_info}
     return {"active": False, "is_training": False, "replaying": False, "source": "jma_live", "kind": None, "area_name": None,
             "area_code": "510", "arrival_time": None, "minutes_left": None, "max_height": None, **jma_info}
 

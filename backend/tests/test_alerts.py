@@ -2,7 +2,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
-from app.alerts import live_status
+from app.alerts import live_status, select_alert, start_replay
 
 SAMPLES = Path(__file__).resolve().parent.parent / "data" / "samples"
 NOW = datetime(2026, 11, 9, 12, 0, tzinfo=timezone.utc)
@@ -25,6 +25,15 @@ def test_all() -> None:
     assert live_status(cancelled, NOW)["reason"] == "cancelled"
     lifted = as_real(TRAINING).replace(real["alert"].kind, "警報解除")
     assert live_status(lifted, NOW)["active"] is False
+    start_replay(NOW)
+    alert, source = select_alert(real, NOW, training_enabled=True)
+    assert source == "jma_live" and alert is real["alert"]
+    alert, source = select_alert({"active": False}, NOW, training_enabled=True)
+    assert source == "training_replay" and alert is not None
+    alert, source = select_alert({"active": False}, NOW, training_enabled=False)
+    assert source == "jma_live" and alert is None
+    alert, source = select_alert({"active": False, "error": "network"}, NOW, training_enabled=True)
+    assert source == "jma_live" and alert is None
     print("ok: 電文なし・訓練・他の地域だけ・大阪に警報・取消・解除")
 
 
