@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.double
@@ -330,7 +331,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             }
             "ask_floor" -> if (!fromLive && target != null) speak("Go up to floor ${target.floorMin ?: 3} or higher.")
         }
-        _state.update { it.copy(answer = note ?: pack?.answers?.get(id)) }
+        _state.update { it.copy(answer = note ?: pack?.answers?.get(id)?.let { en -> jaAnswers[id]?.let { ja -> "$en / $ja" } ?: en }) }
         if (!fromLive && id != "ask_floor" && !id.startsWith("reselect") && id != "road_blocked") playAnswer(id)
     }
 
@@ -366,6 +367,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             _state.update { it.copy(pendingIntent = id, answer = null) }
             speak("Is this right? Tap yes or no.")
         }
+    }
+
+    /** 日本語の画面で出す公式の答え（サーバーの答えと同じ文を同梱した）。 */
+    private val jaAnswers: Map<String, String> by lazy {
+        runCatching {
+            val text = getApplication<Application>().assets.open("answers_ja.json").bufferedReader().use { it.readText() }
+            Json.parseToJsonElement(text).jsonObject.mapValues { it.value.jsonPrimitive.content }
+        }.getOrDefault(emptyMap())
     }
 
     fun setSpeechLang(lang: String) = _state.update { it.copy(speechLang = lang) }
