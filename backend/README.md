@@ -44,11 +44,15 @@ set -a; source .env; set +a
 - URL: https://tsunami-navi-129745156402.asia-northeast1.run.app （11/14 まで止めない）
 - プロジェクト: `project-288752b0-6771-48a6-bf3`（OIF のアカウント・GCP 無料トライアル）／地域: 東京（asia-northeast1）
 - Gemini は Vertex AI 経由（`GOOGLE_CLOUD_PROJECT`・`GOOGLE_CLOUD_LOCATION=global`）。Routes API のキーは Secret Manager の `routes-api-key`
-- 載せ直し（backend/ で）:
+- 載せ直し（**元の作業フォルダ `google-hackathon-2026-11/backend` で**。GitHub から作り直したフォルダには `data/raw/` が無い）:
 ```bash
+git switch main && git pull
 gcloud run deploy tsunami-navi --source . --region asia-northeast1 --quiet
+curl -s -X POST https://tsunami-navi-129745156402.asia-northeast1.run.app/api/plan -H 'Content-Type: application/json' -d '{"lat":34.5813,"lon":135.4673,"explain":false}' | head -c 200
 ```
-- `.gcloudignore` で `data/raw/`（浸水想定）を含めて送る（Git には入れていない）
+- `.gcloudignore` で `data/raw/`（浸水想定）を含めて送る（Git には入れていない）。無い時は Dockerfile の `test -f` で組み立てが止まる（2026-11-10 に無いまま載せて計算が全部失敗したため）
+- 最後の curl で避難先の名前が返れば成功。`Internal Server Error` なら載せ直す
+- 常に 1 台起こしておく（`--min-instances=1`）。提出後〜11/14 に最初の人が約 10 秒待たないように
 - 予算アラート: 約 45,000 円（≒$300）の 20/50/80/100% で通知（自動では止まらない）
 
 ## API（2026-11-09）
@@ -56,7 +60,8 @@ gcloud run deploy tsunami-navi --source . --region asia-northeast1 --quiet
 |---|---|
 | `GET /api/alert` | 今の警報（訓練電文）。`minutes_left`・`arrival_time`・`replaying` |
 | `POST /api/alert/replay` | 訓練電文を「今」発表されたものとして流し直す（残り時間は電文と同じ 17 分から減っていく）。Cloud Run は 1 台で動かしている（状態を共有するため） |
-| `POST /api/plan` | `{lat, lon, lang, slow}` → 避難先・`route`（浸水想定の浅い道・`encoded_polyline`）・`waypoints`（Navigation SDK に渡す経由地・最大8点）・Gemini の説明 |
+| `POST /api/plan` | `{lat, lon, lang, slow}` → 避難先・`route`（浸水想定の浅い道・`encoded_polyline`）・`waypoints`（Navigation SDK に渡す経由地・最大8点）・Gemini の説明（`explain:false` なら省いて約 0.4 秒で返す）・`plan_id` |
+| `GET /api/explain?plan_id=…` | 先に返した避難先の Gemini の説明（Web は避難先を先に出し、説明を後から出す。約 5 秒） |
 | `GET /api/pack?area=osaka-bay&lang=en&expires_at=YYYY-MM-DD` | オフライン用のパック（避難先 2,335 件・簡略化した浸水想定・答えの文・到達時刻の既定値 26 分・歩く速さ）。gzip で約 1MB |
 | `GET /api/pack/audio?lang=en&id=reselect_slow` | 答えの音声（WAV）。Gemini の音声生成で作る |
 

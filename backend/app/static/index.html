@@ -3,225 +3,242 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#111111">
 <title>Tsunami Evacuation Navi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
   :root {
-    color-scheme: light dark;
-    --bg: #f4f6fa;
-    --surface: #ffffff;
-    --surface-2: #eef2f7;
-    --text: #0b1220;
-    --muted: #5b6577;
-    --line: #dbe1ea;
-    --danger: #c81e1e;
-    --danger-ink: #ffffff;
-    --warn: #f5a524;
-    --warn-ink: #1f1300;
-    --ok: #0f8a4b;
-    --accent: #1d4ed8;
-    --radius: 18px;
-    --shadow: 0 1px 2px rgb(15 23 42 / .06), 0 8px 24px rgb(15 23 42 / .06);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0b1220;
-      --surface: #121a2b;
-      --surface-2: #1a2438;
-      --text: #eef2f8;
-      --muted: #9aa6bb;
-      --line: #263248;
-      --danger: #e5484d;
-      --ok: #30a46c;
-      --accent: #6e9bff;
-      --shadow: 0 1px 2px rgb(0 0 0 / .4);
-    }
+    --ink: #111111;
+    --ink-2: #4a4a4a;
+    --ink-3: #8a8a8a;
+    --paper: #ffffff;
+    --paper-2: #f3f3f1;
+    --rule: #e2e2df;
+    --red: #d7000f;
+    --green: #00873c;
+    --yellow: #ffd100;
+    --blue: #1a5fd0;
+    --sheet-r: 18px;
   }
   * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html, body { margin: 0; }
   body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
-    line-height: 1.5; overflow-wrap: anywhere;
+    background: var(--paper); color: var(--ink);
+    font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5; overflow-wrap: anywhere; -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 16px calc(32px + env(safe-area-inset-bottom)); }
-  .ja { color: var(--muted); font-size: 13px; }
-  h1, h2 { text-wrap: balance; }
   button, select { font: inherit; color: inherit; max-width: 100%; white-space: normal; }
   button { cursor: pointer; }
-  button:disabled { opacity: .55; cursor: progress; }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  button:disabled { opacity: .5; cursor: progress; }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .ja { color: var(--ink-3); font-size: 12px; font-weight: 400; }
 
-  header { display: flex; align-items: center; gap: 12px; margin: 4px 0 14px; }
-  .logo { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--danger); display: grid; place-items: center; }
-  header h1 { font-size: 21px; margin: 0; line-height: 1.2; }
-  header p { margin: 2px 0 0; }
+  /* 警報の帯 */
+  .ticker { position: sticky; top: 0; z-index: 1000; background: var(--ink); color: #fff; padding: 8px 16px; display: flex; align-items: center; gap: 12px; min-height: 48px; }
+  .ticker:has(.alert) { background: var(--red); }
+  .ticker .brand { flex: none; display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; letter-spacing: .02em; }
+  .ticker .brand small { font-weight: 400; opacity: .7; font-size: 11px; display: block; letter-spacing: 0; }
+  #alertbox { flex: 1; min-width: 0; font-size: 13px; border-left: 1px solid rgb(255 255 255 / .25); padding-left: 12px; }
+  #alertbox .alert, #alertbox .noalert { display: flex; gap: 8px; align-items: baseline; }
+  #alertbox .noalert::before, #alertbox .alert::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); transform: translateY(-1px); }
+  #alertbox .alert::before { background: #fff; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  #refreshAlert { flex: none; width: 34px; height: 34px; background: none; border: 1px solid rgb(255 255 255 / .4); color: #fff; border-radius: 50%; font-size: 17px; line-height: 1; padding: 0; }
 
-  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin: 12px 0; }
-  .step { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 16px; font-weight: 700; }
-  .step .n { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--text); color: var(--bg); display: grid; place-items: center; font-size: 14px; }
-  .step .ja { font-weight: 400; }
-
-  #alertbox:empty { display: none; }
-  .alert, .noalert { border-radius: 14px; padding: 12px 14px; margin: 0; display: flex; gap: 10px; align-items: flex-start; }
-  .alert { background: var(--danger); color: var(--danger-ink); }
-  .noalert { background: color-mix(in srgb, var(--warn) 22%, var(--surface)); color: var(--text); border: 1px solid color-mix(in srgb, var(--warn) 55%, transparent); }
-  .alert::before, .noalert::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: currentColor; }
-  .alert::before { animation: pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .25; } }
-  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  .ghost { background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; font-size: 14px; }
-  .ghost:hover { background: var(--surface-2); }
-
-  .cta {
-    width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
-    background: var(--danger); color: var(--danger-ink); border: none; border-radius: var(--radius);
-    padding: 18px 20px; font-size: 21px; font-weight: 800; line-height: 1.25;
-    box-shadow: 0 10px 28px color-mix(in srgb, var(--danger) 35%, transparent);
-    transition: transform .12s ease;
+  /* 画面の骨組み: 広い画面は左に操作・右に地図、狭い画面は上に地図・下からシート */
+  .app { display: grid; grid-template-columns: minmax(360px, 440px) 1fr; height: calc(100dvh - 48px); }
+  .sheet { overflow-y: auto; padding: 24px 24px 40px; border-right: 1px solid var(--rule); background: var(--paper); display: flex; flex-direction: column; }
+  .sheet > * { flex: none; }
+  body[data-state="result"] #out { order: 1; margin-top: 0; }
+  body[data-state="result"] #retry { order: 2; }
+  body[data-state="result"] .opts { order: 3; margin-top: 18px; border-top: 1px solid var(--rule); }
+  body[data-state="result"] #conditions { order: 4; }
+  body[data-state="result"] .demo { order: 5; }
+  body[data-state="result"] .foot { order: 6; }
+  #map .leaflet-tile-pane { filter: saturate(.35) contrast(1.05); }
+  .mapwrap { position: relative; background: var(--paper-2); }
+  #map { position: absolute; inset: 0; }
+  #map.off { display: none; }
+  .maphint { position: absolute; left: 16px; bottom: 16px; z-index: 500; background: var(--ink); color: #fff; font-size: 12px; padding: 6px 10px; border-radius: 6px; pointer-events: none; }
+  body[data-state="result"] .maphint { display: none; }
+  @media (max-width: 860px) {
+    .app { display: flex; flex-direction: column; height: auto; }
+    .mapwrap { order: -1; }
+    .ticker .brand > span { display: none; }
+    .mapwrap { height: 34vh; min-height: 220px; z-index: 0; }
+    body[data-state="result"] .mapwrap { height: 42vh; }
+    .sheet { position: relative; z-index: 600; margin-top: calc(-1 * var(--sheet-r)); border-radius: var(--sheet-r) var(--sheet-r) 0 0; border-right: none; box-shadow: 0 -6px 20px rgb(0 0 0 / .12); padding: 10px 16px calc(32px + env(safe-area-inset-bottom)); }
+    .sheet::before { content: ""; display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--rule); margin: 0 auto 14px; }
   }
-  .cta:active { transform: scale(.985); }
-  .cta .ja { color: inherit; opacity: .9; font-weight: 500; font-size: 15px; display: block; margin-top: 2px; }
-  .cta svg { flex: none; }
-  .or { margin: 14px 0 8px; color: var(--muted); font-size: 13px; }
-  .places { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
-  .places button { background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; text-align: left; font-size: 15px; font-weight: 600; }
-  .places button .ja { display: block; font-weight: 400; font-size: 12px; }
-  .places button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 
-  .opts { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
-  .opts select { border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 7px 10px; }
-  .switch { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
-  .switch input { appearance: none; flex: none; width: 44px; height: 26px; border-radius: 999px; background: var(--line); position: relative; margin: 0; cursor: pointer; transition: background .15s; }
-  .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .3); transition: transform .15s; }
-  .switch input:checked { background: var(--ok); }
-  .switch input:checked::after { transform: translateX(18px); }
+  /* 待っている時 */
+  .lead { font-size: 26px; font-weight: 900; line-height: 1.25; margin: 0; letter-spacing: -.01em; }
+  .lead + .ja { font-size: 14px; margin: 4px 0 18px; display: block; }
+  #here {
+    width: 100%; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 14px; text-align: left;
+    background: var(--red); color: #fff; border: none; border-radius: 10px; padding: 18px; font-size: 20px; font-weight: 900; line-height: 1.25;
+  }
+  #here .ja { color: #fff; opacity: .85; font-size: 14px; display: block; font-weight: 700; margin-top: 2px; }
+  #here:active { filter: brightness(.92); }
+  .sub { margin: 26px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+  .sub .ja { text-transform: none; letter-spacing: 0; font-weight: 400; margin-left: 6px; }
+  .demorun { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--ink); color: #fff; border: none; border-radius: 10px; padding: 14px 16px; margin: 6px 0 10px; font-size: 16px; font-weight: 900; }
+  .demorun .ja { color: #fff; opacity: .75; display: block; font-weight: 400; }
+  .demorun .play { flex: none; width: 0; height: 0; border-left: 14px solid var(--yellow); border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+  .outside { background: #fff6cc; border-left: 4px solid var(--yellow); padding: 10px 12px; border-radius: 6px; font-size: 14px; }
+  .message.pending { color: var(--ink-3); }
+  .message.pending::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: -1px; border-radius: 50%; border: 2px solid var(--rule); border-top-color: var(--ink); animation: spin .8s linear infinite; }
+  .places { border-top: 1px solid var(--rule); }
+  .places button { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: none; border: none; border-bottom: 1px solid var(--rule); padding: 12px 2px; font-size: 16px; font-weight: 700; }
+  .places button::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--red); }
+  .places button::after { content: "›"; margin-left: auto; color: var(--ink-3); font-size: 22px; line-height: 1; }
+  .places button .ja { font-weight: 400; margin-left: 4px; }
+  .places button:hover { background: var(--paper-2); }
+  body[data-state="result"] .idle { display: none; }
+  .back { display: none; align-self: flex-start; background: none; border: none; padding: 0; margin: 0 0 12px; font-size: 14px; font-weight: 700; color: var(--blue); }
+  body[data-state="result"] .back { display: inline-block; }
 
-  #conditions { margin: 8px 2px 0; }
+  .opts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .opts select { border: 1px solid var(--rule); background: var(--paper); border-radius: 6px; padding: 6px 8px; font-size: 14px; }
+  .switch { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; font-weight: 700; }
+  .switch input { appearance: none; flex: none; width: 40px; height: 24px; border-radius: 12px; background: #c9c9c5; position: relative; margin: 0; cursor: pointer; transition: background .15s; }
+  .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .switch input:checked { background: var(--green); }
+  .switch input:checked::after { transform: translateX(16px); }
+  body[data-state="idle"] .opts { margin-top: 18px; border-top: 1px solid var(--rule); }
+  #conditions { margin: 8px 0 0; color: var(--ink-3); font-size: 12px; }
   #conditions:empty { display: none; }
-  .note { color: var(--muted); font-size: 12px; }
 
-  #out { margin-top: 12px; }
+  /* 結果 */
+  #out { margin-top: 16px; }
   #out:empty { display: none; }
-  #out[aria-busy="true"] { color: var(--muted); }
-  #out[aria-busy="true"]::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+  #out[aria-busy="true"] { color: var(--ink-2); }
+  #out[aria-busy="true"]::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; border-radius: 50%; border: 2px solid var(--rule); border-top-color: var(--ink); animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .result { view-transition-name: result; display: grid; gap: 12px; }
-  .result > .alert, .result > .noalert { font-size: 14px; }
+  .result { view-transition-name: result; }
+  .verdict { margin: 0 -24px; padding: 14px 24px; color: #fff; background: var(--green); }
+  .verdict.late { background: var(--red); }
+  .verdict b { display: block; font-size: 22px; font-weight: 900; line-height: 1.2; }
+  .verdict .ja { color: #fff; opacity: .9; font-size: 13px; }
+  @media (max-width: 860px) { .verdict { margin: 0 -16px; padding: 14px 16px; } }
 
-  .go { background: var(--surface); border: 2px solid var(--ok); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
-  .go .label { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ok); }
-  .go .name { font-size: 26px; font-weight: 800; line-height: 1.2; margin: 4px 0 2px; }
-  .go .what { font-size: 17px; font-weight: 600; margin-top: 6px; }
-  .navbtn {
-    margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: var(--ok); color: #fff; text-decoration: none; border-radius: 14px; padding: 14px 16px;
-    font-size: 18px; font-weight: 800;
-  }
-  .go .navbtn, .go .navbtn .ja { color: #fff; }
-  .navbtn .ja { display: block; opacity: .9; font-weight: 500; }
+  .card.go { padding: 18px 0 4px; }
+  .go .label { font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--green); }
+  .go .name { font-size: 26px; font-weight: 900; line-height: 1.2; margin: 2px 0 2px; }
+  .go .addr { color: var(--ink-3); font-size: 12px; }
+  .todo { list-style: none; padding: 0; margin: 14px 0 0; counter-reset: todo; }
+  .todo li { counter-increment: todo; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 16px; font-weight: 700; }
+  .todo li::before { content: counter(todo); width: 24px; height: 24px; border-radius: 4px; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 13px; }
+  .todo .ja { display: block; }
+  .navbtn { margin-top: 12px; display: flex; align-items: center; gap: 12px; background: var(--green); color: #fff; text-decoration: none; border-radius: 10px; padding: 14px 16px; font-size: 18px; font-weight: 900; }
+  .navbtn .ja { color: #fff; opacity: .85; display: block; font-weight: 700; }
+  .navbtn::after { content: "›"; margin-left: auto; font-size: 26px; line-height: 1; }
 
-  .time { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
-  .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .num { background: var(--surface-2); border-radius: 14px; padding: 10px 12px; }
-  .num b { display: block; font-size: 34px; line-height: 1.1; font-variant-numeric: tabular-nums; }
-  .num b small { font-size: 15px; font-weight: 600; }
-  .num.left b { color: var(--danger); }
-  .bar { position: relative; height: 12px; border-radius: 999px; background: var(--surface-2); margin: 14px 0 6px; overflow: hidden; }
-  .bar span { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--ok); }
-  .bar.late span { background: var(--danger); }
-  .verdict { font-weight: 700; }
-  .verdict.late { color: var(--danger); }
+  .tl { margin: 22px 0 6px; }
+  .tl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .tl-num { font-size: 40px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tl-num small { font-size: 14px; font-weight: 700; margin-left: 2px; }
+  .tl-num.red { color: var(--red); text-align: right; }
+  .tl-cap { font-size: 12px; color: var(--ink-2); font-weight: 700; }
+  .tl-track { position: relative; height: 10px; margin: 14px 0 26px; background: repeating-linear-gradient(90deg, var(--paper-2) 0 6px, #e9e9e6 6px 12px); border-radius: 2px; }
+  .tl-walk { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ink); border-radius: 2px; }
+  .tl-pin { position: absolute; top: -6px; width: 2px; height: 22px; background: var(--ink); }
+  .tl-pin.wave { background: var(--red); }
+  .tl-pin span { position: absolute; top: 24px; transform: translateX(-50%); white-space: nowrap; font-size: 11px; font-weight: 700; }
+  .tl-pin.wave span { color: var(--red); }
+  .tl-pin.end span { transform: translateX(-100%); }
+  .tl-pin.start span { transform: none; }
+  .basis { font-size: 12px; color: var(--ink-3); margin: 0; }
 
-  .message { font-size: 17px; background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 12px 14px; margin: 0; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
-  .card .name { font-weight: 700; }
-  .card a { color: var(--accent); }
-  details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; }
-  details summary { cursor: pointer; font-weight: 700; }
-  details[open] > *:not(summary) { margin-top: 8px; }
-  #retry { margin-top: 10px; background: var(--text); color: var(--bg); border: none; border-radius: 999px; padding: 10px 18px; font-weight: 700; }
+  .message { font-size: 16px; margin: 18px 0 0; padding: 12px 0 0; border-top: 3px solid var(--ink); }
+  .result .alert, .result .noalert { margin-top: 14px; font-size: 13px; padding: 10px 12px; border-radius: 6px; }
+  .result .alert { background: var(--red); color: #fff; }
+  .result .noalert { background: #fff6cc; border-left: 4px solid var(--yellow); }
+  .alts { margin-top: 18px; }
+  .alts summary { cursor: pointer; font-weight: 700; padding: 10px 0; border-top: 1px solid var(--rule); }
+  .alt { padding: 10px 0; border-top: 1px solid var(--rule); font-size: 14px; }
+  .alt b { display: block; }
+  .alt a { color: var(--blue); font-weight: 700; }
+  .src { color: var(--ink-3); font-size: 11px; margin-top: 18px; }
+  #retry { margin-top: 10px; background: var(--ink); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-weight: 700; }
   #retry[hidden] { display: none; }
-  footer { margin-top: 20px; }
 
-  .how { list-style: none; padding: 0; margin: 0 0 4px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .how li { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px; display: grid; gap: 2px; align-content: start; font-size: 14px; }
-  .how .ic { width: 24px; height: 24px; border-radius: 50%; background: var(--danger); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
-  .how li:nth-child(2) .ic { background: var(--accent); }
-  .how li:nth-child(3) .ic { background: var(--ok); }
-  .how .ja { font-size: 12px; }
-  .warnpanel { padding: 12px; }
-  .warnpanel .row { margin-top: 8px; }
-  .warnpanel .ghost { font-size: 13px; padding: 6px 12px; }
-  .placeholder { border: 2px dashed var(--line); border-radius: var(--radius); padding: 22px 16px; text-align: center; color: var(--muted); margin: 12px 0 0; }
-  #out:not(:empty) ~ .placeholder { display: none; }
-  .todo { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; counter-reset: todo; }
-  .todo li { counter-increment: todo; display: flex; gap: 10px; align-items: baseline; font-size: 17px; font-weight: 600; }
-  .todo li::before { content: counter(todo); flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; transform: translateY(3px); }
-  .todo .ja { display: block; font-weight: 400; }
+  .demo { margin-top: 28px; padding-top: 12px; border-top: 1px dashed var(--rule); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .demo span { font-size: 11px; color: var(--ink-3); font-weight: 700; letter-spacing: .08em; }
+  #replay { background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; font-size: 12px; }
+  .foot { color: var(--ink-3); font-size: 11px; margin: 12px 0 0; }
+
+  .pin-you { width: 16px; height: 16px; border-radius: 50%; background: var(--blue); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--blue); }
+  .pin-go { width: 30px; height: 30px; border-radius: 6px; background: var(--green); color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 15px; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / .35); }
+  .leaflet-container { font-family: inherit; }
+
   :root { view-transition-name: none; }
-  ::view-transition-old(result), ::view-transition-new(result) { animation-duration: .22s; }
+  ::view-transition-old(result), ::view-transition-new(result) { animation-duration: .2s; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
-<body>
-<div class="wrap">
-<header>
-  <div class="logo" aria-hidden="true">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16c2 0 2-1.5 4-1.5S8 16 10 16s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 20c2 0 2-1.5 4-1.5S8 20 10 20s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M12 3v8m0-8-3 3m3-3 3 3"/></svg>
+<body data-state="idle">
+<div class="ticker">
+  <div class="brand">
+    <svg width="26" height="23" viewBox="0 0 26 23" aria-hidden="true"><path d="M13 1 25 22H1Z" fill="#ffd100" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 18c1.5 0 1.5-1.2 3.5-1.2S11.5 18 13 18s1.5-1.2 3.5-1.2S18.5 18 20 18M8.5 14c1.4 0 1.4-1 3-1.6 1-.4 2-.4 3 .2" fill="none" stroke="#111" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <span>Tsunami Navi<small>津波避難ナビ</small></span>
   </div>
-  <div>
-    <h1>Tsunami Evacuation Navi</h1>
-    <p class="ja">Where to run from a tsunami, and whether you will make it in time. / 津波から逃げる先と、間に合うかを出します（旅行者向け Web 版）</p>
-  </div>
-</header>
-
-<ol class="how" aria-label="How it works / 使い方">
-  <li><span class="ic">1</span><b>Press</b><span class="ja">赤いボタンか地点を押す</span></li>
-  <li><span class="ic">2</span><b>See where to go</b><span class="ja">避難先と間に合うかが出る</span></li>
-  <li><span class="ic">3</span><b>Walk there</b><span class="ja">緑のボタンで道案内</span></li>
-</ol>
-
-<section class="panel warnpanel" aria-label="Warning / 警報">
   <div id="alertbox" role="status" aria-live="polite">Checking warning status… / 警報を確認中</div>
-  <div class="row">
-    <button id="refreshAlert" class="ghost">Check again / 警報を再確認</button>
-    <button id="replay" class="ghost">Receive warning (training replay) <span class="ja">訓練電文を流し直す</span></button>
-  </div>
-</section>
+  <button id="refreshAlert" aria-label="Check again / 警報を再確認" title="Check again / 警報を再確認">↻</button>
+</div>
 
-<section class="panel" aria-labelledby="s2">
-  <h2 class="step" id="s2"><span class="n">1</span>Tell us where you are <span class="ja">いる場所を伝える</span></h2>
-  <button id="here" class="cta">
-    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="7"/></svg>
-    <span>I felt shaking — use my location <span class="ja">揺れた（現在地）</span></span>
-  </button>
-  <p class="or">Not in Osaka? Try a sample place on the coast / 大阪にいない時は、海沿いの地点で試せます</p>
-  <div class="places">
-    <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
-    <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
-    <button data-lat="34.5786" data-lon="135.4610">Ohama Park <span class="ja">大浜公園</span></button>
-  </div>
-  <div class="opts">
-    <select id="lang" aria-label="Language / 言語">
-      <option value="en">English</option>
-      <option value="ja">日本語</option>
-    </select>
-    <label class="switch"><input type="checkbox" id="slow" role="switch"> <span>Cannot walk fast (child, elderly, injury) <span class="ja">速く歩けない</span></span></label>
-  </div>
-  <p id="conditions" class="note"></p>
-</section>
+<div class="app">
+  <main class="sheet">
+    <button class="back" id="back" type="button">‹ Change place / 場所を選び直す</button>
 
-<section aria-labelledby="s3">
-  <h2 class="step" id="s3" style="margin-top:20px"><span class="n">2</span>Go here <span class="ja">ここへ逃げる</span></h2>
-  <div id="out" role="status" aria-live="polite"></div>
-  <button id="retry" hidden>Retry / 再試行</button>
-  <p class="placeholder">Your shelter and the time you have will appear here. / 押すと、ここに避難先と残り時間が出ます</p>
-</section>
+    <div class="idle">
+      <h1 class="lead">Felt a strong quake near the sea?</h1>
+      <span class="ja">海の近くで強い揺れを感じたら、すぐに押してください。逃げる先と、間に合うかを出します。</span>
+      <button id="here">
+        <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="20" cy="20" r="6" fill="#fff"/></svg>
+        <span>I felt shaking — use my location <span class="ja">揺れた（現在地）</span></span>
+      </button>
+      <p class="sub">Not in Osaka? Try it here <span class="ja">大阪にいない時は、ここで試す</span></p>
+      <button id="demoRun" class="demorun" type="button">
+        <span class="play" aria-hidden="true"></span>
+        <span>Watch the full flow <span class="ja">訓練の警報が出た時の流れを試す（南海 堺駅の東）</span></span>
+      </button>
+      <div class="places">
+        <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
+        <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
+        <button data-lat="34.5786" data-lon="135.4610">Ohama Park <span class="ja">大浜公園</span></button>
+      </div>
+    </div>
 
-<footer class="note">Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください。</footer>
+    <div class="opts">
+      <select id="lang" aria-label="Language / 言語">
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+        <option value="zh">简体中文</option>
+        <option value="ko">한국어</option>
+      </select>
+      <label class="switch"><input type="checkbox" id="slow" role="switch"> <span>Cannot walk fast <span class="ja">速く歩けない（子ども・高齢者・けが）</span></span></label>
+    </div>
+    <p id="conditions"></p>
+
+    <div id="out" role="status" aria-live="polite"></div>
+    <button id="retry" hidden>Retry / 再試行</button>
+
+    <div class="demo">
+      <span>DEMO</span>
+      <button id="replay">Receive warning (training replay) <span class="ja">訓練電文を流し直す</span></button>
+    </div>
+    <p class="foot">Reference guidance based on official data. Always follow local instructions and announcements. / 公式データに基づく参考の案内です。現地の指示・放送を優先してください。</p>
+  </main>
+  <div class="mapwrap" aria-hidden="true">
+    <div id="map"></div>
+    <div class="maphint">Tap a red circle to try / 赤い丸を押して試す</div>
+  </div>
 </div>
 
 <script>
@@ -238,7 +255,9 @@ let locationVersion = 0;
 let planController = null;
 let alertController = null;
 let retryAction = null;
-let scrollPending = false;
+let map = null;
+let mapLayer = null;
+let lastPlan = null;
 
 function swap(update) {
   if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -274,19 +293,18 @@ function alertMarkup(a) {
   const checked = a.jma_checked_at
     ? new Date(a.jma_checked_at).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) : "—";
   if (training) {
-    return `<div class="alert"><div><b>Training replay / 訓練電文: ${esc(a.kind)} — ${esc(a.area_name || "大阪府")}</b><br>
-      Not a live warning / 実際の警報ではありません
-      ${failed ? '<br>Live warning status unavailable / 実際の警報の有無は確認できません' : ''}</div></div>`;
+    return `<div class="alert"><div><b>Training replay / 訓練電文: ${esc(a.kind)} — ${esc(a.area_name || "大阪府")}</b>
+      · Not a live warning / 実際の警報ではありません
+      ${failed ? '· Live warning status unavailable / 実際の警報の有無は確認できません' : ''}</div></div>`;
   }
   if (failed) {
     return `<div class="noalert"><div>Warning status unavailable / 警報の有無は確認できません。再確認してください。
       ${a.active ? `<br>Previously received warning / 以前受け取った警報: ${esc(a.kind)}（最新の状態は未確認）` : ''}</div></div>`;
   }
   if (a.active) {
-    return `<div class="alert"><div><b>JMA: ${esc(a.kind)} — Osaka</b> (checked ${esc(checked)})<br>
-      気象庁の警報・注意報（訓練ではありません）</div></div>`;
+    return `<div class="alert"><div><b>JMA: ${esc(a.kind)} — Osaka</b> (checked ${esc(checked)}) · 気象庁の警報・注意報（訓練ではありません）</div></div>`;
   }
-  return `<div class="noalert"><div>JMA live check: no tsunami warning for Osaka (checked ${esc(checked)}).<br>
+  return `<div class="noalert"><div>JMA live check: no tsunami warning for Osaka (checked ${esc(checked)}).
     確認時点では大阪府に津波の警報・注意報なし。強い揺れを感じたら警報を待たずに避難してください。</div></div>`;
 }
 
@@ -303,11 +321,17 @@ function showError(error, retry) {
   $('retry').hidden = false;
 }
 
+function setState(state) {
+  if (document.body.dataset.state === state) return;
+  document.body.dataset.state = state;
+  if (state === 'idle') { lastPlan = null; drawMap(); }
+  setTimeout(() => map?.invalidateSize(), 50);
+}
+
 function updateConditions() {
-  document.querySelectorAll('button[data-lat]').forEach(b =>
-    b.setAttribute('aria-pressed', String(!!position && +b.dataset.lat === position.lat && +b.dataset.lon === position.lon)));
+  setState(position ? 'result' : 'idle');
   $('conditions').textContent = position
-    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').value === 'ja' ? '日本語' : 'English'} · ${$('slow').checked ? 'Slow / ゆっくり (0.5 m/s)' : 'Normal / 通常 (0.62 m/s)'}`
+    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').selectedOptions[0].textContent} · ${$('slow').checked ? 'Slow / ゆっくり (0.5 m/s)' : 'Normal / 通常 (0.62 m/s)'}`
     : '';
 }
 
@@ -365,55 +389,65 @@ function mapsHref(o) {
 
 function destinationText(o) {
   return o.type === 'go_upstairs'
-    ? `Building — go up to floor ${esc(o.floor_min ?? 'top')} or higher / ${esc(o.floor_min ?? '最上')}階以上へ`
-    : 'Outside the flood zone / 浸水想定区域の外へ';
+    ? `Go up to floor ${esc(o.floor_min ?? 'top')} or higher <span class="ja">建物の${esc(o.floor_min ?? '最上')}階以上へ</span>`
+    : 'Get outside the flood zone <span class="ja">浸水想定区域の外へ</span>';
+}
+
+function verdict(left, walk) {
+  if (walk == null) return '';
+  if (walk > left) {
+    return `<div class="verdict late"><b>May not make it in time</b>
+      <span class="ja">間に合わない恐れ。近くのできるだけ高い建物へ上がってください</span></div>`;
+  }
+  return `<div class="verdict"><b>Leave now — about ${left - walk} min to spare</b>
+    <span class="ja">今すぐ出れば、約${left - walk}分の余裕があります</span></div>`;
 }
 
 function primaryCard(o) {
   if (!o) return '<p>No evacuation destination returned / 避難先を取得できませんでした。</p>';
+  const walk = Math.round(o.walk_min);
   return `<div class="card go">
-    <div class="label">Go to / 避難先</div>
+    <div class="label">GO TO · 避難先</div>
     <div class="name">${esc(o.name)}</div>
-    <div class="ja">${esc(o.city)} · ${esc(o.address)}</div>
+    <div class="addr">${esc(o.city)} · ${esc(o.address)}</div>
     <ol class="todo">
       <li><span>Leave now <span class="ja">今すぐ出発</span></span></li>
-      <li><span>Walk about ${Math.round(o.walk_min)} min <span class="ja">歩いて約${Math.round(o.walk_min)}分</span></span></li>
+      <li><span>Walk about ${walk} min <span class="ja">歩いて約${walk}分</span></span></li>
       <li><span>${destinationText(o)}</span></li>
     </ol>
     <a class="navbtn" href="${esc(mapsHref(o))}" target="_blank" rel="noopener">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-8-8 18-2-8-8-2z"/></svg>
       <span>Start walking directions <span class="ja">Google マップで道案内</span></span>
     </a>
   </div>`;
 }
 
-function timePanel(plan, alert, o) {
+function timeline(plan, alert, o) {
   const left = Math.round(plan.minutes_left);
-  if (!o) {
-    return `<div class="time"><p>About ${left} min left / 残り約${left}分<br><span class="note">${esc(timeBasis(plan, alert))}</span></p></div>`;
-  }
-  const walk = Math.round(o.walk_min);
-  const late = walk > left;
-  const ratio = left > 0 ? Math.min(100, Math.max(4, (walk / left) * 100)) : 100;
-  return `<div class="time">
-    <div class="nums">
-      <div class="num left"><span class="note">Time left / 到達まで</span><b>${left}<small> min</small></b></div>
-      <div class="num"><span class="note">Walk / 歩いて</span><b>${walk}<small> min</small></b></div>
+  const walk = o ? Math.round(o.walk_min) : null;
+  const max = Math.max(left, walk ?? 0, 1);
+  const w = walk == null ? 0 : (walk / max) * 100;
+  const t = (left / max) * 100;
+  return `<div class="tl">
+    <div class="tl-head">
+      <div><div class="tl-cap">Walk / 歩いて</div><div class="tl-num">${walk ?? '—'}<small>min</small></div></div>
+      <div><div class="tl-cap" style="text-align:right">Tsunami / 津波まで</div><div class="tl-num red">${left}<small>min</small></div></div>
     </div>
-    <div class="bar${late ? ' late' : ''}" role="img" aria-label="Walking time uses ${Math.round(ratio)}% of the time left"><span style="width:${ratio}%"></span></div>
-    <div class="verdict${late ? ' late' : ''}">${late
-      ? 'Walking takes longer than the time left — go up the nearest tall building now. / 間に合わない恐れ。近くの高い建物へ'
-      : `About ${left - walk} min to spare — leave now. / 約${left - walk}分の余裕。今すぐ出発`}</div>
-    <p class="note" style="margin:6px 0 0">About ${left} min left / 残り約${left}分 · ${esc(timeBasis(plan, alert))}</p>
+    <div class="tl-track" role="img" aria-label="Arrive in ${walk ?? '?'} min, tsunami in ${left} min">
+      <span class="tl-walk" style="width:${w}%"></span>
+      <i class="tl-pin start" style="left:0"><span>Now</span></i>
+      ${walk != null ? `<i class="tl-pin${w > 80 ? ' end' : ''}" style="left:${w}%"><span>${w < 20 ? '' : 'Arrive'}</span></i>` : ''}
+      <i class="tl-pin wave${t > 80 ? ' end' : ''}" style="left:calc(${t}% - 2px)"><span>Tsunami</span></i>
+    </div>
+    <p class="basis">About ${left} min left / 残り約${left}分 · ${esc(timeBasis(plan, alert))}</p>
   </div>`;
 }
 
-function altCard(o) {
-  return `<div class="card">
-    <div class="name">${esc(o.name)}</div>
-    <div class="ja">${esc(o.address)}</div>
+function altRow(o) {
+  return `<div class="alt">
+    <b>${esc(o.name)}</b>
+    <span class="ja">${esc(o.address)}</span>
     <div>About ${Math.round(o.walk_min)} min on foot · ${destinationText(o)}</div>
-    <a href="${esc(mapsHref(o))}" target="_blank" rel="noopener">Open walking directions in Google Maps</a>
+    <a href="${esc(mapsHref(o))}" target="_blank" rel="noopener">Directions ›</a>
   </div>`;
 }
 
@@ -430,9 +464,10 @@ async function run() {
   const warningVersion = alertVersion;
   const controller = planController = new AbortController();
   shakeAt = shakeAt ?? Date.now();
+  // 避難先は先に出し、Gemini の説明（数秒かかる）は後から足す
   const input = {
     lat: position.lat, lon: position.lon, lang: $('lang').value,
-    slow: $('slow').checked, shake_at_ms: shakeAt,
+    slow: $('slow').checked, shake_at_ms: shakeAt, explain: false,
   };
   $('out').textContent = 'Calculating… / 計算中';
   $('out').setAttribute('aria-busy', 'true');
@@ -447,26 +482,29 @@ async function run() {
     if (warningVersion === alertVersion) $('alertbox').innerHTML = alertMarkup(alert);
     const walkingSource = plan.walking_time_source === 'routes_api'
       ? 'Routes API distance' : 'straight line × 1.6 (estimate)';
+    const left = Math.round(plan.minutes_left);
+    const walk = plan.primary ? Math.round(plan.primary.walk_min) : null;
     const html = `<div class="result">
+      ${verdict(left, walk)}
       ${primaryCard(plan.primary)}
-      ${timePanel(plan, alert, plan.primary)}
-      ${explanation?.message ? `<p class="message">${esc(explanation.message)}</p>` : ''}
+      ${timeline(plan, alert, plan.primary)}
+      <p class="message${explanation?.message ? '' : ' pending'}" id="explain">${explanation?.message
+        ? esc(explanation.message) : 'Gemini is writing a short explanation… / Gemini が説明を作成中…'}</p>
       ${alertMarkup(alert)}
-      ${plan.alternatives.length ? `<details><summary>Other options (${plan.alternatives.length}) / ほかの避難先</summary>
-        ${plan.alternatives.map(altCard).join('')}</details>` : ''}
-      <p class="note">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波） ·
+      ${plan.alternatives.length ? `<details class="alts"><summary>Other shelters (${plan.alternatives.length}) / ほかの避難先</summary>
+        ${plan.alternatives.map(altRow).join('')}</details>` : ''}
+      <p class="src">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波） ·
         Flood depth: MLIT (Osaka 2023) / 国土数値情報 ·
         Walking: ${walkingSource} ÷ ${input.slow ? '0.5' : '0.62'} m/s ·
-        Explanation: ${explanation?.source === 'gemini' ? 'Gemini' : 'fixed text'}</p>
+        Explanation: <span id="explainSrc">${explanation ? (explanation.source === 'gemini' ? 'Gemini' : 'fixed text') : 'Gemini'}</span></p>
     </div>`;
     $('out').setAttribute('aria-busy', 'false');
     swap(() => {
       if (version !== planVersion) return;
       $('out').innerHTML = html;
-      if (scrollPending) {
-        scrollPending = false;
-        $('s3').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      lastPlan = plan;
+      drawMap();
+      if (!explanation?.message && plan.plan_id) loadExplanation(plan.plan_id, version);
     });
   } catch (error) {
     if (version === planVersion) showError(error, run);
@@ -478,10 +516,30 @@ async function run() {
   }
 }
 
+async function loadExplanation(planId, version) {
+  let text = 'Explanation unavailable — follow the steps above. / 説明を出せませんでした。上の手順に従ってください。';
+  let source = 'unavailable';
+  try {
+    const e = await requestJson(`/api/explain?plan_id=${encodeURIComponent(planId)}`, {}, new AbortController());
+    if (e?.message) {
+      text = e.message;
+      source = e.source === 'gemini' ? 'Gemini' : 'fixed text';
+    }
+  } catch (error) {
+    // 説明が無くても避難先と手順は出ているので、案内は続けられる
+  }
+  if (version !== planVersion || !$('explain')) return;
+  $('explain').textContent = text;
+  $('explain').classList.remove('pending');
+  $('explainSrc').textContent = source;
+}
+
+const AREA = { latMin: 34.0, latMax: 35.2, lonMin: 134.9, lonMax: 135.8 };
+const inArea = (lat, lon) => lat >= AREA.latMin && lat <= AREA.latMax && lon >= AREA.lonMin && lon <= AREA.lonMax;
+
 function selectPosition(lat, lon, label) {
   locationVersion++;
   position = { lat, lon, label };
-  scrollPending = true;
   shakeAt = shakeAt ?? Date.now();
   run();
 }
@@ -509,21 +567,119 @@ function locate() {
     return;
   }
   navigator.geolocation.getCurrentPosition(p => {
-    if (version === locationVersion) {
-      selectPosition(p.coords.latitude, p.coords.longitude, 'Current location / 現在地');
+    if (version !== locationVersion) return;
+    if (!inArea(p.coords.latitude, p.coords.longitude)) {
+      $('out').innerHTML = `<div class="outside"><b>You are outside the Osaka Bay area this app covers.</b>
+        Try a place above, or “Watch the full flow”. / 対応地域（大阪湾岸）の外にいます。上の地点か「流れを試す」で試せます。</div>`;
+      document.querySelector('.places').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
     }
+    selectPosition(p.coords.latitude, p.coords.longitude, 'Current location / 現在地');
   }, fail, { timeout: 10000, maximumAge: 0, enableHighAccuracy: true });
+}
+
+function backToStart() {
+  locationVersion++;
+  cancelPlan();
+  position = null;
+  $('out').textContent = '';
+  $('retry').hidden = true;
+  updateConditions();
+  $('here').focus();
+}
+
+/* 地図（OpenStreetMap）。読み込めなくても他の機能は動く */
+function decodePolyline(str) {
+  const pts = [];
+  let i = 0, lat = 0, lng = 0;
+  while (i < str.length) {
+    for (let k = 0; k < 2; k++) {
+      let shift = 0, result = 0, b;
+      do { b = str.charCodeAt(i++) - 63; result |= (b & 31) << shift; shift += 5; } while (b >= 32);
+      const d = (result & 1) ? ~(result >> 1) : (result >> 1);
+      if (k === 0) lat += d; else lng += d;
+    }
+    pts.push([lat / 1e5, lng / 1e5]);
+  }
+  return pts;
+}
+
+function drawMap() {
+  if (!map || !mapLayer) return;
+  try {
+    mapLayer.clearLayers();
+    if (!lastPlan || !position) {
+      document.querySelectorAll('button[data-lat]').forEach((b, i) => {
+        const left = i === 2;
+        L.circleMarker([+b.dataset.lat, +b.dataset.lon], { radius: 11, color: '#d7000f', weight: 4, fillColor: '#fff', fillOpacity: 1 })
+          .bindTooltip(b.firstChild.textContent.trim(), { permanent: true, direction: left ? 'left' : 'right', offset: [left ? -12 : 12, 0] })
+          .on('click', () => b.click())
+          .addTo(mapLayer);
+      });
+      map.setView([34.615, 135.45], 12);
+      return;
+    }
+    const p = lastPlan.primary;
+    const you = [position.lat, position.lon];
+    const bounds = [you];
+    (lastPlan.alternatives || []).forEach(o => {
+      L.circleMarker([o.lat, o.lon], { radius: 6, color: '#8a8a8a', weight: 2, fillColor: '#fff', fillOpacity: 1 })
+        .bindTooltip(o.name).addTo(mapLayer);
+    });
+    if (p) {
+      const encoded = lastPlan.route && lastPlan.route.encoded_polyline;
+      const line = encoded ? decodePolyline(encoded) : [you, [p.lat, p.lon]];
+      L.polyline(line, { color: '#ffffff', weight: 9, opacity: 1 }).addTo(mapLayer);
+      L.polyline(line, { color: '#00873c', weight: 5, opacity: 1, dashArray: encoded ? null : '6 8' }).addTo(mapLayer);
+      L.marker([p.lat, p.lon], { icon: L.divIcon({ className: '', html: '<div class="pin-go">避</div>', iconSize: [30, 30], iconAnchor: [15, 15] }) })
+        .bindTooltip(p.name, { permanent: true, direction: 'top', offset: [0, -16] }).addTo(mapLayer);
+      bounds.push(...line, [p.lat, p.lon]);
+    }
+    L.marker(you, { icon: L.divIcon({ className: '', html: '<div class="pin-you"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }) }).addTo(mapLayer);
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 17 });
+  } catch (e) {
+    console.warn('map', e);
+  }
+}
+
+function loadMap() {
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  s.async = true;
+  s.onload = () => {
+    try {
+      map = L.map('map', { zoomControl: false, attributionControl: true });
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      mapLayer = L.layerGroup().addTo(map);
+      drawMap();
+    } catch (e) {
+      $('map').classList.add('off');
+    }
+  };
+  s.onerror = () => $('map').classList.add('off');
+  document.head.append(s);
 }
 
 $('retry').addEventListener('click', () => retryAction?.());
 $('replay').addEventListener('click', () => checkAlert(true));
 $('refreshAlert').addEventListener('click', () => checkAlert());
+$('back').addEventListener('click', backToStart);
+$('demoRun').addEventListener('click', () => {
+  checkAlert(true);
+  const sakai = document.querySelector('button[data-lat]');
+  selectPosition(+sakai.dataset.lat, +sakai.dataset.lon, sakai.firstChild.textContent.trim());
+});
 $('lang').addEventListener('change', run);
 $('slow').addEventListener('change', run);
 document.querySelectorAll('button[data-lat]').forEach(b =>
   b.addEventListener('click', () => selectPosition(+b.dataset.lat, +b.dataset.lon, b.firstChild.textContent.trim())));
 $('here').addEventListener('click', locate);
 checkAlert();
+loadMap();
 </script>
 </body>
 </html>
