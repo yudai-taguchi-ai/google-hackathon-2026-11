@@ -4,8 +4,20 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.test.assertFailsWith
 
 class PlannerTest {
+    @Test
+    fun disconnectedGraphNodeIsNotTreatedAsStraightLineRoute() {
+        val graph = WalkGraph.of(listOf(34.0 to 135.0, 34.001 to 135.0, 34.002 to 135.0), listOf(Triple(0, 1, 100)))
+        val reachable = Shelter("connected", "connected", "", 34.001, 135.0, null, null, false, 1)
+        val disconnected = Shelter("disconnected", "disconnected", "", 34.002, 135.0, null, null, false, 2)
+        val plan = Planner.plan(34.0, 135.0, 26.0, false, listOf(disconnected, reachable), InundationMap.EMPTY, graph)
+        assertEquals("connected", plan.primary.shelter.id)
+        assertFailsWith<IllegalArgumentException> {
+            Planner.plan(34.0, 135.0, 26.0, false, listOf(disconnected), InundationMap.EMPTY, graph)
+        }
+    }
     // 経度 135.0〜135.01・緯度 34.0〜34.01 の正方形が「1.0～2.0m」の浸水想定（1 辺 約 1km）
     private val zone = InundationMap.fromMultiPolygons(
         mapOf(
