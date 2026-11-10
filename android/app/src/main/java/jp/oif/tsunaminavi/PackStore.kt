@@ -1,12 +1,16 @@
 package jp.oif.tsunaminavi
 
 import android.content.Context
+import android.util.AtomicFile
 import java.io.File
+import java.util.UUID
 import jp.oif.tsunaminavi.offline.InundationMap
 import jp.oif.tsunaminavi.offline.Shelter
 import jp.oif.tsunaminavi.offline.WalkGraph
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
@@ -36,28 +40,70 @@ class Pack(
 /** パックを Cloud Run から取って保存し、保存したものを読み込む。 */
 class PackStore(context: Context) {
     private val dir = File(context.filesDir, "pack").apply { mkdirs() }
-    private val packFile = File(dir, "pack.json")
-    private val audioDir = File(dir, "audio").apply { mkdirs() }
-    private val graphFile = File(dir, "walk_graph.bin")
+    private val active = AtomicFile(File(dir, "active-generation"))
+    private val pointerLock = Any()
+    private val downloadLock = Mutex()
 
-    suspend fun download(area: String, lang: String, expiresAt: String?) {
+    suspend fun download(area: String, lang: String, expiresAt: String?) = downloadLock.withLock {
         val q = "/api/pack?area=$area&lang=$lang" + (expiresAt?.let { "&expires_at=$it" } ?: "")
-        val tmp = File(dir, "pack.json.tmp")
-        Api.download(q, tmp)
-        val json = withContext(Dispatchers.IO) { Json.parseToJsonElement(tmp.readText()).jsonObject }
-        for (a in json["answers"]!!.jsonArray) {
-            val o = a.jsonObject
-            val id = o["id"]!!.jsonPrimitive.content
-            Api.download(o["audio_url"]!!.jsonPrimitive.content, File(audioDir, "$id.wav"))
+        val generation = "generation-${UUID.randomUUID()}"
+        val staged = File(dir, generation)
+        withContext(Dispatchers.IO) { check(staged.mkdir()) { "Could not create pack staging directory" } }
+        var committed = false
+        try {
+            val packFile = File(staged, "pack.json")
+            val audioDir = File(staged, "audio")
+            withContext(Dispatchers.IO) { check(audioDir.mkdir()) }
+            Api.download(q, packFile)
+            val json = withContext(Dispatchers.IO) { Json.parseToJsonElement(packFile.readText()).jsonObject }
+            for (a in json["answers"]!!.jsonArray) {
+                val o = a.jsonObject
+                val id = o["id"]!!.jsonPrimitive.content
+                require(id.matches(Regex("[a-z_]+"))) { "Invalid answer id" }
+                val audio = File(audioDir, "$id.wav")
+                Api.download(o["audio_url"]!!.jsonPrimitive.content, audio)
+                withContext(Dispatchers.IO) { check(audio.length() > 44) { "Empty audio: $id" } }
+            }
+            json["graph_url"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content?.let {
+                Api.download(it, File(staged, "walk_graph.bin"))
+            }
+            withContext(Dispatchers.IO) {
+                // Validate all data before changing which generation is active.
+                val checked = readPack(staged, strictGraph = true)
+                check(checked.shelters.isNotEmpty() && checked.answers.isNotEmpty()) { "Pack is empty" }
+                synchronized(pointerLock) {
+                    val out = active.startWrite()
+                    try {
+                        out.write(generation.toByteArray(Charsets.UTF_8))
+                        active.finishWrite(out)
+                    } catch (error: Throwable) {
+                        active.failWrite(out)
+                        throw error
+                    }
+                }
+                committed = true
+            }
+        } finally {
+            if (!committed) withContext(kotlinx.coroutines.NonCancellable + Dispatchers.IO) { staged.deleteRecursively() }
         }
-        json["graph_url"]?.takeIf { it !is JsonNull }?.jsonPrimitive?.content?.let { Api.download(it, graphFile) }
-        withContext(Dispatchers.IO) { tmp.renameTo(packFile) }
     }
 
     suspend fun load(): Pack? = withContext(Dispatchers.IO) {
-        if (!packFile.exists()) return@withContext null
+        val name = synchronized(pointerLock) {
+            if (active.baseFile.exists() || File(dir, "active-generation.bak").exists()) active.openRead().bufferedReader().use { it.readText() } else null
+        }
+        if (name != null) require(name.matches(Regex("generation-[0-9a-f-]+"))) { "Invalid pack generation" }
+        val selected = if (name == null) dir else File(dir, name)
+        if (!File(selected, "pack.json").exists()) return@withContext null
+        readPack(selected)
+    }
+
+    private fun readPack(selected: File, strictGraph: Boolean = false): Pack {
+        val packFile = File(selected, "pack.json")
+        val audioDir = File(selected, "audio")
+        val graphFile = File(selected, "walk_graph.bin")
         val json = Json.parseToJsonElement(packFile.readText()).jsonObject
-        Pack(
+        return Pack(
             version = json["version"]!!.jsonPrimitive.content,
             lang = json["lang"]?.jsonPrimitive?.content ?: "en",
             shelters = json["shelters"]!!.jsonArray.map { parseShelter(it.jsonObject) },
@@ -67,7 +113,7 @@ class PackStore(context: Context) {
             },
             audioDir = audioDir,
             sizeBytes = packFile.length() + graphFile.length() + (audioDir.listFiles()?.sumOf { it.length() } ?: 0L),
-            graph = if (graphFile.exists()) runCatching { WalkGraph.fromBytes(graphFile.readBytes()) }.getOrNull() else null,
+            graph = if (!graphFile.exists()) null else if (strictGraph) WalkGraph.fromBytes(graphFile.readBytes()) else runCatching { WalkGraph.fromBytes(graphFile.readBytes()) }.getOrNull(),
         )
     }
 
