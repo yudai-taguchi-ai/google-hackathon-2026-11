@@ -85,6 +85,12 @@
   #here:active { filter: brightness(.92); }
   .sub { margin: 26px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
   .sub .ja { text-transform: none; letter-spacing: 0; font-weight: 400; margin-left: 6px; }
+  .demorun { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--ink); color: #fff; border: none; border-radius: 10px; padding: 14px 16px; margin: 6px 0 10px; font-size: 16px; font-weight: 900; }
+  .demorun .ja { color: #fff; opacity: .75; display: block; font-weight: 400; }
+  .demorun .play { flex: none; width: 0; height: 0; border-left: 14px solid var(--yellow); border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+  .outside { background: #fff6cc; border-left: 4px solid var(--yellow); padding: 10px 12px; border-radius: 6px; font-size: 14px; }
+  .message.pending { color: var(--ink-3); }
+  .message.pending::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: -1px; border-radius: 50%; border: 2px solid var(--rule); border-top-color: var(--ink); animation: spin .8s linear infinite; }
   .places { border-top: 1px solid var(--rule); }
   .places button { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: none; border: none; border-bottom: 1px solid var(--rule); padding: 12px 2px; font-size: 16px; font-weight: 700; }
   .places button::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--red); }
@@ -197,7 +203,11 @@
         <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="20" cy="20" r="6" fill="#fff"/></svg>
         <span>I felt shaking — use my location <span class="ja">揺れた（現在地）</span></span>
       </button>
-      <p class="sub">Not in Osaka? Try a place <span class="ja">大阪にいない時は、地点で試す</span></p>
+      <p class="sub">Not in Osaka? Try it here <span class="ja">大阪にいない時は、ここで試す</span></p>
+      <button id="demoRun" class="demorun" type="button">
+        <span class="play" aria-hidden="true"></span>
+        <span>Watch the full flow <span class="ja">訓練の警報が出た時の流れを試す（南海 堺駅の東）</span></span>
+      </button>
       <div class="places">
         <button data-lat="34.5813" data-lon="135.4673">Nankai Sakai Sta. <span class="ja">南海 堺駅の東</span></button>
         <button data-lat="34.6545" data-lon="135.4290">Kaiyukan <span class="ja">海遊館</span></button>
@@ -209,6 +219,8 @@
       <select id="lang" aria-label="Language / 言語">
         <option value="en">English</option>
         <option value="ja">日本語</option>
+        <option value="zh">简体中文</option>
+        <option value="ko">한국어</option>
       </select>
       <label class="switch"><input type="checkbox" id="slow" role="switch"> <span>Cannot walk fast <span class="ja">速く歩けない（子ども・高齢者・けが）</span></span></label>
     </div>
@@ -319,7 +331,7 @@ function setState(state) {
 function updateConditions() {
   setState(position ? 'result' : 'idle');
   $('conditions').textContent = position
-    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').value === 'ja' ? '日本語' : 'English'} · ${$('slow').checked ? 'Slow / ゆっくり (0.5 m/s)' : 'Normal / 通常 (0.62 m/s)'}`
+    ? `${position.label} (${position.lat.toFixed(5)}, ${position.lon.toFixed(5)}) · ${$('lang').selectedOptions[0].textContent} · ${$('slow').checked ? 'Slow / ゆっくり (0.5 m/s)' : 'Normal / 通常 (0.62 m/s)'}`
     : '';
 }
 
@@ -452,9 +464,10 @@ async function run() {
   const warningVersion = alertVersion;
   const controller = planController = new AbortController();
   shakeAt = shakeAt ?? Date.now();
+  // 避難先は先に出し、Gemini の説明（数秒かかる）は後から足す
   const input = {
     lat: position.lat, lon: position.lon, lang: $('lang').value,
-    slow: $('slow').checked, shake_at_ms: shakeAt,
+    slow: $('slow').checked, shake_at_ms: shakeAt, explain: false,
   };
   $('out').textContent = 'Calculating… / 計算中';
   $('out').setAttribute('aria-busy', 'true');
@@ -475,14 +488,15 @@ async function run() {
       ${verdict(left, walk)}
       ${primaryCard(plan.primary)}
       ${timeline(plan, alert, plan.primary)}
-      ${explanation?.message ? `<p class="message">${esc(explanation.message)}</p>` : ''}
+      <p class="message${explanation?.message ? '' : ' pending'}" id="explain">${explanation?.message
+        ? esc(explanation.message) : 'Gemini is writing a short explanation… / Gemini が説明を作成中…'}</p>
       ${alertMarkup(alert)}
       ${plan.alternatives.length ? `<details class="alts"><summary>Other shelters (${plan.alternatives.length}) / ほかの避難先</summary>
         ${plan.alternatives.map(altRow).join('')}</details>` : ''}
       <p class="src">Shelters: GSI designated tsunami evacuation sites / 国土地理院 指定緊急避難場所（津波） ·
         Flood depth: MLIT (Osaka 2023) / 国土数値情報 ·
         Walking: ${walkingSource} ÷ ${input.slow ? '0.5' : '0.62'} m/s ·
-        Explanation: ${explanation?.source === 'gemini' ? 'Gemini' : 'fixed text'}</p>
+        Explanation: <span id="explainSrc">${explanation ? (explanation.source === 'gemini' ? 'Gemini' : 'fixed text') : 'Gemini'}</span></p>
     </div>`;
     $('out').setAttribute('aria-busy', 'false');
     swap(() => {
@@ -490,6 +504,7 @@ async function run() {
       $('out').innerHTML = html;
       lastPlan = plan;
       drawMap();
+      if (!explanation?.message && plan.plan_id) loadExplanation(plan.plan_id, version);
     });
   } catch (error) {
     if (version === planVersion) showError(error, run);
@@ -500,6 +515,27 @@ async function run() {
     }
   }
 }
+
+async function loadExplanation(planId, version) {
+  let text = 'Explanation unavailable — follow the steps above. / 説明を出せませんでした。上の手順に従ってください。';
+  let source = 'unavailable';
+  try {
+    const e = await requestJson(`/api/explain?plan_id=${encodeURIComponent(planId)}`, {}, new AbortController());
+    if (e?.message) {
+      text = e.message;
+      source = e.source === 'gemini' ? 'Gemini' : 'fixed text';
+    }
+  } catch (error) {
+    // 説明が無くても避難先と手順は出ているので、案内は続けられる
+  }
+  if (version !== planVersion || !$('explain')) return;
+  $('explain').textContent = text;
+  $('explain').classList.remove('pending');
+  $('explainSrc').textContent = source;
+}
+
+const AREA = { latMin: 34.0, latMax: 35.2, lonMin: 134.9, lonMax: 135.8 };
+const inArea = (lat, lon) => lat >= AREA.latMin && lat <= AREA.latMax && lon >= AREA.lonMin && lon <= AREA.lonMax;
 
 function selectPosition(lat, lon, label) {
   locationVersion++;
@@ -531,9 +567,14 @@ function locate() {
     return;
   }
   navigator.geolocation.getCurrentPosition(p => {
-    if (version === locationVersion) {
-      selectPosition(p.coords.latitude, p.coords.longitude, 'Current location / 現在地');
+    if (version !== locationVersion) return;
+    if (!inArea(p.coords.latitude, p.coords.longitude)) {
+      $('out').innerHTML = `<div class="outside"><b>You are outside the Osaka Bay area this app covers.</b>
+        Try a place above, or “Watch the full flow”. / 対応地域（大阪湾岸）の外にいます。上の地点か「流れを試す」で試せます。</div>`;
+      document.querySelector('.places').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
     }
+    selectPosition(p.coords.latitude, p.coords.longitude, 'Current location / 現在地');
   }, fail, { timeout: 10000, maximumAge: 0, enableHighAccuracy: true });
 }
 
@@ -627,6 +668,11 @@ $('retry').addEventListener('click', () => retryAction?.());
 $('replay').addEventListener('click', () => checkAlert(true));
 $('refreshAlert').addEventListener('click', () => checkAlert());
 $('back').addEventListener('click', backToStart);
+$('demoRun').addEventListener('click', () => {
+  checkAlert(true);
+  const sakai = document.querySelector('button[data-lat]');
+  selectPosition(+sakai.dataset.lat, +sakai.dataset.lon, sakai.firstChild.textContent.trim());
+});
 $('lang').addEventListener('change', run);
 $('slow').addEventListener('change', run);
 document.querySelectorAll('button[data-lat]').forEach(b =>

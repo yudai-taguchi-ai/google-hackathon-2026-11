@@ -31,6 +31,10 @@ async function boot(page, overrides = {}) {
       if (state.alertFailure) return route.abort();
       return route.fulfill({ json: state.alert });
     }
+    if (path === '/api/explain') {
+      if (state.explain) return state.explain(route);
+      return route.fulfill({ status: 404, body: '' });
+    }
     if (path === '/api/plan') {
       const input = route.request().postDataJSON();
       state.inputs.push(input);
@@ -254,4 +258,63 @@ test('warning check latency does not postpone the evacuation start time', async 
   await expect(page.locator('#out .card')).toBeVisible();
   expect(state.inputs[0].shake_at_ms).toBeLessThanOrEqual(selectedAt);
   expect(state.inputs[0].shake_at_ms).toBeGreaterThan(selectedAt - 1000);
+});
+
+test('shelter appears before the Gemini explanation, which is filled in afterwards', async ({ page }) => {
+  const release = deferred();
+  const { state, errors } = await boot(page, {
+    plan: (route, input) => {
+      const data = result(input);
+      data.plan.plan_id = 'p1';
+      delete data.explanation;
+      return route.fulfill({ json: { ...data, explanation: null } });
+    },
+    explain: async route => {
+      await release.promise;
+      expect(new URL(route.request().url()).searchParams.get('plan_id')).toBe('p1');
+      return route.fulfill({ json: { message: 'Walk to the hotel now.', source: 'gemini' } });
+    },
+  });
+  await choose(page);
+  expect(state.inputs[0].explain).toBe(false);
+  await expect(page.locator('#explain')).toContainText('Gemini が説明を作成中');
+  release.resolve();
+  await expect(page.locator('#explain')).toHaveText('Walk to the hotel now.');
+  await expect(page.locator('#explainSrc')).toHaveText('Gemini');
+  expect(errors).toEqual([]);
+});
+
+test('explanation failure keeps the guidance and says so', async ({ page }) => {
+  await boot(page, {
+    plan: (route, input) => {
+      const data = result(input);
+      data.plan.plan_id = 'p2';
+      return route.fulfill({ json: { ...data, explanation: null } });
+    },
+    explain: route => route.fulfill({ status: 500, body: '' }),
+  });
+  await choose(page);
+  await expect(page.locator('#explain')).toContainText('説明を出せませんでした');
+  await expect(page.locator('#out .card')).toBeVisible();
+});
+
+test('current location outside Osaka Bay points to the sample places instead of an error', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'geolocation', { configurable: true, value: {
+      getCurrentPosition(ok) { ok({ coords: { latitude: 35.6812, longitude: 139.7671 } }); },
+    } });
+  });
+  const { state } = await boot(page);
+  await page.locator('#here').click();
+  await expect(page.locator('#out')).toContainText('対応地域（大阪湾岸）の外');
+  await expect(page.locator('button[data-lat]').first()).toBeVisible();
+  expect(state.inputs).toHaveLength(0);
+});
+
+test('watch the full flow replays the training warning and plans at Sakai', async ({ page }) => {
+  const { state } = await boot(page);
+  await page.locator('#demoRun').click();
+  await expect(page.locator('#alertbox')).toContainText('Training replay');
+  await expect(page.locator('#out')).toContainText('training telegram');
+  expect(state.inputs.at(-1)).toMatchObject({ lat: 34.5813, lon: 135.4673 });
 });
