@@ -1,8 +1,17 @@
-# 旅行者向け 津波避難ナビ（仮称）
+# Tsunami Navi（津波避難ナビ）
 
 GDG GoC Japan DevFest Hackathon 2026 ／ カテゴリ：**観光**
 
 津波警報が出たとき、旅行者のいる場所から「どこへ・どう逃げるか」を公式の避難場所データから選び、母語の声で会話しながら道案内するアプリ。
+
+## 試し方
+| 形 | 場所 |
+|---|---|
+| Android アプリ（APK） | [Releases v1.6.0](https://github.com/yudai-taguchi-ai/google-hackathon-2026-11/releases/tag/v1.6.0)（入れ方と特記事項はリリースの説明） |
+| Web 版（Cloud Run） | https://tsunami-navi-129745156402.asia-northeast1.run.app |
+
+- 圏外の聞き分けモデル（追加学習した FunctionGemma・約 286MB）は APK に入れていない。端末の `Android/data/jp.oif.tsunaminavi/files/intent.litertlm` に置くと使われ、無い時はキーワード方式で動く
+- 警報の場面は、気象庁の訓練用の電文を流し直して再現する（実際の警報ではない）
 
 ## まず読むもの
 | ファイル | 中身 |
